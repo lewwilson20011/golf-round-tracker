@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Round Tracker</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo-container">
+                <img src="Images/Round-Tracker.png" alt="Round Tracker" class="logo">
+            </div>
+            <div class="user-section">
+                <div class="user-avatar">LW</div>
+                <div class="user-info">
+                    <div class="user-name">Lew Wilson</div>
+                    <div class="user-email">lew.wilson@email.com</div>
+                </div>
+                <button class="logout-btn" id="logoutButton">
+                    <i class="fa-solid fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <i class="fa-solid fa-bullseye icon"></i>
+                    Average Score
+                </div>
+                <div class="stat-value" id="avgScore">37</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-header">
+                    <i class="fa-solid fa-trophy icon"></i>
+                    Best Score
+                </div>
+                <div class="stat-value" id="bestScore">36</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-header">
+                    <i class="fa-solid fa-clock icon"></i>
+                    Total Rounds
+                </div>
+                <div class="stat-value" id="totalRounds">3</div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <i class="fa-solid fa-calendar icon"></i>
+                        Add Round
+                    </div>
+                    <button class="add-course-btn">
+                        <i class="fa-solid fa-plus"></i>
+                        Add Course
+                    </button>
+                </div>
+                <form>
+                    <div class="form-group">
+                        <label>Date</label>
+                        <input type="date" id="roundDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Course</label>
+                        <select id="courseSelect" required>
+                            <option value="">Select Course</option>
+                            <option>Eagle Ridge Country Club</option>
+                            <option>Treyburn Country Club</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Number of Holes</label>
+                        <select id="holesSelect">
+                            <option>18 Holes</option>
+                            <option>9 Holes</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Score</label>
+                        <input type="number" id="scoreInput" min="20" max="200" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Notes</label>
+                        <textarea id="notes" rows="4" placeholder="How was your round?"></textarea>
+                    </div>
+                    <button type="button" class="save-btn" onclick="saveRound()">Save Round</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <div class="card-title">
+                    <i class="fa-solid fa-clock icon"></i>
+                    Recent Rounds
+                </div>
+                <div class="rounds-table">
+                    <div class="rounds-header">
+                        <div>Date</div>
+                        <div>Course</div>
+                        <div>Score</div>
+                        <div>Notes</div>
+                        <div>Actions</div>
+                    </div>
+                    <div id="roundsList"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script type="module" src="supabase.js"></script>
+    <script type="module">
+        import { supabase } from './supabase.js';
+        
+        // Expose deleteRound to global scope for onclick handlers
+        window.deleteRound = async (id) => {
+            const { error } = await supabase
+                .from('rounds')
+                .delete()
+                .match({ id });
+
+            if (error) {
+                console.error('Error deleting round:', error);
+                alert('Error deleting round');
+                return;
+            }
+
+            location.reload();
+        };
+    </script>
+    <script type="module" src="js/script.js"></script>
+</body>
+</html>
