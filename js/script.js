@@ -104,31 +104,45 @@ async function handleSaveRound(e) {
     }
 
     try {
+        // Log the data we're trying to save
+        console.log('Saving round:', {
+            date,
+            course,
+            score,
+            notes,
+            holes,
+            user_id: currentUser.id
+        });
+
+        // Insert the round
         const { data, error } = await supabase
             .from('rounds')
-            .insert([{
+            .insert({
                 date,
                 course,
                 score,
                 notes,
                 holes,
                 user_id: currentUser.id
-            }])
-            .select();
+            });
 
-        if (error) throw error;
+        if (error) {
+            console.error('Supabase error:', error);
+            throw error;
+        }
 
         // Reset form
         document.getElementById('roundDate').valueAsDate = new Date();
         document.getElementById('courseSelect').value = '';
         document.getElementById('scoreInput').value = '';
         document.getElementById('notes').value = '';
+        document.getElementById('holesSelect').value = '18 Holes';
 
         // Reload rounds immediately
         await loadRounds();
     } catch (error) {
-        console.error('Error saving round:', error);
-        alert('Error saving round: ' + error.message);
+        console.error('Detailed error:', error);
+        alert('Error saving round. Please check the console for details.');
     }
 }
 
