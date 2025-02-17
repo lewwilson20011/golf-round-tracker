@@ -2,6 +2,43 @@ import { supabase } from './supabase.js';
 
 let currentUser = null;
 
+// Menu functionality
+document.addEventListener('DOMContentLoaded', () => {
+    const menuButton = document.querySelector('.menu-button');
+    const menuDropdown = document.querySelector('.menu-dropdown');
+
+    menuButton.addEventListener('click', (e) => {
+        e.stopPropagation();
+        menuDropdown.classList.toggle('show');
+    });
+
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!menuDropdown.contains(e.target) && !menuButton.contains(e.target)) {
+            menuDropdown.classList.remove('show');
+        }
+    });
+
+    // Handle menu items
+    document.getElementById('profileSettings').addEventListener('click', async (e) => {
+        e.preventDefault();
+        alert('Profile settings coming soon!');
+    });
+
+    document.getElementById('appSettings').addEventListener('click', async (e) => {
+        e.preventDefault();
+        alert('App settings coming soon!');
+    });
+
+    document.getElementById('signOut').addEventListener('click', async (e) => {
+        e.preventDefault();
+        const { error } = await supabase.auth.signOut();
+        if (!error) {
+            window.location.href = 'login.html';
+        }
+    });
+});
+
 // Initialize the application
 async function initializeApp() {
     // Check if user is authenticated
