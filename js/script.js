@@ -37,6 +37,10 @@ document.addEventListener('DOMContentLoaded', () => {
             window.location.href = 'login.html';
         }
     });
+
+    // Set up form submission
+    const form = document.querySelector('form');
+    form.addEventListener('submit', handleSaveRound);
 });
 
 // Initialize the application
@@ -66,72 +70,83 @@ function updateUserInterface() {
 
 // Load rounds from Supabase
 async function loadRounds() {
-    const { data: rounds, error } = await supabase
-        .from('rounds')
-        .select('*')
-        .order('date', { ascending: false });
+    try {
+        const { data: rounds, error } = await supabase
+            .from('rounds')
+            .select('*')
+            .eq('user_id', currentUser.id)
+            .order('created_at', { ascending: false });
 
-    if (error) {
+        if (error) throw error;
+
+        if (rounds) {
+            updateStats(rounds);
+            renderRounds(rounds);
+        }
+    } catch (error) {
         console.error('Error loading rounds:', error);
-        return;
     }
-
-    updateStats(rounds);
-    renderRounds(rounds);
 }
 
-// Save a new round
-async function saveRound() {
+// Handle save round form submission
+async function handleSaveRound(e) {
+    e.preventDefault();
+    
     const date = document.getElementById('roundDate').value;
     const course = document.getElementById('courseSelect').value;
     const score = parseInt(document.getElementById('scoreInput').value);
     const notes = document.getElementById('notes').value;
+    const holes = document.getElementById('holesSelect').value;
     
     if (!date || !course || !score) {
         alert('Please fill in all required fields');
         return;
     }
 
-    const { error } = await supabase
-        .from('rounds')
-        .insert([{
-            date,
-            course,
-            score,
-            notes,
-            user_id: currentUser.id
-        }]);
+    try {
+        const { data, error } = await supabase
+            .from('rounds')
+            .insert([{
+                date,
+                course,
+                score,
+                notes,
+                holes,
+                user_id: currentUser.id
+            }])
+            .select();
 
-    if (error) {
+        if (error) throw error;
+
+        // Reset form
+        document.getElementById('roundDate').valueAsDate = new Date();
+        document.getElementById('courseSelect').value = '';
+        document.getElementById('scoreInput').value = '';
+        document.getElementById('notes').value = '';
+
+        // Reload rounds immediately
+        await loadRounds();
+    } catch (error) {
         console.error('Error saving round:', error);
-        alert('Error saving round');
-        return;
+        alert('Error saving round: ' + error.message);
     }
-
-    // Reset form
-    document.getElementById('roundDate').value = '';
-    document.getElementById('courseSelect').value = '';
-    document.getElementById('scoreInput').value = '';
-    document.getElementById('notes').value = '';
-
-    // Reload rounds
-    await loadRounds();
 }
 
 // Delete a round
 async function deleteRound(id) {
-    const { error } = await supabase
-        .from('rounds')
-        .delete()
-        .match({ id });
+    try {
+        const { error } = await supabase
+            .from('rounds')
+            .delete()
+            .match({ id });
 
-    if (error) {
+        if (error) throw error;
+
+        await loadRounds();
+    } catch (error) {
         console.error('Error deleting round:', error);
         alert('Error deleting round');
-        return;
     }
-
-    await loadRounds();
 }
 
 // Update statistics
@@ -180,19 +195,8 @@ function renderRounds(rounds) {
     `).join('');
 }
 
-// Handle logout
-document.getElementById('logoutButton').addEventListener('click', async () => {
-    const { error } = await supabase.auth.signOut();
-    if (!error) {
-        window.location.href = 'login.html';
-    }
-});
-
-// Set up form submission
-document.querySelector('form').addEventListener('submit', (e) => {
-    e.preventDefault();
-    saveRound();
-});
+// Make deleteRound available globally
+window.deleteRound = deleteRound;
 
 // Set default date to today
 document.getElementById('roundDate').valueAsDate = new Date();
