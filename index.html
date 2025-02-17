@@ -46,21 +46,21 @@
                     <i class="fa-solid fa-bullseye icon"></i>
                     Average Score
                 </div>
-                <div class="stat-value" id="avgScore">37</div>
+                <div class="stat-value" id="avgScore">-</div>
             </div>
             <div class="stat-card">
                 <div class="stat-header">
                     <i class="fa-solid fa-trophy icon"></i>
                     Best Score
                 </div>
-                <div class="stat-value" id="bestScore">36</div>
+                <div class="stat-value" id="bestScore">-</div>
             </div>
             <div class="stat-card">
                 <div class="stat-header">
                     <i class="fa-solid fa-clock icon"></i>
                     Total Rounds
                 </div>
-                <div class="stat-value" id="totalRounds">3</div>
+                <div class="stat-value" id="totalRounds">0</div>
             </div>
         </div>
 
@@ -104,7 +104,7 @@
                         <label>Notes</label>
                         <textarea id="notes" rows="4" placeholder="How was your round?"></textarea>
                     </div>
-                    <button type="button" class="save-btn" onclick="saveRound()">Save Round</button>
+                    <button type="submit" class="save-btn">Save Round</button>
                 </form>
             </div>
 
@@ -128,9 +128,9 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script type="module" src="supabase.js"></script>
+    <script type="module" src="js/supabase.js"></script>
     <script type="module">
-        import { supabase } from './supabase.js';
+        import { supabase } from './js/supabase.js';
         
         // Expose deleteRound to global scope for onclick handlers
         window.deleteRound = async (id) => {

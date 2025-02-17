@@ -136,7 +136,7 @@ async function deleteRound(id) {
 
 // Update statistics
 function updateStats(rounds) {
-    if (!rounds.length) {
+    if (!rounds || !rounds.length) {
         document.getElementById('avgScore').textContent = '-';
         document.getElementById('bestScore').textContent = '-';
         document.getElementById('totalRounds').textContent = '0';
@@ -154,6 +154,16 @@ function updateStats(rounds) {
 // Render rounds table
 function renderRounds(rounds) {
     const roundsList = document.getElementById('roundsList');
+    
+    if (!rounds || !rounds.length) {
+        roundsList.innerHTML = `
+            <div class="no-rounds">
+                <p>No rounds logged yet. Add your first round to start tracking!</p>
+            </div>
+        `;
+        return;
+    }
+
     roundsList.innerHTML = rounds.map((round) => `
         <div class="round-row">
             <div class="date">${new Date(round.date).toLocaleDateString()}</div>
