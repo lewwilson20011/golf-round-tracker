@@ -1,99 +1,6 @@
-// Handle save round form submission
-async function handleSaveRound(e) {
-    e.preventDefault();
-    
-    const date = document.getElementById('roundDate').value;
-    const course = document.getElementById('courseSelect').value;
-    const score = parseInt(document.getElementById('scoreInput').value);
-    const notes = document.getElementById('notes').value;
-    const holes = document.getElementById('holesSelect').value;
-    
-    if (!date || !course || !score) {
-        alert('Please fill in all required fields');
-        return;
-    }
-
-    try {
-        // Log the data we're trying to save
-        const roundData = {
-            date,
-            course,
-            score,
-            notes,
-            holes,
-            user_id: currentUser.id
-        };
-        console.log('Attempting to save round data:', roundData);
-
-        // Insert the round
-        const { data, error } = await supabase
-            .from('rounds')
-            .insert(roundData);
-
-        if (error) {
-            console.log('Full error details:', error);
-            throw error;
-        }
-
-        console.log('Successfully saved round:', data);
-
-        // Reset form
-        document.getElementById('roundDate').valueAsDate = new Date();
-        document.getElementById('courseSelect').value = '';
-        document.getElementById('scoreInput').value = '';
-        document.getElementById('notes').value = '';
-        document.getElementById('holesSelect').value = '18 Holes';
-
-        // Reload rounds immediately
-        await loadRounds();
-    } catch (error) {
-        console.log('Full error object:', error);
-        alert('Error saving round. Check the browser console for details.');
-    }
-}import { supabase } from './supabase.js';
+import { supabase } from './supabase.js';
 
 let currentUser = null;
-
-// Menu functionality
-document.addEventListener('DOMContentLoaded', () => {
-    const menuButton = document.querySelector('.menu-button');
-    const menuDropdown = document.querySelector('.menu-dropdown');
-
-    menuButton.addEventListener('click', (e) => {
-        e.stopPropagation();
-        menuDropdown.classList.toggle('show');
-    });
-
-    // Close menu when clicking outside
-    document.addEventListener('click', (e) => {
-        if (!menuDropdown.contains(e.target) && !menuButton.contains(e.target)) {
-            menuDropdown.classList.remove('show');
-        }
-    });
-
-    // Handle menu items
-    document.getElementById('profileSettings').addEventListener('click', async (e) => {
-        e.preventDefault();
-        alert('Profile settings coming soon!');
-    });
-
-    document.getElementById('appSettings').addEventListener('click', async (e) => {
-        e.preventDefault();
-        alert('App settings coming soon!');
-    });
-
-    document.getElementById('signOut').addEventListener('click', async (e) => {
-        e.preventDefault();
-        const { error } = await supabase.auth.signOut();
-        if (!error) {
-            window.location.href = 'login.html';
-        }
-    });
-
-    // Set up form submission
-    const form = document.querySelector('form');
-    form.addEventListener('submit', handleSaveRound);
-});
 
 // Initialize the application
 async function initializeApp() {
@@ -129,12 +36,14 @@ async function loadRounds() {
             .eq('user_id', currentUser.id)
             .order('created_at', { ascending: false });
 
-        if (error) throw error;
-
-        if (rounds) {
-            updateStats(rounds);
-            renderRounds(rounds);
+        if (error) {
+            console.log('Load rounds error:', error);
+            throw error;
         }
+
+        console.log('Loaded rounds:', rounds);
+        updateStats(rounds);
+        renderRounds(rounds);
     } catch (error) {
         console.error('Error loading rounds:', error);
     }
@@ -156,32 +65,26 @@ async function handleSaveRound(e) {
     }
 
     try {
-        // Log the data we're trying to save
-        console.log('Saving round:', {
+        const roundData = {
             date,
             course,
             score,
             notes,
             holes,
             user_id: currentUser.id
-        });
+        };
+        console.log('Saving round data:', roundData);
 
-        // Insert the round
         const { data, error } = await supabase
             .from('rounds')
-            .insert({
-                date,
-                course,
-                score,
-                notes,
-                holes,
-                user_id: currentUser.id
-            });
+            .insert(roundData);
 
         if (error) {
-            console.error('Supabase error:', error);
+            console.log('Save error:', error);
             throw error;
         }
+
+        console.log('Save successful:', data);
 
         // Reset form
         document.getElementById('roundDate').valueAsDate = new Date();
@@ -193,25 +96,8 @@ async function handleSaveRound(e) {
         // Reload rounds immediately
         await loadRounds();
     } catch (error) {
-        console.error('Detailed error:', error);
-        alert('Error saving round. Please check the console for details.');
-    }
-}
-
-// Delete a round
-async function deleteRound(id) {
-    try {
-        const { error } = await supabase
-            .from('rounds')
-            .delete()
-            .match({ id });
-
-        if (error) throw error;
-
-        await loadRounds();
-    } catch (error) {
-        console.error('Error deleting round:', error);
-        alert('Error deleting round');
+        console.log('Save error details:', error);
+        alert('Error saving round. Check browser console for details.');
     }
 }
 
@@ -261,11 +147,70 @@ function renderRounds(rounds) {
     `).join('');
 }
 
+// Delete round function
+async function deleteRound(id) {
+    try {
+        const { error } = await supabase
+            .from('rounds')
+            .delete()
+            .match({ id });
+
+        if (error) throw error;
+
+        await loadRounds();
+    } catch (error) {
+        console.error('Error deleting round:', error);
+        alert('Error deleting round');
+    }
+}
+
+// Set up event listeners when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    // Menu functionality
+    const menuButton = document.querySelector('.menu-button');
+    const menuDropdown = document.querySelector('.menu-dropdown');
+
+    menuButton.addEventListener('click', (e) => {
+        e.stopPropagation();
+        menuDropdown.classList.toggle('show');
+    });
+
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!menuDropdown.contains(e.target) && !menuButton.contains(e.target)) {
+            menuDropdown.classList.remove('show');
+        }
+    });
+
+    // Menu items
+    document.getElementById('profileSettings').addEventListener('click', (e) => {
+        e.preventDefault();
+        alert('Profile settings coming soon!');
+    });
+
+    document.getElementById('appSettings').addEventListener('click', (e) => {
+        e.preventDefault();
+        alert('App settings coming soon!');
+    });
+
+    document.getElementById('signOut').addEventListener('click', async (e) => {
+        e.preventDefault();
+        const { error } = await supabase.auth.signOut();
+        if (!error) {
+            window.location.href = 'login.html';
+        }
+    });
+
+    // Form submission
+    const form = document.querySelector('form');
+    form.addEventListener('submit', handleSaveRound);
+
+    // Set initial date
+    document.getElementById('roundDate').valueAsDate = new Date();
+});
+
 // Make deleteRound available globally
 window.deleteRound = deleteRound;
-
-// Set default date to today
-document.getElementById('roundDate').valueAsDate = new Date();
 
 // Initialize the application
 initializeApp();
