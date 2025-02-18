@@ -73,14 +73,20 @@ async function handleSaveRound(e) {
             holes,
             user_id: currentUser.id
         };
-        console.log('Saving round data:', roundData);
+        console.log('Current user:', currentUser);
+        console.log('Round data to save:', JSON.stringify(roundData, null, 2));
 
         const { data, error } = await supabase
             .from('rounds')
             .insert(roundData);
 
         if (error) {
-            console.log('Save error:', error);
+            console.log('Full error:', {
+                message: error.message,
+                details: error.details,
+                hint: error.hint,
+                code: error.code
+            });
             throw error;
         }
 
@@ -96,7 +102,12 @@ async function handleSaveRound(e) {
         // Reload rounds immediately
         await loadRounds();
     } catch (error) {
-        console.log('Save error details:', error);
+        console.log('Caught error:', {
+            message: error.message,
+            details: error.details,
+            hint: error.hint,
+            code: error.code
+        });
         alert('Error saving round. Check browser console for details.');
     }
 }
