@@ -1,10 +1,6 @@
 // Initialize Supabase client
-const supabaseUrl = 'https://YOUR_PROJECT_ID.supabase.co'
-const supabaseKey = 'YOUR_ANON_PUBLIC_KEY'
+const supabaseUrl = 'YOUR_SUPABASE_PROJECT_URL'
+const supabaseKey = 'YOUR_SUPABASE_ANON_KEY'
 
-// Ensure the Supabase script is loaded before creating the client
-if (window.supabase) {
-    export const supabase = window.supabase.createClient(supabaseUrl, supabaseKey)
-} else {
-    console.error('Supabase script not loaded. Make sure to include the Supabase CDN script.')
-}
+// Create Supabase client using the global Supabase object from CDN
+const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
