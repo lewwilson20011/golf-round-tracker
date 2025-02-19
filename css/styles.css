@@ -20,7 +20,7 @@
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     background: linear-gradient(rgba(26, 31, 46, 0.85), rgba(26, 31, 46, 0.85)),
-                url('/golf-course-image.jpg') center/cover fixed;
+                url('../images/golf-course-image.jpg') center/cover fixed;
     color: white;
     min-height: 100vh;
 }
