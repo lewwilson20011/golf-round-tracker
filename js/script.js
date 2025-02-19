@@ -233,8 +233,41 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Form submission
-    const form = document.querySelector('form');
-    form.addEventListener('submit', handleSaveRound);
+const form = document.querySelector('form');
+form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const date = document.getElementById('roundDate').value;
+    const course = document.getElementById('courseSelect').value;
+    const score = parseInt(document.getElementById('scoreInput').value);
+    const notes = document.getElementById('notes').value;
+    const holes = document.getElementById('holesSelect').value;
+    
+    try {
+        const { data, error } = await supabase
+            .from('rounds')
+            .insert([{
+                date,
+                course,
+                score,
+                notes,
+                holes,
+                user_id: currentUser.id
+            }]);
+
+        if (error) throw error;
+
+        // Reset form
+        form.reset();
+        document.getElementById('roundDate').valueAsDate = new Date();
+
+        // Reload rounds
+        await loadRounds();
+    } catch (error) {
+        console.error('Error saving round:', error);
+        alert('Error saving round: ' + error.message);
+    }
+});
 
     // Set initial date
     document.getElementById('roundDate').valueAsDate = new Date();
