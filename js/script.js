@@ -11,14 +11,13 @@ window.deleteRound = async (id) => {
                 .delete()
                 .eq('id', id);
 
-            if (error) {
-                console.error('Delete error:', error);
-                throw error;
-            }
+            if (error) throw error;
+
+            // Reload rounds after successful deletion
             await loadRounds();
         } catch (error) {
             console.error('Error deleting round:', error);
-            alert('Error deleting round');
+            alert(`Error deleting round: ${error.message}`);
         }
     }
 };
@@ -262,11 +261,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const editId = form.dataset.editId;
         
         try {
-            let error;
+            let result;
             
             if (editId) {
                 // Update existing round
-                const { error: updateError } = await supabase
+                result = await supabase
                     .from('rounds')
                     .update({
                         date,
@@ -276,10 +275,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         holes
                     })
                     .eq('id', editId);
-                error = updateError;
             } else {
                 // Insert new round
-                const { error: insertError } = await supabase
+                result = await supabase
                     .from('rounds')
                     .insert([{
                         date,
@@ -289,10 +287,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         holes,
                         user_id: currentUser.id
                     }]);
-                error = insertError;
             }
 
-            if (error) throw error;
+            // Check for errors
+            if (result.error) throw result.error;
 
             // Reset form and UI
             resetForm();
