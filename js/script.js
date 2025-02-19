@@ -9,9 +9,12 @@ window.deleteRound = async (id) => {
             const { error } = await supabase
                 .from('rounds')
                 .delete()
-                .match({ id });
+                .eq('id', id);
 
-            if (error) throw error;
+            if (error) {
+                console.error('Delete error:', error);
+                throw error;
+            }
             await loadRounds();
         } catch (error) {
             console.error('Error deleting round:', error);
@@ -20,8 +23,42 @@ window.deleteRound = async (id) => {
     }
 };
 
+function setEditMode(isEditing) {
+    const saveBtn = document.querySelector('.save-btn');
+    if (isEditing) {
+        saveBtn.textContent = 'Update Round';
+        saveBtn.classList.add('updating');
+        // Add cancel button if it doesn't exist
+        if (!document.querySelector('.cancel-edit')) {
+            const cancelBtn = document.createElement('button');
+            cancelBtn.className = 'cancel-edit';
+            cancelBtn.textContent = 'Cancel';
+            cancelBtn.onclick = resetForm;
+            saveBtn.parentNode.insertBefore(cancelBtn, saveBtn);
+        }
+    } else {
+        saveBtn.textContent = 'Save Round';
+        saveBtn.classList.remove('updating');
+        // Remove cancel button
+        const cancelBtn = document.querySelector('.cancel-edit');
+        if (cancelBtn) cancelBtn.remove();
+    }
+}
+
+function resetForm() {
+    const form = document.querySelector('form');
+    form.reset();
+    form.dataset.editId = '';
+    document.getElementById('roundDate').valueAsDate = new Date();
+    setEditMode(false);
+    document.querySelectorAll('.round-row').forEach(row => row.classList.remove('editing'));
+}
+
 window.editRound = async (id) => {
     try {
+        // Remove previous editing highlights
+        document.querySelectorAll('.round-row').forEach(row => row.classList.remove('editing'));
+        
         // Get the round data
         const { data: round, error } = await supabase
             .from('rounds')
@@ -32,9 +69,10 @@ window.editRound = async (id) => {
         if (error) throw error;
 
         // Fill the form with the round data
-        document.getElementById('roundDate').value = round.date;
+        const dateInput = document.getElementById('roundDate');
+        dateInput.value = round.date;
         document.getElementById('courseSelect').value = round.course;
-        document.getElementById('holesSelect').value = round.holes;
+        document.getElementById('holesSelect').value = round.holes || '18 Holes';
         document.getElementById('scoreInput').value = round.score;
         document.getElementById('notes').value = round.notes || '';
 
@@ -42,9 +80,14 @@ window.editRound = async (id) => {
         const form = document.querySelector('form');
         form.dataset.editId = id;
         
-        // Change save button text
-        const saveBtn = form.querySelector('.save-btn');
-        saveBtn.textContent = 'Update Round';
+        // Update UI for edit mode
+        setEditMode(true);
+        
+        // Highlight the round being edited
+        const roundRow = document.querySelector(`[data-round-id="${id}"]`);
+        if (roundRow) {
+            roundRow.classList.add('editing');
+        }
         
         // Scroll to form
         form.scrollIntoView({ behavior: 'smooth' });
@@ -152,7 +195,7 @@ function renderRounds(rounds) {
     }
 
     roundsList.innerHTML = rounds.map((round) => `
-        <div class="round-row">
+        <div class="round-row" data-round-id="${round.id}">
             <div class="date">${new Date(round.date).toLocaleDateString()}</div>
             <div class="course">${round.course}</div>
             <div class="score">${round.score}</div>
@@ -232,7 +275,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         notes,
                         holes
                     })
-                    .match({ id: editId });
+                    .eq('id', editId);
                 error = updateError;
             } else {
                 // Insert new round
@@ -251,12 +294,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (error) throw error;
 
-            // Reset form
-            form.reset();
-            form.dataset.editId = '';
-            document.getElementById('roundDate').valueAsDate = new Date();
-            const saveBtn = form.querySelector('.save-btn');
-            saveBtn.textContent = 'Save Round';
+            // Reset form and UI
+            resetForm();
 
             // Reload rounds
             await loadRounds();

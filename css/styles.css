@@ -498,3 +498,52 @@ select:focus, input:focus, textarea:focus {
 .edit-btn:hover {
     background: rgba(59, 130, 246, 0.25);
 }
+
+.round-row.editing {
+    background: rgba(59, 130, 246, 0.1);
+    border-left: 3px solid #3b82f6;
+}
+
+.save-btn.updating {
+    background: #3b82f6;
+}
+
+.cancel-edit {
+    background: #64748b;
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    margin-right: 10px;
+}
+
+.cancel-edit:hover {
+    opacity: 0.9;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.edit-btn {
+    background: rgba(59, 130, 246, 0.15);
+    color: #3b82f6;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.edit-btn:hover {
+    background: rgba(59, 130, 246, 0.25);
+}
