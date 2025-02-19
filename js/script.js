@@ -2,7 +2,26 @@ import { supabase } from './supabase.js';
 
 let currentUser = null;
 
-// Initialize the application
+// Load courses from Supabase
+async function loadCourses() {
+    try {
+        const { data: courses, error } = await supabase
+            .from('courses')
+            .select('name')
+            .order('name');
+
+        if (error) throw error;
+
+        const courseList = document.getElementById('courseList');
+        courseList.innerHTML = courses.map(course => 
+            `<option value="${course.name}"></option>`
+        ).join('');
+    } catch (error) {
+        console.error('Error loading courses:', error);
+    }
+}
+
+// Add this to your initializeApp function:
 async function initializeApp() {
     // Check if user is authenticated
     const { data: { user } } = await supabase.auth.getUser();
@@ -13,6 +32,7 @@ async function initializeApp() {
     
     currentUser = user;
     updateUserInterface();
+    await loadCourses(); // Add this line
     await loadRounds();
 }
 

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Round Tracker</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="css/styles.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
 </head>
 <body>
     <div class="container">
@@ -46,21 +46,21 @@
                     <i class="fa-solid fa-bullseye icon"></i>
                     Average Score
                 </div>
-                <div class="stat-value" id="avgScore">-</div>
+                <div class="stat-value" id="avgScore">37</div>
             </div>
             <div class="stat-card">
                 <div class="stat-header">
                     <i class="fa-solid fa-trophy icon"></i>
                     Best Score
                 </div>
-                <div class="stat-value" id="bestScore">-</div>
+                <div class="stat-value" id="bestScore">36</div>
             </div>
             <div class="stat-card">
                 <div class="stat-header">
                     <i class="fa-solid fa-clock icon"></i>
                     Total Rounds
                 </div>
-                <div class="stat-value" id="totalRounds">0</div>
+                <div class="stat-value" id="totalRounds">3</div>
             </div>
         </div>
 
@@ -83,11 +83,16 @@
                     </div>
                     <div class="form-group">
                         <label>Course</label>
-                        <select id="courseSelect" required>
-                            <option value="">Select Course</option>
-                            <option>Eagle Ridge Country Club</option>
-                            <option>Treyburn Country Club</option>
-                        </select>
+                        <input 
+                            type="text" 
+                            id="courseSelect" 
+                            list="courseList" 
+                            placeholder="Start typing to search courses..."
+                            required
+                        >
+                        <datalist id="courseList">
+                            <!-- Will be populated from database -->
+                        </datalist>
                     </div>
                     <div class="form-group">
                         <label>Number of Holes</label>
@@ -104,7 +109,7 @@
                         <label>Notes</label>
                         <textarea id="notes" rows="4" placeholder="How was your round?"></textarea>
                     </div>
-                    <button type="submit" class="save-btn">Save Round</button>
+                    <button type="button" class="save-btn" onclick="saveRound()">Save Round</button>
                 </form>
             </div>
 
@@ -128,9 +133,9 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script type="module" src="js/supabase.js"></script>
+    <script type="module" src="supabase.js"></script>
     <script type="module">
-        import { supabase } from './js/supabase.js';
+        import { supabase } from './supabase.js';
         
         // Expose deleteRound to global scope for onclick handlers
         window.deleteRound = async (id) => {
@@ -148,6 +153,6 @@
             location.reload();
         };
     </script>
-    <script type="module" src="js/script.js"></script>
+    <script type="module" src="script.js"></script>
 </body>
 </html>
