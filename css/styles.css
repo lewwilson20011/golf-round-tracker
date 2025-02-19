@@ -475,3 +475,26 @@ select:focus, input:focus, textarea:focus {
         padding: 12px;
     }
 }
+
+.action-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.edit-btn {
+    background: rgba(59, 130, 246, 0.15);
+    color: #3b82f6;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.edit-btn:hover {
+    background: rgba(59, 130, 246, 0.25);
+}

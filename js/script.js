@@ -2,24 +2,55 @@ import { supabase } from './supabase.js';
 
 let currentUser = null;
 
-// Make deleteRound available globally
+// Make delete and edit functions globally available
 window.deleteRound = async (id) => {
-    try {
-        const { error } = await supabase
-            .from('rounds')
-            .delete()
-            .eq('id', id);
+    if (confirm('Are you sure you want to delete this round?')) {
+        try {
+            const { error } = await supabase
+                .from('rounds')
+                .delete()
+                .match({ id });
 
-        if (error) {
+            if (error) throw error;
+            await loadRounds();
+        } catch (error) {
             console.error('Error deleting round:', error);
             alert('Error deleting round');
-            return;
         }
+    }
+};
 
-        loadRounds(); // Reload the rounds after deletion
+window.editRound = async (id) => {
+    try {
+        // Get the round data
+        const { data: round, error } = await supabase
+            .from('rounds')
+            .select('*')
+            .eq('id', id)
+            .single();
+
+        if (error) throw error;
+
+        // Fill the form with the round data
+        document.getElementById('roundDate').value = round.date;
+        document.getElementById('courseSelect').value = round.course;
+        document.getElementById('holesSelect').value = round.holes;
+        document.getElementById('scoreInput').value = round.score;
+        document.getElementById('notes').value = round.notes || '';
+
+        // Add the round ID to the form for updating
+        const form = document.querySelector('form');
+        form.dataset.editId = id;
+        
+        // Change save button text
+        const saveBtn = form.querySelector('.save-btn');
+        saveBtn.textContent = 'Update Round';
+        
+        // Scroll to form
+        form.scrollIntoView({ behavior: 'smooth' });
     } catch (error) {
-        console.error('Error:', error);
-        alert('Error deleting round');
+        console.error('Error loading round for edit:', error);
+        alert('Error loading round for edit');
     }
 };
 
@@ -126,10 +157,12 @@ function renderRounds(rounds) {
             <div class="course">${round.course}</div>
             <div class="score">${round.score}</div>
             <div class="notes">${round.notes || ''}</div>
-            <div>
+            <div class="action-buttons">
+                <button class="edit-btn" onclick="editRound('${round.id}')">
+                    <i class="fa-solid fa-pencil"></i>
+                </button>
                 <button class="delete-btn" onclick="deleteRound('${round.id}')">
                     <i class="fa-solid fa-trash"></i>
-                    Delete
                 </button>
             </div>
         </div>
@@ -183,24 +216,47 @@ document.addEventListener('DOMContentLoaded', () => {
         const score = parseInt(document.getElementById('scoreInput').value);
         const notes = document.getElementById('notes').value;
         const holes = document.getElementById('holesSelect').value;
+        const editId = form.dataset.editId;
         
         try {
-            const { data, error } = await supabase
-                .from('rounds')
-                .insert([{
-                    date,
-                    course,
-                    score,
-                    notes,
-                    holes,
-                    user_id: currentUser.id
-                }]);
+            let error;
+            
+            if (editId) {
+                // Update existing round
+                const { error: updateError } = await supabase
+                    .from('rounds')
+                    .update({
+                        date,
+                        course,
+                        score,
+                        notes,
+                        holes
+                    })
+                    .match({ id: editId });
+                error = updateError;
+            } else {
+                // Insert new round
+                const { error: insertError } = await supabase
+                    .from('rounds')
+                    .insert([{
+                        date,
+                        course,
+                        score,
+                        notes,
+                        holes,
+                        user_id: currentUser.id
+                    }]);
+                error = insertError;
+            }
 
             if (error) throw error;
 
             // Reset form
             form.reset();
+            form.dataset.editId = '';
             document.getElementById('roundDate').valueAsDate = new Date();
+            const saveBtn = form.querySelector('.save-btn');
+            saveBtn.textContent = 'Save Round';
 
             // Reload rounds
             await loadRounds();
