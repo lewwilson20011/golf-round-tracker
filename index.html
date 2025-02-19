@@ -94,9 +94,11 @@
     </div>
   </div>
 </div>
-<!-- Make sure these are in this exact order -->
+<!-- Supabase CDN script MUST be loaded first -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase.js"></script>
+<!-- Then your custom Supabase script -->
+<script type="module" src="supabase.js"></script>
+<!-- Then your main script -->
 <script type="module" src="js/script.js"></script>
 </body>
 </html>
