@@ -2,7 +2,7 @@ import { supabase } from './supabase.js';
 
 let currentUser = null;
 
-// Debugging function to log errors consistently
+// Enhanced error handling function
 function handleError(context, error) {
     console.error(`Error in ${context}:`, error);
     alert(`Error in ${context}: ${error.message || 'Unknown error'}`);
@@ -12,52 +12,36 @@ function handleError(context, error) {
 window.deleteRound = async (id) => {
     if (confirm('Are you sure you want to delete this round?')) {
         try {
-            const { error } = await supabase
+            console.log(`Attempting to delete round with ID: ${id}`);
+            
+            // Get current user
+            const { data: { user }, error: userError } = await supabase.auth.getUser();
+            
+            if (userError) throw userError;
+            if (!user) throw new Error('No authenticated user');
+
+            // Perform deletion
+            const { data, error } = await supabase
                 .from('rounds')
                 .delete()
-                .eq('id', id);
+                .eq('id', id)
+                .eq('user_id', user.id);
+
+            // Log deletion result
+            console.log('Delete operation result:', { data, error });
 
             if (error) throw error;
 
             // Reload rounds after successful deletion
             await loadRounds();
         } catch (error) {
-            handleError('deleteRound', error);
+            console.error('Delete round error:', error);
+            alert(`Error deleting round: ${error.message}`);
         }
     }
 };
 
-function setEditMode(isEditing) {
-    const saveBtn = document.querySelector('.save-btn');
-    if (isEditing) {
-        saveBtn.textContent = 'Update Round';
-        saveBtn.classList.add('updating');
-        // Add cancel button if it doesn't exist
-        if (!document.querySelector('.cancel-edit')) {
-            const cancelBtn = document.createElement('button');
-            cancelBtn.className = 'cancel-edit';
-            cancelBtn.textContent = 'Cancel';
-            cancelBtn.onclick = resetForm;
-            saveBtn.parentNode.insertBefore(cancelBtn, saveBtn);
-        }
-    } else {
-        saveBtn.textContent = 'Save Round';
-        saveBtn.classList.remove('updating');
-        // Remove cancel button
-        const cancelBtn = document.querySelector('.cancel-edit');
-        if (cancelBtn) cancelBtn.remove();
-    }
-}
-
-function resetForm() {
-    const form = document.querySelector('form');
-    form.reset();
-    form.dataset.editId = '';
-    document.getElementById('roundDate').valueAsDate = new Date();
-    setEditMode(false);
-    document.querySelectorAll('.round-row').forEach(row => row.classList.remove('editing'));
-}
-
+// Update round function
 window.editRound = async (id) => {
     try {
         // Remove previous editing highlights
@@ -157,8 +141,9 @@ function updateUserInterface() {
 // Load rounds from Supabase
 async function loadRounds() {
     try {
-        // Ensure we have a current user before loading rounds
-        if (!currentUser) {
+        // Ensure we have a current user
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) {
             console.warn('No current user found');
             return;
         }
@@ -166,7 +151,7 @@ async function loadRounds() {
         const { data: rounds, error } = await supabase
             .from('rounds')
             .select('*')
-            .eq('user_id', currentUser.id)
+            .eq('user_id', user.id)
             .order('created_at', { ascending: false });
 
         if (error) throw error;
@@ -226,14 +211,108 @@ function renderRounds(rounds) {
     `).join('');
 }
 
-// Prevent multiple event listener attachments
-let isEventListenersAttached = false;
+// Set edit mode function
+function setEditMode(isEditing) {
+    const saveBtn = document.querySelector('.save-btn');
+    if (isEditing) {
+        saveBtn.textContent = 'Update Round';
+        saveBtn.classList.add('updating');
+        // Add cancel button if it doesn't exist
+        if (!document.querySelector('.cancel-edit')) {
+            const cancelBtn = document.createElement('button');
+            cancelBtn.className = 'cancel-edit';
+            cancelBtn.textContent = 'Cancel';
+            cancelBtn.onclick = resetForm;
+            saveBtn.parentNode.insertBefore(cancelBtn, saveBtn);
+        }
+    } else {
+        saveBtn.textContent = 'Save Round';
+        saveBtn.classList.remove('updating');
+        // Remove cancel button
+        const cancelBtn = document.querySelector('.cancel-edit');
+        if (cancelBtn) cancelBtn.remove();
+    }
+}
+
+// Reset form function
+function resetForm() {
+    const form = document.querySelector('form');
+    form.reset();
+    form.dataset.editId = '';
+    document.getElementById('roundDate').valueAsDate = new Date();
+    setEditMode(false);
+    document.querySelectorAll('.round-row').forEach(row => row.classList.remove('editing'));
+}
+
+// Form submission handler
+async function handleFormSubmit(e) {
+    e.preventDefault();
+    
+    // Get form values
+    const date = document.getElementById('roundDate').value;
+    const course = document.getElementById('courseSelect').value;
+    const score = parseInt(document.getElementById('scoreInput').value);
+    const notes = document.getElementById('notes').value;
+    const holes = document.getElementById('holesSelect').value;
+    const editId = document.querySelector('form').dataset.editId;
+    
+    try {
+        // Ensure user is authenticated
+        const { data: { user }, error: userError } = await supabase.auth.getUser();
+        
+        if (userError) throw userError;
+        if (!user) throw new Error('No authenticated user');
+
+        let result;
+        
+        if (editId) {
+            // Update existing round
+            result = await supabase
+                .from('rounds')
+                .update({
+                    date,
+                    course,
+                    score,
+                    notes,
+                    holes
+                })
+                .eq('id', editId)
+                .eq('user_id', user.id);
+
+            console.log('Update result:', result);
+        } else {
+            // Insert new round
+            result = await supabase
+                .from('rounds')
+                .insert([{
+                    date,
+                    course,
+                    score,
+                    notes,
+                    holes,
+                    user_id: user.id
+                }]);
+
+            console.log('Insert result:', result);
+        }
+
+        // Check for errors
+        if (result.error) {
+            console.error('Form submission error:', result.error);
+            throw result.error;
+        }
+
+        // Reset form and reload rounds
+        resetForm();
+        await loadRounds();
+    } catch (error) {
+        console.error('Form submission error:', error);
+        alert(`Error: ${error.message}`);
+    }
+}
 
 // Set up event listeners when DOM is loaded
-function setupEventListeners() {
-    if (isEventListenersAttached) return;
-    isEventListenersAttached = true;
-
+document.addEventListener('DOMContentLoaded', () => {
     // Menu functionality
     const menuButton = document.querySelector('.menu-button');
     const menuDropdown = document.querySelector('.menu-dropdown');
@@ -271,67 +350,14 @@ function setupEventListeners() {
 
     // Form submission
     const form = document.querySelector('form');
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        
-        const date = document.getElementById('roundDate').value;
-        const course = document.getElementById('courseSelect').value;
-        const score = parseInt(document.getElementById('scoreInput').value);
-        const notes = document.getElementById('notes').value;
-        const holes = document.getElementById('holesSelect').value;
-        const editId = form.dataset.editId;
-        
-        try {
-            let result;
-            
-            if (editId) {
-                // Update existing round
-                result = await supabase
-                    .from('rounds')
-                    .update({
-                        date,
-                        course,
-                        score,
-                        notes,
-                        holes
-                    })
-                    .eq('id', editId);
-            } else {
-                // Insert new round
-                result = await supabase
-                    .from('rounds')
-                    .insert([{
-                        date,
-                        course,
-                        score,
-                        notes,
-                        holes,
-                        user_id: currentUser.id
-                    }]);
-            }
-
-            // Check for errors
-            if (result.error) throw result.error;
-
-            // Reset form and UI
-            resetForm();
-
-            // Reload rounds
-            await loadRounds();
-        } catch (error) {
-            handleError('Form Submission', error);
-        }
-    });
+    form.addEventListener('submit', handleFormSubmit);
 
     // Set initial date
     document.getElementById('roundDate').valueAsDate = new Date();
-}
 
-// Ensure event listeners are only set up once
-document.addEventListener('DOMContentLoaded', () => {
-    setupEventListeners();
+    // Initialize the application
     initializeApp();
 });
 
-// Additional logging for debugging
+// Logging for debugging
 console.log('Script loaded');
