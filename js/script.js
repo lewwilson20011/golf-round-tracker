@@ -246,4 +246,5 @@ window.deleteRound = deleteRound;
 // Initialize the application
 initializeApp();
 
-// test change
+// Export for global use
+window.handleSaveRound = handleSaveRound;
