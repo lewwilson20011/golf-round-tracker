@@ -278,6 +278,20 @@ async function handleFormSubmit(e) {
                 user_id: user.id
             });
 
+            // First, verify the round exists and belongs to the user
+            const { data: existingRound, error: fetchError } = await supabase
+                .from('rounds')
+                .select('*')
+                .eq('id', editId)
+                .eq('user_id', user.id)
+                .single();
+
+            if (fetchError) {
+                console.error('Error finding round to update:', fetchError);
+                throw fetchError;
+            }
+
+            // Perform the update
             result = await supabase
                 .from('rounds')
                 .update({
@@ -288,8 +302,7 @@ async function handleFormSubmit(e) {
                     holes
                 })
                 .eq('id', editId)
-                .eq('user_id', user.id)
-                .select(); // Add .select() to return the updated record
+                .eq('user_id', user.id);
 
             console.log('Full update result:', result);
 
@@ -302,9 +315,6 @@ async function handleFormSubmit(e) {
                 });
                 throw result.error;
             }
-
-            // Log the returned data
-            console.log('Updated record:', result.data);
         } else {
             // Insert new round
             result = await supabase
@@ -316,8 +326,7 @@ async function handleFormSubmit(e) {
                     notes,
                     holes,
                     user_id: user.id
-                }])
-                .select();
+                }]);
 
             console.log('Insert result:', result);
         }
