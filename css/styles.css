@@ -70,11 +70,7 @@ body {
     cursor: pointer;
     border-radius: 4px;
     transition: all 0.2s;
-}
-
-.menu-button:hover {
-    color: white;
-    background: rgba(255, 255, 255, 0.1);
+    /* Remove the hover state */
 }
 
 .menu-dropdown {
