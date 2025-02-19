@@ -288,7 +288,8 @@ async function handleFormSubmit(e) {
                     holes
                 })
                 .eq('id', editId)
-                .eq('user_id', user.id);
+                .eq('user_id', user.id)
+                .select(); // Add .select() to return the updated record
 
             console.log('Full update result:', result);
 
@@ -301,6 +302,9 @@ async function handleFormSubmit(e) {
                 });
                 throw result.error;
             }
+
+            // Log the returned data
+            console.log('Updated record:', result.data);
         } else {
             // Insert new round
             result = await supabase
@@ -312,7 +316,8 @@ async function handleFormSubmit(e) {
                     notes,
                     holes,
                     user_id: user.id
-                }]);
+                }])
+                .select();
 
             console.log('Insert result:', result);
         }
