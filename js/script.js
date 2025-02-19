@@ -12,8 +12,6 @@ function handleError(context, error) {
 window.deleteRound = async (id) => {
     if (confirm('Are you sure you want to delete this round?')) {
         try {
-            console.log(`Attempting to delete round with ID: ${id}`);
-            
             // Get current user
             const { data: { user }, error: userError } = await supabase.auth.getUser();
             
@@ -26,9 +24,6 @@ window.deleteRound = async (id) => {
                 .delete()
                 .eq('id', id)
                 .eq('user_id', user.id);
-
-            // Log deletion result
-            console.log('Delete operation result:', { data, error });
 
             if (error) throw error;
 
@@ -260,13 +255,29 @@ async function handleFormSubmit(e) {
         // Ensure user is authenticated
         const { data: { user }, error: userError } = await supabase.auth.getUser();
         
-        if (userError) throw userError;
-        if (!user) throw new Error('No authenticated user');
+        if (userError) {
+            console.error('User authentication error:', userError);
+            throw userError;
+        }
+        if (!user) {
+            console.error('No authenticated user');
+            throw new Error('No authenticated user');
+        }
 
         let result;
         
         if (editId) {
             // Update existing round
+            console.log('Attempting to update round with details:', {
+                id: editId,
+                date,
+                course,
+                score,
+                notes,
+                holes,
+                user_id: user.id
+            });
+
             result = await supabase
                 .from('rounds')
                 .update({
@@ -279,7 +290,17 @@ async function handleFormSubmit(e) {
                 .eq('id', editId)
                 .eq('user_id', user.id);
 
-            console.log('Update result:', result);
+            console.log('Full update result:', result);
+
+            // Check for specific error details
+            if (result.error) {
+                console.error('Update error details:', {
+                    message: result.error.message,
+                    details: result.error.details,
+                    hint: result.error.hint
+                });
+                throw result.error;
+            }
         } else {
             // Insert new round
             result = await supabase
@@ -306,7 +327,7 @@ async function handleFormSubmit(e) {
         resetForm();
         await loadRounds();
     } catch (error) {
-        console.error('Form submission error:', error);
+        console.error('Complete form submission error:', error);
         alert(`Error: ${error.message}`);
     }
 }
