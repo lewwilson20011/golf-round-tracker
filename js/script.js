@@ -2,6 +2,12 @@ import { supabase } from './supabase.js';
 
 let currentUser = null;
 
+// Debugging function to log errors consistently
+function handleError(context, error) {
+    console.error(`Error in ${context}:`, error);
+    alert(`Error in ${context}: ${error.message || 'Unknown error'}`);
+}
+
 // Make delete and edit functions globally available
 window.deleteRound = async (id) => {
     if (confirm('Are you sure you want to delete this round?')) {
@@ -16,8 +22,7 @@ window.deleteRound = async (id) => {
             // Reload rounds after successful deletion
             await loadRounds();
         } catch (error) {
-            console.error('Error deleting round:', error);
-            alert(`Error deleting round: ${error.message}`);
+            handleError('deleteRound', error);
         }
     }
 };
@@ -91,8 +96,7 @@ window.editRound = async (id) => {
         // Scroll to form
         form.scrollIntoView({ behavior: 'smooth' });
     } catch (error) {
-        console.error('Error loading round for edit:', error);
-        alert('Error loading round for edit');
+        handleError('editRound', error);
     }
 };
 
@@ -111,23 +115,32 @@ async function loadCourses() {
             `<option value="${course.name}"></option>`
         ).join('');
     } catch (error) {
-        console.error('Error loading courses:', error);
+        handleError('loadCourses', error);
     }
 }
 
 // Initialize the application
 async function initializeApp() {
-    // Check if user is authenticated
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) {
+    try {
+        // Check if user is authenticated
+        const { data: { user }, error: authError } = await supabase.auth.getUser();
+        
+        if (authError) throw authError;
+        
+        if (!user) {
+            window.location.href = 'login.html';
+            return;
+        }
+        
+        currentUser = user;
+        updateUserInterface();
+        await loadCourses();
+        await loadRounds();
+    } catch (error) {
+        handleError('initializeApp', error);
+        // Redirect to login in case of any authentication issues
         window.location.href = 'login.html';
-        return;
     }
-    
-    currentUser = user;
-    updateUserInterface();
-    await loadCourses();
-    await loadRounds();
 }
 
 // Update UI with user info
@@ -144,22 +157,24 @@ function updateUserInterface() {
 // Load rounds from Supabase
 async function loadRounds() {
     try {
+        // Ensure we have a current user before loading rounds
+        if (!currentUser) {
+            console.warn('No current user found');
+            return;
+        }
+
         const { data: rounds, error } = await supabase
             .from('rounds')
             .select('*')
             .eq('user_id', currentUser.id)
             .order('created_at', { ascending: false });
 
-        if (error) {
-            console.log('Load rounds error:', error);
-            throw error;
-        }
+        if (error) throw error;
 
-        console.log('Loaded rounds:', rounds);
         updateStats(rounds);
         renderRounds(rounds);
     } catch (error) {
-        console.error('Error loading rounds:', error);
+        handleError('loadRounds', error);
     }
 }
 
@@ -211,8 +226,14 @@ function renderRounds(rounds) {
     `).join('');
 }
 
+// Prevent multiple event listener attachments
+let isEventListenersAttached = false;
+
 // Set up event listeners when DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
+function setupEventListeners() {
+    if (isEventListenersAttached) return;
+    isEventListenersAttached = true;
+
     // Menu functionality
     const menuButton = document.querySelector('.menu-button');
     const menuDropdown = document.querySelector('.menu-dropdown');
@@ -298,14 +319,19 @@ document.addEventListener('DOMContentLoaded', () => {
             // Reload rounds
             await loadRounds();
         } catch (error) {
-            console.error('Error saving round:', error);
-            alert('Error saving round: ' + error.message);
+            handleError('Form Submission', error);
         }
     });
 
     // Set initial date
     document.getElementById('roundDate').valueAsDate = new Date();
+}
+
+// Ensure event listeners are only set up once
+document.addEventListener('DOMContentLoaded', () => {
+    setupEventListeners();
+    initializeApp();
 });
 
-// Initialize the application
-initializeApp();
+// Additional logging for debugging
+console.log('Script loaded');
