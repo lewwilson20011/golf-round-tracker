@@ -187,38 +187,37 @@ function renderRounds(rounds) {
             <div class="notes">${round.notes || ''}</div>
             <div>
                 <button class="delete-btn" onclick="deleteRound('${round.id}')">
-                    <i class="fa-solid fa-trash"></i>
-                    Delete
-                </button>
+    <i class="fa-solid fa-trash"></i>
+    Delete
+</button>
             </div>
         </div>
     `).join('');
 }
 
-// Delete round function
-async function deleteRound(id) {
-  try {
-    const {
-      error
-    } = await supabase
-      .from('rounds')
-      .delete()
-      .match({
-        id
-      });
+// Make deleteRound available globally right at the top after currentUser
+let currentUser = null;
 
-    if (error) throw error;
+// Add this right after
+window.deleteRound = async (id) => {
+    try {
+        const { error } = await supabase
+            .from('rounds')
+            .delete()
+            .eq('id', id);
 
-    // After successful delete, reload the rounds
-    await loadRounds();
-  } catch (error) {
-    console.error('Error deleting round:', error);
-    alert('Error deleting round');
-  }
-}
+        if (error) {
+            console.error('Error deleting round:', error);
+            alert('Error deleting round');
+            return;
+        }
 
-// Make deleteRound available globally
-window.deleteRound = deleteRound;
+        loadRounds(); // Reload the rounds after deletion
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Error deleting round');
+    }
+};
 
 // Set up event listeners when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
