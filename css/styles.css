@@ -449,13 +449,19 @@ select:focus, input:focus, textarea:focus {
     }
 
     .user-section {
-        padding: 6px 10px;
+        padding: 6px;  /* Reduced padding */
+    }
+
+    .user-info {
+        display: none;  /* Hide name and email on mobile */
     }
 
     .user-avatar {
-        width: 28px;
-        height: 28px;
-        font-size: 12px;
+        margin-right: 4px;  /* Add small spacing between avatar and menu */
+    }
+
+    .menu-button {
+        padding: 4px;  /* Smaller padding for menu button */
     }
 
     .form-group {
@@ -469,6 +475,10 @@ select:focus, input:focus, textarea:focus {
 
     .save-btn {
         padding: 12px;
+    }
+	
+	.menu-dropdown {
+        right: -6px;  /* Adjust dropdown position to align with narrower header */
     }
 }
 
