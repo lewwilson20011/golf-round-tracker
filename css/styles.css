@@ -30,6 +30,9 @@ body {
     max-width: 1200px;
     margin: 0 auto;
     padding: var(--spacing-base);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Header */
@@ -38,7 +41,7 @@ body {
     justify-content: space-between;
     align-items: center;
     margin-bottom: calc(var(--spacing-base) * 1.5);
-	margin-top: calc(var(--spacing-base) * 1.5);
+    margin-top: calc(var(--spacing-base) * 1.5);
     gap: var(--spacing-base);
 }
 
@@ -58,10 +61,34 @@ body {
     position: relative;
 }
 
-.menu-container {
-    position: relative;
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    background: var(--primary-green);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 14px;
 }
 
+.user-info {
+    line-height: 1.3;
+}
+
+.user-name {
+    font-weight: 600;
+    font-size: 14px;
+    color: #000000;
+}
+
+.user-email {
+    color: #000000;
+    font-size: 12px;
+}
+
+/* Menu Styles */
 .menu-button {
     background: none;
     border: none;
@@ -70,7 +97,6 @@ body {
     cursor: pointer;
     border-radius: 4px;
     transition: all 0.2s;
-    /* Remove the hover state */
 }
 
 .menu-dropdown {
@@ -85,11 +111,11 @@ body {
     display: none;
     z-index: 1000;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
 }
 
 .menu-dropdown.show {
     display: block;
-    animation: menuFadeIn 0.2s ease-out;
 }
 
 .menu-item {
@@ -113,57 +139,46 @@ body {
     margin: 8px 0;
 }
 
-@keyframes menuFadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
+/* Mobile Header Styles */
+@media screen and (max-width: 768px) {
+    .user-section {
+        background: transparent;
+        border: none;
+        padding: 0;
+        gap: 8px;
     }
-    to {
-        opacity: 1;
-        transform: translateY(0);
+    
+    .user-info {
+        display: none;
+    }
+    
+    .menu-button {
+        color: white;
+        padding: 8px;
+    }
+    
+    .user-avatar {
+        width: 36px;
+        height: 36px;
+        font-size: 14px;
     }
 }
 
-.user-avatar {
-    width: 32px;
-    height: 32px;
-    background: var(--primary-green);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 600;
-    font-size: 14px;
-}
-
-.user-info {
-    line-height: 1.3;
-}
-
-.user-name {
-    font-weight: 600;
-    font-size: 14px;
-	color: #000000;
-}
-
-.user-email {
-    color: #000000;
-    font-size: 12px;
-}
-
-.logout-btn {
-    background: none;
-    border: none;
-    color: var(--text-muted);
-    cursor: pointer;
-    padding: 8px;
-    border-radius: 4px;
-    transition: all 0.2s;
-}
-
-.logout-btn:hover {
-    color: white;
-    background: rgba(255, 255, 255, 0.1);
+/* iPhone-specific header improvements */
+@media screen and (max-width: 390px) {
+    .user-section {
+        gap: 4px;
+    }
+    
+    .user-avatar {
+        width: 32px;
+        height: 32px;
+        font-size: 12px;
+    }
+    
+    .menu-button {
+        padding: 6px;
+    }
 }
 
 /* Stats Grid */
@@ -179,6 +194,7 @@ body {
     padding: var(--spacing-base);
     border-radius: var(--border-radius);
     border: 1px solid var(--border-color);
+    overflow: hidden;
 }
 
 .stat-header {
@@ -198,7 +214,7 @@ body {
     font-weight: 700;
 }
 
-/* Main Content */
+/* Main Content and Cards */
 .main-content {
     display: grid;
     gap: var(--spacing-base);
@@ -210,6 +226,7 @@ body {
     border: 1px solid var(--border-color);
     padding: var(--spacing-base);
     backdrop-filter: blur(10px);
+    overflow: hidden;
 }
 
 .card-header {
@@ -239,7 +256,6 @@ body {
     font-size: 14px;
 }
 
-/* Form inputs with improved icon alignment */
 select, input, textarea {
     width: 100%;
     padding: 12px 16px;
@@ -319,6 +335,28 @@ select:focus, input:focus, textarea:focus {
     opacity: 0.9;
 }
 
+/* Responsive adjustments */
+@media (min-width: 768px) {
+    .main-content {
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+    }
+}
+
+@media (max-width: 767px) {
+    .stats-grid {
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    }
+
+    .stat-card {
+        padding: 12px;
+    }
+
+    .stat-value {
+        font-size: 24px;
+    }
+}
+
 /* Table Styles */
 .rounds-table {
     margin: 0 calc(var(--spacing-base) * -1);
@@ -365,6 +403,30 @@ select:focus, input:focus, textarea:focus {
     border-bottom: 1px solid var(--border-color);
 }
 
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.edit-btn {
+    background: rgba(59, 130, 246, 0.15);
+    color: #3b82f6;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.edit-btn:hover {
+    background: rgba(59, 130, 246, 0.25);
+}
+
 .delete-btn {
     background: rgba(239, 68, 68, 0.15);
     color: #ef4444;
@@ -383,31 +445,33 @@ select:focus, input:focus, textarea:focus {
     background: rgba(239, 68, 68, 0.25);
 }
 
-.icon {
-    color: var(--primary-green);
+.round-row.editing {
+    background: rgba(59, 130, 246, 0.1);
+    border-left: 3px solid #3b82f6;
+}
+
+.save-btn.updating {
+    background: #3b82f6;
+}
+
+.cancel-edit {
+    background: #64748b;
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    margin-right: 10px;
+}
+
+.cancel-edit:hover {
+    opacity: 0.9;
 }
 
 /* Responsive Design */
-@media (min-width: 768px) {
-    .main-content {
-        grid-template-columns: 1fr 1fr;
-    }
-}
-
-@media (max-width: 767px) {
-    .stats-grid {
-        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    }
-
-    .stat-card {
-        padding: 12px;
-    }
-
-    .stat-value {
-        font-size: 24px;
-    }
-}
-
 @media (max-width: 640px) {
     .container {
         padding: 12px;
@@ -443,113 +507,126 @@ select:focus, input:focus, textarea:focus {
     }
 }
 
-@media (max-width: 480px) {
+/* iPhone-specific improvements */
+@media screen and (max-width: 390px) {
     :root {
         --spacing-base: 12px;
     }
 
-    .user-section {
-        padding: 6px;  /* Reduced padding */
-    }
-
-    .user-info {
-        display: none;  /* Hide name and email on mobile */
-    }
-
-    .user-avatar {
-        margin-right: 4px;  /* Add small spacing between avatar and menu */
-    }
-
-    .menu-button {
-        padding: 4px;  /* Smaller padding for menu button */
+    .container {
+        padding: 12px;
     }
 
     .form-group {
-        margin-bottom: 12px;
+        margin-bottom: 16px;
     }
 
     select, input, textarea {
-        padding: 10px;
-        font-size: 13px;
+        padding: 14px;
+        font-size: 16px; /* Prevents zoom on iPhone */
     }
 
     .save-btn {
-        padding: 12px;
-    }
-	
-	.menu-dropdown {
-        right: -6px;  /* Adjust dropdown position to align with narrower header */
+        padding: 16px;
     }
 }
 
-.action-buttons {
-    display: flex;
-    gap: 8px;
+/* Animation Keyframes */
+@keyframes slideInTop {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-.edit-btn {
-    background: rgba(59, 130, 246, 0.15);
-    color: #3b82f6;
-    border: none;
-    padding: 6px 10px;
-    border-radius: 6px;
-    font-size: 12px;
-    cursor: pointer;
-    transition: background 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 4px;
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
-.edit-btn:hover {
-    background: rgba(59, 130, 246, 0.25);
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
-.round-row.editing {
-    background: rgba(59, 130, 246, 0.1);
-    border-left: 3px solid #3b82f6;
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-.save-btn.updating {
-    background: #3b82f6;
+/* Animated Elements */
+.header {
+    animation: slideInTop 0.6s ease-out;
 }
 
-.cancel-edit {
-    background: #64748b;
-    color: white;
-    border: none;
-    padding: 14px;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 14px;
-    cursor: pointer;
-    transition: opacity 0.2s;
-    margin-right: 10px;
+.stats-grid {
+    animation: fadeIn 0.6s ease-out 0.2s both;
 }
 
-.cancel-edit:hover {
-    opacity: 0.9;
+.main-content > .card:first-child {
+    animation: slideInLeft 0.6s ease-out 0.4s both;
 }
 
-.action-buttons {
-    display: flex;
-    gap: 8px;
+.main-content > .card:last-child {
+    animation: slideInRight 0.6s ease-out 0.4s both;
 }
 
-.edit-btn {
-    background: rgba(59, 130, 246, 0.15);
-    color: #3b82f6;
-    border: none;
-    padding: 6px 10px;
-    border-radius: 6px;
-    font-size: 12px;
-    cursor: pointer;
-    transition: background 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 4px;
+.stat-card {
+    animation: fadeIn 0.5s ease-out both;
 }
 
-.edit-btn:hover {
-    background: rgba(59, 130, 246, 0.25);
+.stat-card:nth-child(1) { animation-delay: 0.3s; }
+.stat-card:nth-child(2) { animation-delay: 0.4s; }
+.stat-card:nth-child(3) { animation-delay: 0.5s; }
+
+.rounds-header {
+    animation: fadeIn 0.5s ease-out 0.6s both;
+}
+
+.round-row {
+    animation: fadeIn 0.5s ease-out both;
+}
+
+/* Stagger round row animations */
+.round-row:nth-child(1) { animation-delay: 0.7s; }
+.round-row:nth-child(2) { animation-delay: 0.8s; }
+.round-row:nth-child(3) { animation-delay: 0.9s; }
+.round-row:nth-child(4) { animation-delay: 1.0s; }
+.round-row:nth-child(5) { animation-delay: 1.1s; }
+
+/* Form elements fade in */
+.form-group {
+    animation: fadeIn 0.5s ease-out both;
+}
+
+.form-group:nth-child(1) { animation-delay: 0.5s; }
+.form-group:nth-child(2) { animation-delay: 0.6s; }
+.form-group:nth-child(3) { animation-delay: 0.7s; }
+.form-group:nth-child(4) { animation-delay: 0.8s; }
+.form-group:nth-child(5) { animation-delay: 0.9s; }
+
+.save-btn {
+    animation: fadeIn 0.5s ease-out 1s both;
 }
