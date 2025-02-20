@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-   	<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Login - Round Tracker</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="css/styles.css" rel="stylesheet">
@@ -46,12 +46,17 @@
             max-width: 400px;
         }
 
-        .auth-intro h2 {
-            color: var(--primary-green);
-            font-size: 2rem;
+        .logo-heading {
             margin-bottom: 1.5rem;
             animation: fadeIn 0.8s ease-out 0.3s both;
+            text-align: left;
         }
+
+        .intro-logo {
+    height: 72px; /* Increased from 48px */
+    width: auto;
+    display: block;
+}
 
         .auth-intro p {
             color: rgba(255, 255, 255, 0.9);
@@ -67,11 +72,12 @@
         }
 
         .feature {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            color: rgba(255, 255, 255, 0.9);
-        }
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: rgba(255, 255, 255, 0.9);
+    text-align: left; /* Ensure text always aligns left */
+}
 
         .feature i {
             font-size: 1.25rem;
@@ -87,6 +93,61 @@
 
         .feature span {
             font-size: 1rem;
+        }
+
+        @media (max-width: 1024px) {
+            .split-layout {
+                margin: 1rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .split-layout {
+                flex-direction: column;
+            }
+
+            .intro-section {
+        padding: 2rem;
+    }
+            .auth-section {
+                padding: 2rem;
+                animation: slideInBottom 0.6s ease-out;
+            }
+
+            .auth-intro {
+        max-width: none;
+        margin: 0 auto;
+    }
+
+            .logo-heading {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+            .intro-logo {
+        height: 64px;
+        margin: 0 auto;
+    }
+
+            .intro-features {
+        max-width: 400px;
+        margin: 0 auto;
+        text-align: left; /* Keep feature list left-aligned */
+    }
+        }
+
+        @media (max-width: 480px) {
+            .intro-section {
+        padding: 1.5rem;
+    }
+
+    .intro-logo {
+        height: 56px;
+    }
+
+            .feature {
+                font-size: 0.9rem;
+            }
         }
 
         @keyframes slideInLeft {
@@ -122,45 +183,6 @@
             }
         }
 
-        /* Responsive Design */
-        @media (max-width: 1024px) {
-            .split-layout {
-                margin: 1rem;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .split-layout {
-                flex-direction: column;
-            }
-
-            .intro-section, .auth-section {
-                padding: 2rem;
-            }
-
-            .intro-section {
-                animation: slideInTop 0.6s ease-out;
-            }
-
-            .auth-section {
-                animation: slideInBottom 0.6s ease-out;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .intro-section, .auth-section {
-                padding: 1.5rem;
-            }
-
-            .auth-intro h2 {
-                font-size: 1.5rem;
-            }
-
-            .feature {
-                font-size: 0.9rem;
-            }
-        }
-
         @keyframes slideInTop {
             from {
                 opacity: 0;
@@ -190,7 +212,9 @@
             <!-- Introduction Section -->
             <div class="intro-section">
                 <div class="auth-intro">
-                    <h2>Welcome to Round Tracker</h2>
+                    <h2 class="logo-heading">
+                        <img src="Images/Round-Tracker-White.png" alt="Welcome to Round Tracker" class="intro-logo">
+                    </h2>
                     <p>Your personal assistant for tracking and managing rounds of golf. Keep track of your scores, analyze your performance, and improve your game.</p>
                     <div class="intro-features">
                         <div class="feature">
@@ -211,10 +235,6 @@
 
             <!-- Auth Section -->
             <div class="auth-section">
-                <div class="auth-header">
-                    <img src="Images/Round-Tracker-White.png" alt="Round Tracker" class="auth-logo">
-                </div>
-
                 <div class="auth-tabs">
                     <button type="button" class="auth-tab active" data-tab="login">Login</button>
                     <button type="button" class="auth-tab" data-tab="register">Register</button>

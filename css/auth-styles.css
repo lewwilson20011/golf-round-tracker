@@ -16,14 +16,16 @@
     backdrop-filter: blur(10px);
 }
 
-.auth-header {
-    text-align: center;
-    margin-bottom: var(--spacing-base);
+/* Remove the auth-header styles since we're not using it anymore */
+
+.logo-heading {
+    margin-bottom: 1.5rem;
 }
 
-.auth-logo {
+.intro-logo {
     height: 48px;
     width: auto;
+    display: block;
 }
 
 .auth-tabs {
@@ -71,6 +73,13 @@
     font-size: 14px;
     margin-bottom: var(--spacing-base);
     min-height: 20px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+    .intro-logo {
+        height: 36px;
+    }
 }
 
 @keyframes fadeIn {
