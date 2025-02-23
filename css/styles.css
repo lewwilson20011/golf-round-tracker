@@ -23,8 +23,27 @@ body {
                 url('../images/golf-course-image.jpg') center/cover fixed;
     color: white;
     min-height: 100vh;
+    background-attachment: scroll; /* Change from fixed to scroll for mobile */
+    background-size: cover;
+    background-position: center;
 }
 
+/* Add these media queries for better mobile responsiveness */
+@media screen and (max-width: 768px) {
+    body {
+        background-attachment: scroll;
+        background-size: cover;
+        background-position: center center;
+    }
+}
+
+/* For very small screens */
+@media screen and (max-width: 480px) {
+    body {
+        background-size: cover;
+        background-position: center center;
+    }
+}
 /* Container */
 .container {
     max-width: 1200px;
