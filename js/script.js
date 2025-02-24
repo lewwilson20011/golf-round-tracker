@@ -113,12 +113,53 @@ async function initializeApp() {
         
         currentUser = user;
         updateUserInterface();
+        
+        // Check user settings for dark mode
+        await loadUserSettings();
+        
         await loadCourses();
         await loadRounds();
     } catch (error) {
         handleError('initializeApp', error);
         // Redirect to login in case of any authentication issues
         window.location.href = 'login.html';
+    }
+}
+
+// Load user settings
+async function loadUserSettings() {
+    try {
+        // Get user settings from Supabase
+        const { data: settings, error } = await supabase
+            .from('user_settings')
+            .select('*')
+            .eq('user_id', currentUser.id)
+            .single();
+
+        if (error && error.code !== 'PGRST116') { // PGRST116 is "no rows returned" error
+            throw error;
+        }
+
+        // If user has dark mode enabled, apply it
+        if (settings && settings.dark_mode) {
+            document.body.classList.add('dark-mode');
+        }
+        
+        // If animations are disabled, apply that setting
+        if (settings && settings.animations === false) {
+            const style = document.createElement('style');
+            style.id = 'disable-animations';
+            style.textContent = `
+                * {
+                    animation: none !important;
+                    transition: none !important;
+                }
+            `;
+            document.head.appendChild(style);
+        }
+    } catch (error) {
+        console.error('Load settings error:', error);
+        // Non-critical error, don't alert the user
     }
 }
 
@@ -340,9 +381,78 @@ async function handleFormSubmit(e) {
         // Reset form and reload rounds
         resetForm();
         await loadRounds();
+        
+        // Auto-update handicap if the setting is enabled
+        await updateHandicapIfEnabled(user.id);
     } catch (error) {
         console.error('Complete form submission error:', error);
         alert(`Error: ${error.message}`);
+    }
+}
+
+// Update handicap if auto-handicap setting is enabled
+async function updateHandicapIfEnabled(userId) {
+    try {
+        // Check if auto-handicap is enabled
+        const { data: settings, error: settingsError } = await supabase
+            .from('user_settings')
+            .select('auto_handicap')
+            .eq('user_id', userId)
+            .single();
+            
+        if (settingsError && settingsError.code !== 'PGRST116') {
+            throw settingsError;
+        }
+        
+        // If no settings or auto_handicap is disabled, do nothing
+        if (!settings || settings.auto_handicap === false) {
+            return;
+        }
+        
+        // Get all rounds for handicap calculation
+        const { data: rounds, error: roundsError } = await supabase
+            .from('rounds')
+            .select('score, holes')
+            .eq('user_id', userId)
+            .order('date', { ascending: false })
+            .limit(20); // Last 20 rounds
+            
+        if (roundsError) throw roundsError;
+        
+        if (!rounds || rounds.length === 0) {
+            return; // No rounds to calculate handicap
+        }
+        
+        // Simple handicap calculation (this is a simplified example)
+        // In reality, handicap calculation is more complex and involves course ratings
+        const eighteenHoleRounds = rounds.filter(r => r.holes === '18 Holes' || r.holes === null);
+        if (eighteenHoleRounds.length < 5) {
+            return; // Not enough rounds for handicap calculation
+        }
+        
+        // Calculate handicap based on best 8 of last 20 rounds
+        const scores = eighteenHoleRounds.map(r => r.score).sort((a, b) => a - b);
+        const bestScores = scores.slice(0, Math.min(8, scores.length));
+        const avgBestScore = bestScores.reduce((sum, score) => sum + score, 0) / bestScores.length;
+        
+        // Simplified formula: (avg of best scores - 72) * 0.96
+        // 72 is representing a standard course par
+        const handicap = Math.max(0, ((avgBestScore - 72) * 0.96).toFixed(1));
+        
+        // Update user profile with new handicap
+        const { error: updateError } = await supabase
+            .from('profiles')
+            .upsert({
+                id: userId,
+                handicap: handicap,
+                updated_at: new Date()
+            });
+            
+        if (updateError) throw updateError;
+        
+    } catch (error) {
+        console.error('Auto-handicap update error:', error);
+        // Non-critical error, don't alert the user
     }
 }
 
@@ -364,17 +474,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Menu items
-    document.getElementById('profileSettings').addEventListener('click', (e) => {
-        e.preventDefault();
-        alert('Profile settings coming soon!');
-    });
-
-    document.getElementById('appSettings').addEventListener('click', (e) => {
-        e.preventDefault();
-        alert('App settings coming soon!');
-    });
-
+    // Sign Out functionality
     document.getElementById('signOut').addEventListener('click', async (e) => {
         e.preventDefault();
         const { error } = await supabase.auth.signOut();

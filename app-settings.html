@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>App Settings - Round Tracker</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+    <style>
+        /* App settings specific styles */
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.2);
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .toggle-slider {
+            background-color: var(--primary-green);
+        }
+        
+        input:checked + .toggle-slider:before {
+            transform: translateX(26px);
+        }
+        
+        .setting-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .setting-row:last-child {
+            border-bottom: none;
+        }
+        
+        .setting-label {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .setting-title {
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+        
+        .setting-description {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+        
+        .setting-group {
+            margin-bottom: 24px;
+        }
+        
+        .setting-group-title {
+            color: var(--text-muted);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        /* Animation for settings page */
+        .settings-container {
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        /* Mobile optimizations */
+        @media (max-width: 768px) {
+            .setting-description {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo-container">
+                <a href="index.html">
+                    <img src="Images/Round-Tracker.png" alt="Round Tracker" class="logo">
+                </a>
+            </div>
+            <div class="user-section">
+                <div class="user-avatar" id="userInitials">LW</div>
+                <div class="user-info">
+                    <div class="user-name" id="userName">Lew Wilson</div>
+                    <div class="user-email" id="userEmail">lew.wilson@email.com</div>
+                </div>
+                <button class="menu-button">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <div class="menu-dropdown">
+                    <a href="profile-settings.html" class="menu-item">
+                        <i class="fa-solid fa-user"></i> Profile Settings
+                    </a>
+                    <a href="app-settings.html" class="menu-item active">
+                        <i class="fa-solid fa-gear"></i> App Settings
+                    </a>
+                    <div class="menu-divider"></div>
+                    <a href="#" class="menu-item" id="signOut">
+                        <i class="fa-solid fa-right-from-bracket"></i> Sign Out
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="card settings-container">
+            <div class="card-header">
+                <div class="card-title">
+                    <i class="fa-solid fa-gear icon"></i> App Settings
+                </div>
+            </div>
+            
+            <div class="setting-group">
+                <div class="setting-group-title">Display</div>
+                
+                <div class="setting-row">
+                    <div class="setting-label">
+                        <div class="setting-title">Dark Mode</div>
+                        <div class="setting-description">Switch between light and dark themes</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="darkModeToggle">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="setting-row">
+                    <div class="setting-label">
+                        <div class="setting-title">Animations</div>
+                        <div class="setting-description">Enable or disable interface animations</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="animationsToggle" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="setting-group">
+                <div class="setting-group-title">Scoring & Preferences</div>
+                
+                <div class="setting-row">
+                    <div class="setting-label">
+                        <div class="setting-title">Default Scoring System</div>
+                        <div class="setting-description">Set your preferred scoring method</div>
+                    </div>
+                    <select id="scoringSystem">
+                        <option>Stroke Play</option>
+                        <option>Stableford</option>
+                        <option>Match Play</option>
+                    </select>
+                </div>
+                
+                <div class="setting-row">
+                    <div class="setting-label">
+                        <div class="setting-title">Auto-Calculate Handicap</div>
+                        <div class="setting-description">Update handicap based on new rounds</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="autoHandicapToggle" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="setting-group">
+                <div class="setting-group-title">Notifications</div>
+                
+                <div class="setting-row">
+                    <div class="setting-label">
+                        <div class="setting-title">Email Notifications</div>
+                        <div class="setting-description">Receive summary emails</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="emailNotificationsToggle">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="setting-row">
+                    <div class="setting-label">
+                        <div class="setting-title">Push Notifications</div>
+                        <div class="setting-description">Receive app notifications</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="pushNotificationsToggle">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="setting-group">
+                <div class="setting-group-title">Data Management</div>
+                
+                <div class="setting-row">
+                    <div class="setting-label">
+                        <div class="setting-title">Export Data</div>
+                        <div class="setting-description">Download your round history</div>
+                    </div>
+                    <button class="edit-btn" id="exportData">
+                        <i class="fa-solid fa-download"></i> Export
+                    </button>
+                </div>
+                
+                <div class="setting-row">
+                    <div class="setting-label">
+                        <div class="setting-title">Delete Account</div>
+                        <div class="setting-description">Permanently remove account and data</div>
+                    </div>
+                    <button class="delete-btn" id="deleteAccount">
+                        <i class="fa-solid fa-trash"></i> Delete
+                    </button>
+                </div>
+            </div>
+            
+            <button type="button" class="save-btn" id="saveSettings">Save Settings</button>
+        </div>
+    </div>
+
+    <!-- Supabase CDN script MUST be loaded first -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script type="module" src="js/supabase.js"></script>
+    <script type="module" src="js/app-settings.js"></script>
+</body>
+</html>
