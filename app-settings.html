@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>App Settings - Round Tracker</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+    <link href="css/dark-mode.css" rel="stylesheet">
+    <style>
+        .back-button {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: white;
+            text-decoration: none;
+            margin-bottom: 16px;
+            font-weight: 500;
+        }
+
+        .setting-section {
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            margin-bottom: 16px;
+            font-weight: 600;
+            color: var(--text-muted);
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .setting-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .setting-row:last-child {
+            border-bottom: none;
+        }
+
+        .setting-label {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .setting-name {
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .setting-description {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 52px;
+            height: 26px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.15);
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .toggle-slider {
+            background-color: var(--primary-green);
+        }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(26px);
+        }
+
+        .select-wrapper {
+            width: 150px;
+        }
+
+        @media (max-width: 640px) {
+            .setting-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+
+            .select-wrapper {
+                width: 100%;
+            }
+        }
+
+        .form-footer {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 24px;
+            gap: 12px;
+        }
+
+        .cancel-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .cancel-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .save-settings-btn {
+            background: var(--primary-green);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .save-settings-btn:hover {
+            opacity: 0.9;
+        }
+
+        /* Dark mode styles */
+        body.dark-mode {
+            background: linear-gradient(rgba(0, 0, 0, .7), rgba(0, 0, 0, 0.7)),
+                        url('../images/golf-course-image.jpg') center/cover fixed;
+        }
+
+        body.dark-mode .card {
+            background: rgba(15, 23, 42, 0.98);
+        }
+
+        /* Animation for settings page */
+        .settings-card {
+            animation: fadeIn 0.6s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo-container">
+                <img src="Images/Round-Tracker.png" alt="Round Tracker" class="logo">
+            </div>
+            <div class="user-section">
+                <div class="user-avatar">LW</div>
+                <div class="user-info">
+                    <div class="user-name">Lew Wilson</div>
+                    <div class="user-email">lew.wilson@email.com</div>
+                </div>
+                <button class="menu-button">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <div class="menu-dropdown">
+                    <a href="#" class="menu-item" id="profileSettings">
+                        <i class="fa-solid fa-user"></i> Profile Settings
+                    </a>
+                    <a href="#" class="menu-item" id="appSettings">
+                        <i class="fa-solid fa-gear"></i> App Settings
+                    </a>
+                    <div class="menu-divider"></div>
+                    <a href="#" class="menu-item" id="signOut">
+                        <i class="fa-solid fa-right-from-bracket"></i> Sign Out
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <a href="index.html" class="back-button">
+            <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
+        </a>
+
+        <div class="card settings-card">
+            <div class="card-title">
+                <i class="fa-solid fa-gear icon"></i> App Settings
+            </div>
+
+            <form id="settingsForm">
+                <div class="setting-section">
+                    <div class="section-title">Appearance</div>
+
+                    <div class="setting-row">
+                        <div class="setting-label">
+                            <div class="setting-name">Dark Mode</div>
+                            <div class="setting-description">Switch to a darker theme</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="darkMode">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="setting-row">
+                        <div class="setting-label">
+                            <div class="setting-name">Date Format</div>
+                            <div class="setting-description">Choose how dates are displayed</div>
+                        </div>
+                        <div class="select-wrapper">
+                            <select id="dateFormat">
+                                <option value="MM/DD/YYYY">MM/DD/YYYY</option>
+                                <option value="DD/MM/YYYY">DD/MM/YYYY</option>
+                                <option value="YYYY-MM-DD">YYYY-MM-DD</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="setting-row">
+                        <div class="setting-label">
+                            <div class="setting-name">Distance Units</div>
+                            <div class="setting-description">Select your preferred distance unit</div>
+                        </div>
+                        <div class="select-wrapper">
+                            <select id="distanceUnit">
+                                <option value="yards">Yards</option>
+                                <option value="meters">Meters</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="setting-section">
+                    <div class="section-title">Functionality</div>
+
+                    <div class="setting-row">
+                        <div class="setting-label">
+                            <div class="setting-name">Auto Calculate Handicap</div>
+                            <div class="setting-description">Automatically update handicap based on your rounds</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="autoCalculateHandicap">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="setting-row">
+                        <div class="setting-label">
+                            <div class="setting-name">Notifications</div>
+                            <div class="setting-description">Enable reminders and notifications</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="notifications">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-footer">
+                    <a href="index.html" class="cancel-btn">Cancel</a>
+                    <button type="submit" class="save-settings-btn">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Supabase CDN script MUST be loaded first -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script type="module" src="js/supabase.js"></script>
+    <script type="module" src="js/app-settings.js"></script>
+</body>
+</html>
