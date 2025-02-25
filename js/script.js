@@ -101,25 +101,40 @@ async function loadCourses() {
 // Initialize the application
 async function initializeApp() {
     try {
-        // Check if user is authenticated
-        const { data: { user }, error: authError } = await supabase.auth.getUser();
+        // Add detailed logging
+        console.log("Getting user...");
+        const authResult = await supabase.auth.getUser();
+        console.log("Auth result:", authResult);
+        const { data: { user }, error: authError } = authResult;
         
-        if (authError) throw authError;
+        if (authError) {
+            console.error("Auth error:", authError);
+            throw authError;
+        }
         
         if (!user) {
+            console.log("No user found, redirecting to login");
             window.location.href = 'login.html';
             return;
         }
         
+        console.log("User authenticated:", user);
         currentUser = user;
         updateUserInterface();
         
         // Check user settings for dark mode
+        console.log("Loading user settings...");
         await loadUserSettings();
         
+        console.log("Loading courses...");
         await loadCourses();
+        
+        console.log("Loading rounds...");
         await loadRounds();
+        
+        console.log("App initialization complete");
     } catch (error) {
+        console.error("Detailed initialization error:", error);
         handleError('initializeApp', error);
         // Redirect to login in case of any authentication issues
         window.location.href = 'login.html';
