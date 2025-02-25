@@ -89,6 +89,8 @@ async function loadUserProfile() {
         if (profile) {
             document.getElementById('handicap').value = profile.handicap || '';
             document.getElementById('location').value = profile.location || '';
+            document.getElementById('homeCourse').value = profile.home_course || '';
+            document.getElementById('preferredTees').value = profile.preferred_tees || '';
         }
     } catch (error) {
         handleError('loadUserProfile', error);
@@ -131,16 +133,22 @@ async function saveProfile(formData) {
                 .from('profiles')
                 .insert({
                     id: currentUser.id,
+                    full_name: fullName,
                     handicap: formData.handicap || null,
-                    location: formData.location || null
+                    location: formData.location || null,
+                    home_course: formData.homeCourse || null,
+                    preferred_tees: formData.preferredTees || null
                 });
         } else {
             // Update existing profile
             profileResult = await supabase
                 .from('profiles')
                 .update({
+                    full_name: fullName,
                     handicap: formData.handicap || null,
-                    location: formData.location || null
+                    location: formData.location || null,
+                    home_course: formData.homeCourse || null,
+                    preferred_tees: formData.preferredTees || null
                 })
                 .eq('id', currentUser.id);
         }
@@ -247,7 +255,9 @@ document.addEventListener('DOMContentLoaded', () => {
             firstName: document.getElementById('firstName').value,
             lastName: document.getElementById('lastName').value,
             handicap: document.getElementById('handicap').value,
-            location: document.getElementById('location').value
+            location: document.getElementById('location').value,
+            homeCourse: document.getElementById('homeCourse').value,
+            preferredTees: document.getElementById('preferredTees').value
         };
         
         saveProfile(formData);
