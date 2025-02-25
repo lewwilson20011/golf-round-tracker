@@ -19,7 +19,7 @@
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    background: linear-gradient(rgba(100, 144, 225, .6), rgba(255, 255, 255, 0)),
+    background: linear-gradient(rgba(255, 255, 255, .7), rgba(255, 255, 255, 0)),
                 url('../images/golf-course-image.jpg') center/cover fixed;
     color: white;
     min-height: 100vh;
@@ -59,7 +59,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: calc(var(--spacing-base) * 1.5);
+    margin-bottom: calc(var(--spacing-base) * 2);
     margin-top: calc(var(--spacing-base) * 1.5);
     gap: var(--spacing-base);
 }
@@ -73,10 +73,10 @@ body {
     display: flex;
     align-items: center;
     gap: 12px;
-    background: #ffffff;
-    padding: 8px 12px;
-    border-radius: var(--border-radius);
-    border: 1px solid var(--border-color);
+/*    background: #ffffff;*/
+/*    padding: 8px 12px;*/
+/*    border-radius: var(--border-radius);*/
+/*    border: 1px solid var(--border-color);*/
     position: relative;
 }
 
