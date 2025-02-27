@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Profile Settings - Round Tracker</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+    <link href="css/dark-mode.css" rel="stylesheet">
+	<link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+<link rel="apple-touch-icon" sizes="60x60" href="icons/apple-icon-60x60.png">
+<link rel="apple-touch-icon" sizes="72x72" href="icons/apple-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="76x76" href="icons/apple-icon-76x76.png">
+<link rel="apple-touch-icon" sizes="114x114" href="icons/apple-icon-114x114.png">
+<link rel="apple-touch-icon" sizes="120x120" href="icons/apple-icon-120x120.png">
+<link rel="apple-touch-icon" sizes="144x144" href="icons/apple-icon-144x144.png">
+<link rel="apple-touch-icon" sizes="152x152" href="icons/apple-icon-152x152.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icons/apple-icon-180x180.png">
+<link rel="icon" type="image/png" sizes="192x192"  href="icons/android-icon-192x192.png">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="icons/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
+<link rel="manifest" href="icons/manifest.json">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="icons/ms-icon-144x144.png">
+<meta name="theme-color" content="#ffffff">
+    <style>
+        /* Profile-specific styles */
+        .profile-image {
+            width: 100px;
+            height: 100px;
+            background: var(--primary-green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 32px;
+            margin: 0 auto 20px auto;
+            position: relative;
+        }
+        
+        .profile-image-upload {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: var(--card-bg);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: 1px solid var(--border-color);
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .tab {
+            padding: 12px 16px;
+            cursor: pointer;
+            color: var(--text-muted);
+            border-bottom: 2px solid transparent;
+        }
+        
+        .tab.active {
+            color: white;
+            border-bottom: 2px solid var(--primary-green);
+        }
+        
+        /* Animation for settings page */
+        .settings-container {
+            animation: fadeIn 0.5s ease-out;
+            width: 100%;
+			padding: 2rem;
+        }
+        
+        /* Back button and button group styles */
+        .back-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+            text-decoration: none;
+        }
+        
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        /* Two-column layout for forms */
+        .two-column-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* Two equal columns */
+            gap: 20px; /* Space between columns */
+        }
+
+        /* For full-width elements inside the grid */
+        .full-width {
+            grid-column: 1 / -1; /* Span both columns */
+        }
+
+        /* Profile image should be in center of its own row */
+        .profile-image-container {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        /* Button group centered at the bottom */
+        .button-group {
+            display: flex;
+            gap: 16px;
+            margin-top: 24px;
+            justify-content: flex-end;
+            grid-column: 1 / -1; /* Span both columns */
+        }
+
+        .save-btn, .cancel-btn {
+            padding: 12px 24px;
+            flex: 0 0 20%; /* Make buttons narrower */
+            max-width: 200px;
+            text-align: center;
+        }
+        
+        .cancel-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .cancel-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        /* Responsive - revert to single column on mobile */
+        @media (max-width: 768px) {
+            .two-column-form {
+                grid-template-columns: 1fr; /* Single column on mobile */
+            }
+            
+            .save-btn, .cancel-btn {
+                flex: 0 0 40%; /* Wider buttons on mobile */
+            }
+            
+            .profile-image {
+                width: 80px;
+                height: 80px;
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo-container">
+                <a href="index.html">
+                    <img src="Images/Round-Tracker-Pencil.png" alt="Round Tracker" class="logo">
+                </a>
+            </div>
+            <div class="user-section">
+                <div class="user-avatar" id="userInitials">LW</div>
+                <div class="user-info">
+                    <div class="user-name" id="userName">Lew Wilson</div>
+                    <div class="user-email" id="userEmail">lew.wilson@email.com</div>
+                </div>
+                <button class="menu-button">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <div class="menu-dropdown">
+                    <a href="profile-settings.html" class="menu-item active">
+                        <i class="fa-solid fa-user"></i> Profile Settings
+                    </a>
+                    <a href="app-settings.html" class="menu-item">
+                        <i class="fa-solid fa-gear"></i> App Settings
+                    </a>
+                    <div class="menu-divider"></div>
+                    <a href="#" class="menu-item" id="signOut">
+                        <i class="fa-solid fa-right-from-bracket"></i> Sign Out
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="card settings-container">
+            <div class="card-header">
+                <div class="card-title">
+                    <i class="fa-solid fa-user icon"></i> Profile Settings
+                </div>
+            </div>
+            
+            <div class="tabs">
+                <div class="tab active" data-tab="profile">Profile Info</div>
+                <div class="tab" data-tab="security">Security</div>
+            </div>
+            
+            <div class="tab-content" id="profile-tab">
+                <div class="profile-image-container full-width">
+                    <div class="profile-image">
+                        <span id="profileInitials">LW</span>
+                        <div class="profile-image-upload">
+                            <i class="fa-solid fa-camera"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <form id="profileForm" class="two-column-form">
+                    <div class="form-group">
+                        <label>First Name</label>
+                        <input type="text" id="firstName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Last Name</label>
+                        <input type="text" id="lastName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="email" readonly>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Handicap</label>
+                        <input type="number" id="handicap" min="0" max="54" step="0.1">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Location</label>
+                        <input type="text" id="location" placeholder="City, Country">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Home Course</label>
+                        <input type="text" id="homeCourse" placeholder="Your regular golf course">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Preferred Tees</label>
+                        <select id="preferredTees">
+                            <option value="">Select tee preference</option>
+                            <option value="Championship">Championship</option>
+                            <option value="Back">Back</option>
+                            <option value="Middle">Middle</option>
+                            <option value="Forward">Forward</option>
+                        </select>
+                    </div>
+                    
+                    <div class="button-group">
+                        <a href="index.html" class="cancel-btn">Cancel</a>
+                        <button type="submit" class="save-btn" onclick="window.location.href='index.html'">Save Profile</button>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="tab-content" id="security-tab" style="display: none;">
+                <form id="passwordForm" class="two-column-form">
+                    <div class="form-group">
+                        <label>Current Password</label>
+                        <input type="password" id="currentPassword" required>
+                    </div>
+                    
+                    <div class="form-group"> 
+                        <!-- Empty placeholder to maintain grid alignment -->
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>New Password</label>
+                        <input type="password" id="newPassword" required minlength="8">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Confirm New Password</label>
+                        <input type="password" id="confirmPassword" required minlength="8">
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <p style="color: var(--text-muted); font-size: 14px;">
+                            Password must be at least 8 characters and include a mix of letters, numbers, and symbols.
+                        </p>
+                    </div>
+                    
+                    <div class="button-group">
+                        <a href="index.html" class="cancel-btn">Cancel</a>
+                        <button type="submit" class="save-btn" onclick="window.location.href='index.html'">Update Password</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Supabase CDN script MUST be loaded first -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script type="module" src="js/supabase.js"></script>
+    <script type="module" src="js/profile-settings.js"></script>
+</body>
+</html>
