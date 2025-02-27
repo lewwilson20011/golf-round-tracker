@@ -6,7 +6,6 @@
 <title>Round Tracker</title>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 <link href="css/styles.css" rel="stylesheet">
-<link href="css/dark-mode.css" rel="stylesheet">
 <link href="css/chat-bot.css" rel="stylesheet">
 <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
 <link rel="apple-touch-icon" sizes="60x60" href="icons/apple-icon-60x60.png">
@@ -145,6 +144,30 @@ transform: translateY(0);
 .card {
     padding: 24px; /* Increased padding (originally 16px) */
 }
+/* Style for the empty state message in "Recent Rounds" */
+.no-rounds {
+    text-align: center;
+    padding: 30px 20px;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border-color);
+}
+.no-rounds i {
+    font-size: 40px;
+    color: var(--primary-green);
+    margin-bottom: 16px;
+    opacity: 0.7;
+}
+.no-rounds h3 {
+    font-weight: 600;
+    margin-bottom: 12px;
+    font-size: 18px;
+}
+.no-rounds p {
+    font-size: 14px;
+    line-height: 1.5;
+    max-width: 300px;
+    margin: 0 auto;
+}
 </style>
 </head>
 <body>
@@ -158,34 +181,38 @@ transform: translateY(0);
         <div class="user-email">lew.wilson@email.com</div>
       </div>
       <button class="menu-button"> <i class="fa-solid fa-bars"></i> </button>
-      <div class="menu-dropdown"> <a href="profile-settings.html" class="menu-item" id="profileSettings"> <i class="fa-solid fa-user"></i> Profile Settings </a> <a href="app-settings.html" class="menu-item" id="appSettings"> <i class="fa-solid fa-gear"></i> App Settings </a>
+      <div class="menu-dropdown"> 
+        <a href="profile-settings.html" class="menu-item" id="profileSettings"> 
+          <i class="fa-solid fa-user"></i> Profile Settings 
+        </a> 
+        <a href="app-settings.html" class="menu-item" id="appSettings"> 
+          <i class="fa-solid fa-gear"></i> App Settings 
+        </a>
         <div class="menu-divider"></div>
-        <a href="#" class="menu-item" id="signOut"> <i class="fa-solid fa-right-from-bracket"></i> Sign Out </a> </div>
+        <a href="#" class="menu-item" id="signOut"> 
+          <i class="fa-solid fa-right-from-bracket"></i> Sign Out 
+        </a> 
+      </div>
     </div>
   </div>
   <div class="stats-grid">
     <div class="stat-card">
       <div class="stat-header"> <i class="fa-solid fa-bullseye icon"></i> Average Score </div>
-      <div class="stat-value" id="avgScore">37</div>
+      <div class="stat-value" id="avgScore">-</div>
     </div>
     <div class="stat-card">
       <div class="stat-header"> <i class="fa-solid fa-trophy icon"></i> Best Score </div>
-      <div class="stat-value" id="bestScore">36</div>
+      <div class="stat-value" id="bestScore">-</div>
     </div>
     <div class="stat-card">
       <div class="stat-header"> <i class="fa-solid fa-clock icon"></i> Total Rounds </div>
-      <div class="stat-value" id="totalRounds">3</div>
+      <div class="stat-value" id="totalRounds">0</div>
     </div>
   </div>
   <div class="main-content">
     <div class="card">
       <div class="card-header">
         <div class="card-title"> <i class="fa-solid fa-calendar icon"></i> Add Round </div>
-        <!--
-                    <button class="add-course-btn">
-                        <i class="fa-solid fa-plus"></i> Add Course
-                    </button>
---> 
       </div>
       <form>
         <div class="form-group">
@@ -233,13 +260,15 @@ transform: translateY(0);
           <div>Notes</div>
           <div>Actions</div>
         </div>
-        <div id="roundsList"></div>
+        <div id="roundsList">
+          <!-- Empty state will be shown here when no rounds are logged -->
+        </div>
       </div>
     </div>
   </div>
 </div>
 	
-<!-- Update the chat-button element in your index.html to include text content -->
+<!-- Chatbot container -->
 <div class="chat-container">
     <div class="chat-box">
         <div class="chat-header">
@@ -268,6 +297,7 @@ transform: translateY(0);
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script> 
 <!-- Update path to point to supabase.js in js folder --> 
 <script type="module" src="js/supabase.js"></script> 
+<script type="module" src="js/script.js"></script>
 <script type="module" src="js/chat-bot.js"></script>
 
 </body>

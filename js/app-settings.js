@@ -2,7 +2,6 @@ import { supabase } from './supabase.js';
 
 let currentUser = null;
 let currentSettings = {
-    darkMode: false,
     animations: true,
     scoringSystem: 'Stroke Play',
     autoHandicap: true,
@@ -71,7 +70,6 @@ async function loadUserSettings() {
         // If we have settings, update our local state
         if (settings) {
             currentSettings = {
-                darkMode: settings.dark_mode || false,
                 animations: settings.animations !== false, // Default to true if not set
                 scoringSystem: settings.scoring_system || 'Stroke Play',
                 autoHandicap: settings.auto_handicap !== false, // Default to true if not set
@@ -90,7 +88,6 @@ async function loadUserSettings() {
 // Update UI elements with current settings
 function updateSettingsUI() {
     // Toggle switches
-    document.getElementById('darkModeToggle').checked = currentSettings.darkMode;
     document.getElementById('animationsToggle').checked = currentSettings.animations;
     document.getElementById('autoHandicapToggle').checked = currentSettings.autoHandicap;
     document.getElementById('emailNotificationsToggle').checked = currentSettings.emailNotifications;
@@ -98,13 +95,6 @@ function updateSettingsUI() {
     
     // Select inputs
     document.getElementById('scoringSystem').value = currentSettings.scoringSystem;
-    
-    // Apply dark mode if enabled
-    if (currentSettings.darkMode) {
-        document.body.classList.add('dark-mode');
-    } else {
-        document.body.classList.remove('dark-mode');
-    }
     
     // Disable animations if disabled
     if (!currentSettings.animations) {
@@ -149,7 +139,6 @@ async function saveSettings() {
         
         // Map our settings to database fields
         const settingsData = {
-            dark_mode: currentSettings.darkMode,
             animations: currentSettings.animations,
             scoring_system: currentSettings.scoringSystem,
             auto_handicap: currentSettings.autoHandicap,
@@ -202,7 +191,7 @@ async function exportUserData() {
 
         // Convert data to CSV format
         const headers = Object.keys(rounds[0]).filter(key => key !== 'user_id');
-        const csvHeader = headers.join(',') + '\\n';
+        const csvHeader = headers.join(',') + '\n';
         
         const csvRows = rounds.map(round => {
             return headers.map(header => {
@@ -210,12 +199,12 @@ async function exportUserData() {
                 const value = round[header] === null ? '' : round[header];
                 const valueStr = String(value);
                 
-                if (valueStr.includes(',') || valueStr.includes('"') || valueStr.includes('\\n')) {
+                if (valueStr.includes(',') || valueStr.includes('"') || valueStr.includes('\n')) {
                     return `"${valueStr.replace(/"/g, '""')}"`;
                 }
                 return valueStr;
             }).join(',');
-        }).join('\\n');
+        }).join('\n');
         
         const csvContent = csvHeader + csvRows;
         
@@ -310,40 +299,47 @@ document.addEventListener('DOMContentLoaded', () => {
     const menuButton = document.querySelector('.menu-button');
     const menuDropdown = document.querySelector('.menu-dropdown');
 
-    menuButton.addEventListener('click', (e) => {
-        e.stopPropagation();
-        menuDropdown.classList.toggle('show');
-    });
+    if (menuButton && menuDropdown) {
+        menuButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            menuDropdown.classList.toggle('show');
+        });
 
-    // Close menu when clicking outside
-    document.addEventListener('click', (e) => {
-        if (!menuDropdown.contains(e.target) && !menuButton.contains(e.target)) {
-            menuDropdown.classList.remove('show');
-        }
-    });
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (menuDropdown.classList.contains('show')) {
+                if (!menuDropdown.contains(e.target) && !menuButton.contains(e.target)) {
+                    menuDropdown.classList.remove('show');
+                }
+            }
+        });
+
+        // Close menu when pressing Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && menuDropdown.classList.contains('show')) {
+                menuDropdown.classList.remove('show');
+            }
+        });
+    }
 
     // Sign Out functionality
-    document.getElementById('signOut').addEventListener('click', async (e) => {
-        e.preventDefault();
-        const { error } = await supabase.auth.signOut();
-        if (!error) {
-            window.location.href = 'login.html';
-        }
-    });
+    const signOutButton = document.getElementById('signOut');
+    if (signOutButton) {
+        signOutButton.addEventListener('click', async (e) => {
+            e.preventDefault();
+            try {
+                const { error } = await supabase.auth.signOut();
+                if (!error) {
+                    window.location.href = 'login.html';
+                }
+            } catch (error) {
+                console.error('Sign out error:', error);
+                alert(`Error signing out: ${error.message}`);
+            }
+        });
+    }
 
     // Settings change listeners for toggle switches
-    document.getElementById('darkModeToggle').addEventListener('change', (e) => {
-        currentSettings.darkMode = e.target.checked;
-        settingsChanged = true;
-        
-        // Apply dark mode immediately for preview
-        if (e.target.checked) {
-            document.body.classList.add('dark-mode');
-        } else {
-            document.body.classList.remove('dark-mode');
-        }
-    });
-
     document.getElementById('animationsToggle').addEventListener('change', (e) => {
         currentSettings.animations = e.target.checked;
         settingsChanged = true;

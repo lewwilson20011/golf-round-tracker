@@ -122,10 +122,6 @@ async function initializeApp() {
         currentUser = user;
         updateUserInterface();
         
-        // Check user settings for dark mode
-        console.log("Loading user settings...");
-        await loadUserSettings();
-        
         console.log("Loading courses...");
         await loadCourses();
         
@@ -138,43 +134,6 @@ async function initializeApp() {
         handleError('initializeApp', error);
         // Redirect to login in case of any authentication issues
         window.location.href = 'login.html';
-    }
-}
-
-// Load user settings
-async function loadUserSettings() {
-    try {
-        // Get user settings from Supabase
-        const { data: settings, error } = await supabase
-            .from('user_settings')
-            .select('*')
-            .eq('user_id', currentUser.id)
-            .single();
-
-        if (error && error.code !== 'PGRST116') { // PGRST116 is "no rows returned" error
-            throw error;
-        }
-
-        // If user has dark mode enabled, apply it
-        if (settings && settings.dark_mode) {
-            document.body.classList.add('dark-mode');
-        }
-        
-        // If animations are disabled, apply that setting
-        if (settings && settings.animations === false) {
-            const style = document.createElement('style');
-            style.id = 'disable-animations';
-            style.textContent = `
-                * {
-                    animation: none !important;
-                    transition: none !important;
-                }
-            `;
-            document.head.appendChild(style);
-        }
-    } catch (error) {
-        console.error('Load settings error:', error);
-        // Non-critical error, don't alert the user
     }
 }
 
@@ -207,8 +166,10 @@ async function loadRounds() {
 
         if (error) throw error;
 
-        updateStats(rounds);
-        renderRounds(rounds);
+        // Make sure we have an array even if the result is null
+        const roundsArray = rounds || [];
+        updateStats(roundsArray);
+        renderRounds(roundsArray);
     } catch (error) {
         handleError('loadRounds', error);
     }
@@ -216,35 +177,48 @@ async function loadRounds() {
 
 // Update statistics
 function updateStats(rounds) {
-    if (!rounds || !rounds.length) {
+    // Make sure rounds is an array and handle empty state
+    const roundsArray = Array.isArray(rounds) ? rounds : [];
+    
+    // Display total count (will be 0 if empty)
+    document.getElementById('totalRounds').textContent = roundsArray.length;
+    
+    if (roundsArray.length === 0) {
+        // No rounds, show placeholder values
         document.getElementById('avgScore').textContent = '-';
         document.getElementById('bestScore').textContent = '-';
-        document.getElementById('totalRounds').textContent = '0';
         return;
     }
 
-    const avgScore = Math.round(rounds.reduce((acc, round) => acc + round.score, 0) / rounds.length);
-    const bestScore = Math.min(...rounds.map(round => round.score));
+    // Calculate stats when we have rounds
+    const avgScore = Math.round(roundsArray.reduce((acc, round) => acc + round.score, 0) / roundsArray.length);
+    const bestScore = Math.min(...roundsArray.map(round => round.score));
     
     document.getElementById('avgScore').textContent = avgScore;
     document.getElementById('bestScore').textContent = bestScore;
-    document.getElementById('totalRounds').textContent = rounds.length;
 }
 
 // Render rounds table
 function renderRounds(rounds) {
     const roundsList = document.getElementById('roundsList');
     
-    if (!rounds || !rounds.length) {
+    // Always ensure we're working with an array
+    const roundsArray = Array.isArray(rounds) ? rounds : [];
+    
+    if (roundsArray.length === 0) {
+        // Render the attractive empty state
         roundsList.innerHTML = `
             <div class="no-rounds">
-                <p>No rounds logged yet. Add your first round to start tracking!</p>
+                <i class="fa-solid fa-golf-ball-tee"></i>
+                <h3>No rounds logged yet</h3>
+                <p>Add your first round using the form on the left to start tracking your golf progress!</p>
             </div>
         `;
         return;
     }
 
-    roundsList.innerHTML = rounds.map((round) => `
+    // Render the rounds when we have data
+    roundsList.innerHTML = roundsArray.map((round) => `
         <div class="round-row" data-round-id="${round.id}">
             <div class="date">${new Date(round.date).toLocaleDateString()}</div>
             <div class="course">${round.course}</div>
@@ -359,18 +333,6 @@ async function handleFormSubmit(e) {
                 })
                 .eq('id', editId)
                 .eq('user_id', user.id);
-
-            console.log('Full update result:', result);
-
-            // Check for specific error details
-            if (result.error) {
-                console.error('Update error details:', {
-                    message: result.error.message,
-                    details: result.error.details,
-                    hint: result.error.hint
-                });
-                throw result.error;
-            }
         } else {
             // Insert new round
             result = await supabase
@@ -383,8 +345,6 @@ async function handleFormSubmit(e) {
                     holes,
                     user_id: user.id
                 }]);
-
-            console.log('Insert result:', result);
         }
 
         // Check for errors
@@ -396,118 +356,76 @@ async function handleFormSubmit(e) {
         // Reset form and reload rounds
         resetForm();
         await loadRounds();
-        
-        // Auto-update handicap if the setting is enabled
-        await updateHandicapIfEnabled(user.id);
     } catch (error) {
         console.error('Complete form submission error:', error);
         alert(`Error: ${error.message}`);
     }
 }
 
-// Update handicap if auto-handicap setting is enabled
-async function updateHandicapIfEnabled(userId) {
-    try {
-        // Check if auto-handicap is enabled
-        const { data: settings, error: settingsError } = await supabase
-            .from('user_settings')
-            .select('auto_handicap')
-            .eq('user_id', userId)
-            .single();
-            
-        if (settingsError && settingsError.code !== 'PGRST116') {
-            throw settingsError;
-        }
-        
-        // If no settings or auto_handicap is disabled, do nothing
-        if (!settings || settings.auto_handicap === false) {
-            return;
-        }
-        
-        // Get all rounds for handicap calculation
-        const { data: rounds, error: roundsError } = await supabase
-            .from('rounds')
-            .select('score, holes')
-            .eq('user_id', userId)
-            .order('date', { ascending: false })
-            .limit(20); // Last 20 rounds
-            
-        if (roundsError) throw roundsError;
-        
-        if (!rounds || rounds.length === 0) {
-            return; // No rounds to calculate handicap
-        }
-        
-        // Simple handicap calculation (this is a simplified example)
-        // In reality, handicap calculation is more complex and involves course ratings
-        const eighteenHoleRounds = rounds.filter(r => r.holes === '18 Holes' || r.holes === null);
-        if (eighteenHoleRounds.length < 5) {
-            return; // Not enough rounds for handicap calculation
-        }
-        
-        // Calculate handicap based on best 8 of last 20 rounds
-        const scores = eighteenHoleRounds.map(r => r.score).sort((a, b) => a - b);
-        const bestScores = scores.slice(0, Math.min(8, scores.length));
-        const avgBestScore = bestScores.reduce((sum, score) => sum + score, 0) / bestScores.length;
-        
-        // Simplified formula: (avg of best scores - 72) * 0.96
-        // 72 is representing a standard course par
-        const handicap = Math.max(0, ((avgBestScore - 72) * 0.96).toFixed(1));
-        
-        // Update user profile with new handicap
-        const { error: updateError } = await supabase
-            .from('profiles')
-            .upsert({
-                id: userId,
-                handicap: handicap,
-                updated_at: new Date()
-            });
-            
-        if (updateError) throw updateError;
-        
-    } catch (error) {
-        console.error('Auto-handicap update error:', error);
-        // Non-critical error, don't alert the user
-    }
-}
-
 // Set up event listeners when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    // Menu functionality
+    // Set up the menu functionality with improved reliability
     const menuButton = document.querySelector('.menu-button');
     const menuDropdown = document.querySelector('.menu-dropdown');
 
-    menuButton.addEventListener('click', (e) => {
-        e.stopPropagation();
-        menuDropdown.classList.toggle('show');
-    });
+    if (menuButton && menuDropdown) {
+        // Toggle menu when the button is clicked
+        menuButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            menuDropdown.classList.toggle('show');
+            console.log('Menu toggled:', menuDropdown.classList.contains('show'));
+        });
 
-    // Close menu when clicking outside
-    document.addEventListener('click', (e) => {
-        if (!menuDropdown.contains(e.target) && !menuButton.contains(e.target)) {
-            menuDropdown.classList.remove('show');
-        }
-    });
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (menuDropdown.classList.contains('show')) {
+                if (!menuDropdown.contains(e.target) && !menuButton.contains(e.target)) {
+                    menuDropdown.classList.remove('show');
+                }
+            }
+        });
+
+        // Close menu when pressing Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && menuDropdown.classList.contains('show')) {
+                menuDropdown.classList.remove('show');
+            }
+        });
+    } else {
+        console.error('Menu elements not found!');
+    }
 
     // Sign Out functionality
-    document.getElementById('signOut').addEventListener('click', async (e) => {
-        e.preventDefault();
-        const { error } = await supabase.auth.signOut();
-        if (!error) {
-            window.location.href = 'login.html';
-        }
-    });
+    const signOutButton = document.getElementById('signOut');
+    if (signOutButton) {
+        signOutButton.addEventListener('click', async (e) => {
+            e.preventDefault();
+            try {
+                const { error } = await supabase.auth.signOut();
+                if (error) throw error;
+                window.location.href = 'login.html';
+            } catch (error) {
+                console.error('Sign out error:', error);
+                alert(`Error signing out: ${error.message}`);
+            }
+        });
+    }
 
     // Form submission
     const form = document.querySelector('form');
-    form.addEventListener('submit', handleFormSubmit);
+    if (form) {
+        form.addEventListener('submit', handleFormSubmit);
+    }
 
     // Set initial date
-    document.getElementById('roundDate').valueAsDate = new Date();
+    const dateInput = document.getElementById('roundDate');
+    if (dateInput) {
+        dateInput.valueAsDate = new Date();
+    }
 
     // Initialize the application
     initializeApp();
 });
 
 // Logging for debugging
-console.log('Script loaded');
+console.log('Script loaded and ready');
