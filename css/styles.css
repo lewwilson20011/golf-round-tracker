@@ -85,17 +85,17 @@ body {
 .user-name {
   font-weight: 600;
   font-size: 14px;
-  color: #000000;
+  color: #ffffff;
 }
 .user-email {
-  color: #000000;
+  color: #ffffff;
   font-size: 12px;
 }
 /* Menu Styles */
 .menu-button {
   background: none;
   border: none;
-  color: var(--primary-green);
+  color: #ffffff;
   padding: 8px;
   cursor: pointer;
   border-radius: 4px;
@@ -148,7 +148,7 @@ body {
     display: none;
   }
   .menu-button {
-    color: green;
+    color: #ffffff;
     padding: 8px;
   }
   .user-avatar {

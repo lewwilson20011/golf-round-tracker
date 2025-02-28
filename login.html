@@ -7,7 +7,9 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 <link href="css/styles.css" rel="stylesheet">
 <link href="css/auth-styles.css" rel="stylesheet">
-	<link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+<!-- Import header-footer styles -->
+<link href="css/header-footer.css" rel="stylesheet">
+<link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
 <link rel="apple-touch-icon" sizes="60x60" href="icons/apple-icon-60x60.png">
 <link rel="apple-touch-icon" sizes="72x72" href="icons/apple-icon-72x72.png">
 <link rel="apple-touch-icon" sizes="76x76" href="icons/apple-icon-76x76.png">
@@ -33,7 +35,7 @@ body {
     background-position: center;
 }
 .auth-container {
-    min-height: 100vh;
+    min-height: calc(100vh - 180px); /* Adjusted to account for header and footer */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -64,16 +66,6 @@ body {
 }
 .auth-intro {
     max-width: 400px;
-}
-.logo-heading {
-    margin-bottom: 1.5rem;
-    animation: fadeIn 0.8s ease-out 0.3s both;
-    text-align: left;
-}
-.intro-logo {
-    height: 40px; /* Increased from 48px */
-    width: auto;
-    display: block;
 }
 .auth-intro p {
     color: rgba(255, 255, 255, 0.9);
@@ -108,6 +100,12 @@ body {
     font-size: 1rem;
 }
 
+/* Login page specific header adjustments */
+.login-header .header {
+    display: flex;
+    justify-content: flex-start; /* Only show logo, nothing on right */
+}
+
 @media (max-width: 1024px) {
 .split-layout {
     margin: 1rem;
@@ -130,16 +128,6 @@ body {
         text-align: left; /* Center content */
     }
 
-    .logo-heading {
-        display: flex;
-        justify-content: center; /* Ensure logo is centered */
-        margin-bottom: 1.5rem;
-    }
-
-    .intro-logo {
-        margin: 0 auto; /* Center the logo */
-    }
-
     .intro-features {
         justify-content: center; /* Center features */
         text-align: left; /* Keep text left-aligned within center container */
@@ -149,10 +137,6 @@ body {
 @media (max-width: 480px) {
 .intro-section {
     padding: 1.5rem;
-}
-.intro-logo {
-    height: 40px;
-	margin: .5rem 0 0 -.5rem;
 }
 .feature {
     font-size: 0.9rem;
@@ -211,12 +195,24 @@ transform: translateY(0);
 </style>
 </head>
 <body>
+<!-- HEADER START -->
+<header class="site-header site-header-auth login-header">
+    <div class="header">
+        <div class="logo-container">
+            <a href="index.html">
+                <img src="Images/SVG/Round-Tracker-Logo.svg" alt="Round Tracker" class="logo">
+            </a>
+        </div>
+        <!-- No user section here for login page -->
+    </div>
+</header>
+<!-- HEADER END -->
+
 <div class="auth-container">
   <div class="split-layout"> 
-    <!-- Introduction Section -->
+    <!-- Introduction Section (removed logo from here) -->
     <div class="intro-section">
       <div class="auth-intro">
-        <h2 class="logo-heading"> <img src="Images/SVG/Round-Tracker-Logo.svg" alt="Welcome to Round Tracker" class="intro-logo"> </h2>
         <p>Your personal assistant for tracking and managing rounds of golf. Keep track of your scores, analyze your performance, and improve your game.</p>
         <div class="intro-features">
           <div class="feature"> <i class="fas fa-golf-ball"></i> <span>Track scores and stats for every round</span> </div>
@@ -267,8 +263,57 @@ transform: translateY(0);
     </div>
   </div>
 </div>
+
+<!-- FOOTER START -->
+<footer class="site-footer">
+    <div class="footer-content">
+        <div class="footer-logo">
+            <img src="Images/SVG/Round-Tracker-Logo.svg" alt="Round Tracker" class="footer-logo-img">
+        </div>
+        <div class="footer-links">
+            <div class="footer-column">
+                <h4>About</h4>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Our Mission</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Features</h4>
+                <ul>
+                    <li><a href="#">Score Tracking</a></li>
+                    <li><a href="#">Statistics</a></li>
+                    <li><a href="#">Course Database</a></li>
+                    <li><a href="#">Golf Tips</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Feedback</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2025 Round Tracker. All rights reserved.</p>
+        <div class="social-icons">
+            <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="#" aria-label="Twitter"><i class="fa-brands fa-twitter"></i></a>
+            <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        </div>
+    </div>
+</footer>
+<!-- FOOTER END -->
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script> 
-<script type="module" src="js/supabase.js"></script> 
+<script type="module" src="js/supabase.js"></script>
+<!-- No header-footer.js needed for login page since we're handling it manually -->
 <script type="module" src="js/login.js"></script>
 </body>
 </html>
