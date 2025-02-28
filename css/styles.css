@@ -17,7 +17,7 @@
 }
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-  background: linear-gradient(rgba(255, 255, 255, .9), rgba(255, 255, 255, 0)), url('../images/golf-course-image.jpg') center/cover fixed;
+  background: linear-gradient(rgba(73, 129, 223, .1), rgba(255, 255, 255, 0)), url('../images/golf-course-image.jpg') center/cover fixed;
   color: white;
   min-height: 100vh;
   background-attachment: scroll; /* Change from fixed to scroll for mobile */
@@ -60,6 +60,7 @@ body {
 .logo {
   height: 48px;
   width: auto;
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.7));
 }
 .user-section {
   display: flex;
