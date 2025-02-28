@@ -60,7 +60,7 @@ body {
 .logo {
   height: 48px;
   width: auto;
-  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.7));
+/*  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.7));*/
 }
 .user-section {
   display: flex;
@@ -95,7 +95,7 @@ body {
 .menu-button {
   background: none;
   border: none;
-  color: green;
+  color: var(--primary-green);
   padding: 8px;
   cursor: pointer;
   border-radius: 4px;
