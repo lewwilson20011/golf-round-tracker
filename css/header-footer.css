@@ -362,11 +362,13 @@
     }
     
     .logo {
-        height: 36px; /* Even smaller logo on small screens */
+        height: 40px;
+        padding: 2px 4px 0; /* Even smaller logo on small screens */
     }
     
     .footer-links {
         flex-direction: column;
+		text-align: center;
     }
     
     .footer-column {
@@ -390,6 +392,7 @@
     .footer-logo {
         margin-bottom: 0;
         text-align: center; /* Center the logo on small screens */
+		flex: none;
     }
     
     /* Footer adjustments for better spacing */
