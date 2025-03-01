@@ -84,9 +84,9 @@
 
 .menu-dropdown {
     position: absolute;
-    top: 100%;
-    right: 0;
-    margin-top: 8px;
+    top: 85px !important; /* Position dropdown right below hamburger */
+    right: 20px !important; /* Align with the right edge of menu button */
+    margin-top: 0; /* Remove margin that might offset it */
     background: rgba(30, 41, 59, 0.95);
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
@@ -354,6 +354,21 @@
     .user-section {
         gap: 8px;
     }
+    
+    /* Center logo on login page for mobile */
+    .login-header .header {
+        justify-content: center;
+    }
+    
+    .login-header .logo-container {
+        margin-left: 0;
+    }
+    
+    /* Mobile dropdown positioning */
+    .menu-dropdown {
+        top: 65px !important;
+		right: 10px !important;
+    }
 }
 
 @media (max-width: 480px) {
@@ -368,7 +383,7 @@
     
     .footer-links {
         flex-direction: column;
-		text-align: center;
+        text-align: center;
     }
     
     .footer-column {
@@ -392,7 +407,7 @@
     .footer-logo {
         margin-bottom: 0;
         text-align: center; /* Center the logo on small screens */
-		flex: none;
+        flex: none;
     }
     
     /* Footer adjustments for better spacing */

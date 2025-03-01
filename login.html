@@ -192,6 +192,16 @@ opacity: 1;
 transform: translateY(0);
 }
 }
+	/* Fix for centering logo on login page on mobile */
+@media (max-width: 768px) {
+  .login-header .header {
+    justify-content: center; /* Center the logo container */
+  }
+  
+  .login-header .logo-container {
+    margin-left: 0; /* Remove any left margin if present */
+  }
+}
 </style>
 </head>
 <body>

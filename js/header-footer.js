@@ -149,18 +149,49 @@ function setupHeaderMenu() {
     }
 }
 
+// Improved dropdown positioning
+function positionDropdownMenu() {
+    const menuBtn = document.querySelector('.menu-button');
+    const dropdown = document.getElementById('menuDropdown');
+    
+    if (menuBtn && dropdown) {
+        // Set dropdown position to be directly under the hamburger icon
+        const isDesktop = window.innerWidth > 768;
+        
+        if (isDesktop) {
+            dropdown.style.top = '45px';
+            dropdown.style.right = '0';
+        } else {
+            dropdown.style.top = '40px';
+            dropdown.style.right = '0';
+        }
+        
+        // Ensure the dropdown has a positioning context
+        const userSection = document.querySelector('.user-section');
+        if (userSection) {
+            userSection.style.position = 'relative';
+        }
+        
+        // Ensure z-index is high
+        dropdown.style.zIndex = '9999';
+    }
+}
+
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM loaded, initializing header-footer');
     initializeHeaderFooter();
     
-    // Additional direct dropdown fix
+    // Additional direct dropdown fix with better positioning
     setTimeout(() => {
         const menuBtn = document.querySelector('.menu-button');
         const menuDropdown = document.querySelector('.menu-dropdown');
         
         if (menuBtn && menuDropdown) {
             console.log('Adding additional direct dropdown handler');
+            
+            // Run positioning function once
+            positionDropdownMenu();
             
             menuBtn.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -173,10 +204,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else {
                     menuDropdown.style.display = 'block';
                     menuDropdown.classList.add('show');
+                    
+                    // Position the dropdown properly when shown
+                    setTimeout(positionDropdownMenu, 10);
                 }
                 
                 console.log('Direct dropdown toggle, current display:', menuDropdown.style.display);
             });
+            
+            // Also run positioning when window is resized
+            window.addEventListener('resize', positionDropdownMenu);
         }
     }, 500); // Small delay to ensure it runs after the initial setup
 });
