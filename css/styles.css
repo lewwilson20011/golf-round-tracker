@@ -14,9 +14,12 @@
   --text-muted: #94a3b8;
   --spacing-base: 16px;
   --border-radius: 12px;
+  --font-primary: 'Montserrat', sans-serif;
+  --font-secondary: 'Lora', serif;
+  --font-body: 'Hind Madurai', sans-serif;
 }
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  font-family: var(--font-body);
   background: linear-gradient(rgba(73, 129, 223, .1), rgba(255, 255, 255, 0)), url('../images/golf-course-image.jpg') center/cover fixed;
   color: white;
   min-height: 100vh;
@@ -86,6 +89,7 @@ body {
   font-weight: 600;
   font-size: 14px;
   color: #ffffff;
+  font-family: var(--font-primary);
 }
 .user-email {
   color: #ffffff;
@@ -126,6 +130,7 @@ body {
   color: var(--text-muted);
   text-decoration: none;
   transition: all 0.2s;
+  font-family: var(--font-body);
 }
 .menu-item:hover {
   background: rgba(255, 255, 255, 0.05);
@@ -195,10 +200,12 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.5px;
   margin-bottom: 8px;
+  font-family: var(--font-primary);
 }
 .stat-value {
   font-size: 28px;
   font-weight: 700;
+  font-family: var(--font-primary);
 }
 /* Main Content and Cards */
 .main-content {
@@ -225,6 +232,7 @@ body {
   gap: 8px;
   font-weight: 600;
   font-size: 24px;
+  font-family: var(--font-primary);
 }
 /* Form Styles */
 .form-group {
@@ -235,6 +243,7 @@ body {
   margin-bottom: 8px;
   color: var(--text-muted);
   font-size: 14px;
+  font-family: var(--font-primary);
 }
 select, input, textarea {
   width: 100%;
@@ -246,6 +255,7 @@ select, input, textarea {
   font-size: 14px;
   transition: border-color 0.2s;
   line-height: 1.5;
+  font-family: var(--font-body);
 }
 /* Calendar icon alignment fix */
 input[type="date"] {
@@ -287,6 +297,7 @@ select:focus, input:focus, textarea:focus {
   gap: 6px;
   cursor: pointer;
   transition: background 0.2s;
+  font-family: var(--font-primary);
 }
 .add-course-btn:hover {
   background: rgba(255, 255, 255, 0.15);
@@ -302,6 +313,7 @@ select:focus, input:focus, textarea:focus {
   font-size: 14px;
   cursor: pointer;
   transition: opacity 0.2s;
+  font-family: var(--font-primary);
 }
 .save-btn:hover {
   opacity: 0.9;
@@ -340,6 +352,7 @@ select:focus, input:focus, textarea:focus {
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  font-family: var(--font-primary);
 }
 .round-row {
   display: grid;
@@ -356,6 +369,7 @@ select:focus, input:focus, textarea:focus {
 }
 .round-row .notes {
   color: var(--text-muted);
+  font-family: var(--font-body);
 }
 .no-rounds {
   padding: 32px 16px;
@@ -381,6 +395,7 @@ select:focus, input:focus, textarea:focus {
   display: flex;
   align-items: center;
   gap: 4px;
+  font-family: var(--font-primary);
 }
 .edit-btn:hover {
   background: rgba(59, 130, 246, 0.25);
@@ -397,6 +412,7 @@ select:focus, input:focus, textarea:focus {
   display: flex;
   align-items: center;
   gap: 4px;
+  font-family: var(--font-primary);
 }
 .delete-btn:hover {
   background: rgba(239, 68, 68, 0.25);
@@ -419,6 +435,7 @@ select:focus, input:focus, textarea:focus {
   cursor: pointer;
   transition: opacity 0.2s;
   margin-right: 10px;
+  font-family: var(--font-primary);
 }
 .cancel-edit:hover {
   opacity: 0.9;
@@ -449,6 +466,7 @@ select:focus, input:focus, textarea:focus {
   display: flex;
   align-items: center;
   justify-content: center;
+  font-family: var(--font-primary);
 }
 .cancel-btn:hover {
   background: rgba(255, 255, 255, 0.15);
@@ -656,6 +674,7 @@ select:focus, input:focus, textarea:focus {
   margin-bottom: 12px;
   font-size: 18px;
   color: white;
+  font-family: var(--font-primary);
 }
 
 .no-rounds p {
@@ -664,6 +683,7 @@ select:focus, input:focus, textarea:focus {
   line-height: 1.5;
   max-width: 300px;
   margin: 0 auto;
+  font-family: var(--font-body);
 }
 
 /* Additional animation for the empty state */
