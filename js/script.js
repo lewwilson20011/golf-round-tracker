@@ -12,6 +12,68 @@ function handleError(context, error) {
     }
 }
 
+// Format date correctly (fixing the one day off issue)
+function formatDateCorrectly(dateString) {
+    // Create a date object using the input string
+    const date = new Date(dateString);
+    // Add one day to account for timezone issues
+    date.setDate(date.getDate() + 1);
+    // Format it as a localized string
+    return date.toLocaleDateString();
+}
+
+// Calculate trend direction (up is good, down is bad, flat is neutral)
+function calculateTrend(rounds, isNineHole = false) {
+    // Filter rounds by hole count
+    const filteredRounds = rounds.filter(round => {
+        return isNineHole ? round.holes === '9 Holes' : round.holes !== '9 Holes';
+    });
+    
+    // Need at least 2 rounds to establish a trend
+    if (filteredRounds.length < 2) {
+        return 'neutral';
+    }
+    
+    // Sort by date, most recent first
+    const sortedRounds = [...filteredRounds].sort((a, b) => 
+        new Date(b.date) - new Date(a.date)
+    );
+    
+    // Get the average of the 3 most recent rounds (or fewer if we don't have 3)
+    const recentRoundsCount = Math.min(3, sortedRounds.length);
+    const recentRounds = sortedRounds.slice(0, recentRoundsCount);
+    const recentAvg = recentRounds.reduce((sum, r) => sum + r.score, 0) / recentRounds.length;
+    
+    // Get the average of the rounds before that (up to 3)
+    const olderRoundsCount = Math.min(3, Math.max(0, sortedRounds.length - recentRoundsCount));
+    if (olderRoundsCount === 0) return 'neutral'; // Not enough data for comparison
+    
+    const olderRounds = sortedRounds.slice(recentRoundsCount, recentRoundsCount + olderRoundsCount);
+    const olderAvg = olderRounds.reduce((sum, r) => sum + r.score, 0) / olderRounds.length;
+    
+    // Calculate the difference - for golf, lower is better
+    const difference = olderAvg - recentAvg;
+    
+    if (Math.abs(difference) < 1) {
+        return 'neutral'; // Less than 1 stroke difference is considered neutral
+    } else if (difference > 0) {
+        return 'improving'; // Recent scores are lower (better)
+    } else {
+        return 'worsening'; // Recent scores are higher (worse)
+    }
+}
+
+// Get HTML for trend arrow
+function getTrendArrowHTML(trend) {
+    if (trend === 'improving') {
+        return '<span class="trend-arrow improving"><i class="fa-solid fa-arrow-down"></i></span>';
+    } else if (trend === 'worsening') {
+        return '<span class="trend-arrow worsening"><i class="fa-solid fa-arrow-up"></i></span>';
+    } else {
+        return '<span class="trend-arrow neutral"><i class="fa-solid fa-minus"></i></span>';
+    }
+}
+
 // Make delete and edit functions globally available
 window.deleteRound = async (id) => {
     if (confirm('Are you sure you want to delete this round?')) {
@@ -184,10 +246,10 @@ async function loadRounds() {
 function updateStats(rounds) {
     // Make sure rounds is an array and handle empty state
     const roundsArray = Array.isArray(rounds) ? rounds : [];
-
+    
     // Display total count (will be 0 if empty)
     document.getElementById('totalRounds').textContent = roundsArray.length;
-
+    
     if (roundsArray.length === 0) {
         // No rounds, show placeholder values
         document.getElementById('avgScore').textContent = '-';
@@ -195,12 +257,136 @@ function updateStats(rounds) {
         return;
     }
 
-    // Calculate stats when we have rounds
-    const avgScore = Math.round(roundsArray.reduce((acc, round) => acc + round.score, 0) / roundsArray.length);
-    const bestScore = Math.min(...roundsArray.map(round => round.score));
-
-    document.getElementById('avgScore').textContent = avgScore;
-    document.getElementById('bestScore').textContent = bestScore;
+    // Separate rounds by hole count
+    const nineHoleRounds = roundsArray.filter(round => round.holes === '9 Holes');
+    const eighteenHoleRounds = roundsArray.filter(round => round.holes !== '9 Holes');
+    
+    // Calculate average scores for both categories separately
+    let avgNineHoleScore = '-';
+    let avgEighteenHoleScore = '-';
+    
+    if (nineHoleRounds.length > 0) {
+        const totalNineHoleScore = nineHoleRounds.reduce((sum, round) => sum + round.score, 0);
+        avgNineHoleScore = Math.round(totalNineHoleScore / nineHoleRounds.length);
+    }
+    
+    if (eighteenHoleRounds.length > 0) {
+        const totalEighteenHoleScore = eighteenHoleRounds.reduce((sum, round) => sum + round.score, 0);
+        avgEighteenHoleScore = Math.round(totalEighteenHoleScore / eighteenHoleRounds.length);
+    }
+    
+    // Find best scores for each category and their corresponding details
+    let bestNineHoleScore = '-';
+    let bestNineHoleCourse = '';
+    let bestNineHoleDate = '';
+    
+    let bestEighteenHoleScore = '-';
+    let bestEighteenHoleCourse = '';
+    let bestEighteenHoleDate = '';
+    
+    if (nineHoleRounds.length > 0) {
+        // Find the round with the lowest score
+        const bestNineHoleRound = nineHoleRounds.reduce((best, current) => 
+            (current.score < best.score) ? current : best, nineHoleRounds[0]);
+        
+        bestNineHoleScore = bestNineHoleRound.score;
+        bestNineHoleCourse = bestNineHoleRound.course;
+        bestNineHoleDate = formatDateCorrectly(bestNineHoleRound.date);
+    }
+    
+    if (eighteenHoleRounds.length > 0) {
+        // Find the round with the lowest score
+        const bestEighteenHoleRound = eighteenHoleRounds.reduce((best, current) => 
+            (current.score < best.score) ? current : best, eighteenHoleRounds[0]);
+        
+        bestEighteenHoleScore = bestEighteenHoleRound.score;
+        bestEighteenHoleCourse = bestEighteenHoleRound.course;
+        bestEighteenHoleDate = formatDateCorrectly(bestEighteenHoleRound.date);
+    }
+    
+    // Calculate trends for both 9 and 18 holes
+    const trend18 = calculateTrend(roundsArray, false);
+    const trend9 = calculateTrend(roundsArray, true);
+    
+    // Update the average score display with separate 9-hole and 18-hole averages
+    if (document.getElementById('avgScore')) {
+        let avgScoreHTML = '';
+        
+        // 18-hole average with trend arrow
+        avgScoreHTML += `18: ${avgEighteenHoleScore} ${getTrendArrowHTML(trend18)}`;
+        
+        // Divider between averages
+        avgScoreHTML += `<span class="score-divider"></span>`;
+        
+        // 9-hole average with trend arrow
+        avgScoreHTML += `9: ${avgNineHoleScore} ${getTrendArrowHTML(trend9)}`;
+        
+        document.getElementById('avgScore').innerHTML = avgScoreHTML;
+    }
+    
+    // Update best score display to show both categories with course and date
+    if (document.getElementById('bestScore')) {
+        let bestScoreHTML = '';
+        
+        if (bestEighteenHoleScore !== '-') {
+            bestScoreHTML += `18: ${bestEighteenHoleScore}<br><small>${bestEighteenHoleCourse} (${bestEighteenHoleDate})</small>`;
+        } else {
+            bestScoreHTML += `18: -<br><small>No rounds played</small>`;
+        }
+        
+        // Use a smaller gap between the two sections
+        bestScoreHTML += '<span class="score-divider"></span>';
+        
+        if (bestNineHoleScore !== '-') {
+            bestScoreHTML += `9: ${bestNineHoleScore}<br><small>${bestNineHoleCourse} (${bestNineHoleDate})</small>`;
+        } else {
+            bestScoreHTML += `9: -<br><small>No rounds played</small>`;
+        }
+        
+        document.getElementById('bestScore').innerHTML = bestScoreHTML;
+        
+        // Add styling for stats cards and trend arrows
+        const styleElement = document.createElement('style');
+        styleElement.textContent = `
+            .stat-value small {
+                font-size: 11px;
+                color: #94a3b8;
+                font-weight: normal;
+                display: block;
+                line-height: 1.1;
+                margin-top: 0;
+                margin-bottom: 4px;
+            }
+            #bestScore, #avgScore {
+                font-size: 20px;
+                line-height: 1.2;
+                display: flex;
+                flex-direction: column;
+                gap: 4px;
+            }
+            .score-divider {
+                height: 1px;
+                background-color: rgba(255, 255, 255, 0.1);
+                margin: 2px 0;
+                width: 100%;
+            }
+            .trend-arrow {
+                display: inline-block;
+                margin-left: 6px;
+                font-size: 14px;
+            }
+            .trend-arrow.improving {
+                color: #22c55e; /* Green for improvement */
+            }
+            .trend-arrow.worsening {
+                color: #ef4444; /* Red for getting worse */
+            }
+            .trend-arrow.neutral {
+                color: #94a3b8; /* Gray for neutral */
+            }
+        `;
+        document.head.appendChild(styleElement);
+    }
 }
 
 // Render rounds table
@@ -225,7 +411,7 @@ function renderRounds(rounds) {
     // Render the rounds when we have data
     roundsList.innerHTML = roundsArray.map((round) => `
         <div class="round-row" data-round-id="${round.id}">
-            <div class="date">${new Date(round.date).toLocaleDateString()}</div>
+            <div class="date">${formatDateCorrectly(round.date)}</div>
             <div class="course">${round.course}</div>
             <div class="score">${round.score}</div>
             <div class="notes">${round.notes || ''}</div>

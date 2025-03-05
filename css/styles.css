@@ -690,3 +690,12 @@ select:focus, input:focus, textarea:focus {
 .no-rounds {
   animation: fadeIn 0.6s ease-out 0.6s both;
 }
+
+.stat-value small {
+  font-size: 12px;
+  color: #94a3b8;
+  font-weight: normal;
+  display: block;
+  line-height: normal;
+  margin-top: 2px;
+}
