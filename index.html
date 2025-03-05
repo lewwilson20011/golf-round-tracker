@@ -248,15 +248,16 @@
 <script type="module" src="js/script.js"></script>
 <script type="module" src="js/chat-bot.js"></script>
 
-<!-- UPDATED Dropdown Menu JavaScript -->
 <script type="module">
+import { signOut } from './js/supabase.js';
+
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Setting up sign out functionality');
-
+    
     // Simple menu toggle function
     function toggleMenu(event) {
         event.stopPropagation();
-
+        
         var dropdown = document.getElementById("menuDropdown");
         if (dropdown.style.display === "block") {
             dropdown.style.display = "none";
@@ -264,42 +265,33 @@ document.addEventListener('DOMContentLoaded', function() {
             dropdown.style.display = "block";
         }
     }
-
+    
     // Add click handler to menu buttons
     var menuButtons = document.querySelectorAll('.menu-button');
     menuButtons.forEach(function(btn) {
         btn.addEventListener('click', toggleMenu);
     });
-
+    
     // Close dropdown when clicking outside
     document.addEventListener('click', function(event) {
         var dropdown = document.getElementById("menuDropdown");
         var isClickInsideMenu = event.target.closest('.menu-dropdown');
         var isMenuToggleClick = event.target.closest('.menu-button') || event.target.closest('.fa-bars');
-
+        
         if (dropdown && dropdown.style.display === "block" && !isClickInsideMenu && !isMenuToggleClick) {
             dropdown.style.display = "none";
         }
     });
-
+    
     // Direct sign out handler
     var signOutLink = document.getElementById('signOutLink');
     if (signOutLink) {
-        signOutLink.addEventListener('click', function(e) {
+        signOutLink.addEventListener('click', async function(e) {
             e.preventDefault();
             console.log('Sign out link clicked');
-
-            // Clear localStorage directly
-            for (let i = localStorage.length - 1; i >= 0; i--) {
-                const key = localStorage.key(i);
-                if (key && key.includes('supabase')) {
-                    localStorage.removeItem(key);
-                    console.log('Removed:', key);
-                }
-            }
-
-            // Force redirect to login page
-            window.location.href = 'login.html';
+            
+            // Use the imported signOut function
+            await signOut();
         });
     }
 });

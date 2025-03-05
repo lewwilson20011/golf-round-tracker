@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Signing Out...</title>
+    <script>
+        // This page is used to clear any remaining session data
+        // Clear all localStorage
+        localStorage.clear();
+
+        // Clear all sessionStorage
+        sessionStorage.clear();
+
+        // Attempt to clear all cookies
+        document.cookie.split(";").forEach(function(c) {
+            document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+        });
+
+        // Redirect to login page
+        window.location.replace('login.html');
+    </script>
+</head>
+<body>
+    <p>Signing out...</p>
+</body>
+</html>
