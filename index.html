@@ -115,15 +115,15 @@
         </div>
         <div class="form-group">
           <label>Course</label>
-          <input 
-            type="text" 
-            id="courseSelect" 
-            list="courseList" 
+          <input
+            type="text"
+            id="courseSelect"
+            list="courseList"
             placeholder="Start typing to search courses..."
             required
           >
-          <datalist id="courseList"> 
-            <!-- Will be populated from database --> 
+          <datalist id="courseList">
+            <!-- Will be populated from database -->
           </datalist>
         </div>
         <div class="form-group">
@@ -208,7 +208,7 @@
     </div>
 </footer>
 <!-- FOOTER END -->
-	
+
 <!-- Chatbot container -->
 <div class="chat-container">
     <div class="chat-box">
@@ -241,126 +241,68 @@
     </a>
 </div>
 
-<!-- Supabase CDN script MUST be loaded first --> 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script> 
-<!-- Update path to point to supabase.js in js folder --> 
+<!-- Supabase CDN script MUST be loaded first -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- Load main app scripts -->
 <script type="module" src="js/supabase.js"></script>
 <script type="module" src="js/script.js"></script>
 <script type="module" src="js/chat-bot.js"></script>
 
-<!-- Dropdown Menu JavaScript -->
+<!-- UPDATED Dropdown Menu JavaScript -->
 <script type="module">
-import { supabase } from './js/supabase.js';
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Setting up sign out functionality');
 
-// Simple menu toggle function
-function toggleMenu(event) {
-    // Prevent event bubbling
-    if (event) {
+    // Simple menu toggle function
+    function toggleMenu(event) {
         event.stopPropagation();
-    }
-    
-    // Get dropdown element
-    var dropdown = document.getElementById("menuDropdown");
-    
-    // Toggle display
-    if (dropdown.style.display === "block") {
-        dropdown.style.display = "none";
-    } else {
-        dropdown.style.display = "block";
-        
-        // Calculate position based on screen size
-        if (window.innerWidth <= 768) {
-            // Mobile layout
-            dropdown.style.top = '135px'; // Fixed position below header
-            dropdown.style.right = '15px'; // From right edge
+
+        var dropdown = document.getElementById("menuDropdown");
+        if (dropdown.style.display === "block") {
+            dropdown.style.display = "none";
         } else {
-            // Desktop layout
-            var menuBtn = document.querySelector('.menu-button');
-            if (menuBtn) {
-                var rect = menuBtn.getBoundingClientRect();
-                dropdown.style.top = (rect.bottom + 10) + 'px';
-                dropdown.style.right = '15px';
-            }
+            dropdown.style.display = "block";
         }
     }
-}
 
-// Close dropdown when clicking outside
-document.addEventListener('click', function(event) {
-    var dropdown = document.getElementById("menuDropdown");
-    var isClickInsideMenu = event.target.closest('.menu-dropdown');
-    var isMenuToggleClick = event.target.closest('.menu-button') || event.target.closest('.fa-bars');
-    
-    if (dropdown && dropdown.style.display === "block" && !isClickInsideMenu && !isMenuToggleClick) {
-        dropdown.style.display = "none";
-    }
-});
-
-// Add click handler to menu buttons
-document.addEventListener('DOMContentLoaded', function() {
+    // Add click handler to menu buttons
     var menuButtons = document.querySelectorAll('.menu-button');
     menuButtons.forEach(function(btn) {
         btn.addEventListener('click', toggleMenu);
     });
 
-    // Sign Out functionality
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(event) {
+        var dropdown = document.getElementById("menuDropdown");
+        var isClickInsideMenu = event.target.closest('.menu-dropdown');
+        var isMenuToggleClick = event.target.closest('.menu-button') || event.target.closest('.fa-bars');
+
+        if (dropdown && dropdown.style.display === "block" && !isClickInsideMenu && !isMenuToggleClick) {
+            dropdown.style.display = "none";
+        }
+    });
+
+    // Direct sign out handler
     var signOutLink = document.getElementById('signOutLink');
     if (signOutLink) {
-        signOutLink.addEventListener('click', async function(e) {
+        signOutLink.addEventListener('click', function(e) {
             e.preventDefault();
-            try {
-                const { error } = await supabase.auth.signOut();
-                if (error) throw error;
-                window.location.href = 'login.html';
-            } catch (error) {
-                console.error('Sign out error:', error);
-                alert(`Error signing out: ${error.message}`);
+            console.log('Sign out link clicked');
+
+            // Clear localStorage directly
+            for (let i = localStorage.length - 1; i >= 0; i--) {
+                const key = localStorage.key(i);
+                if (key && key.includes('supabase')) {
+                    localStorage.removeItem(key);
+                    console.log('Removed:', key);
+                }
             }
+
+            // Force redirect to login page
+            window.location.href = 'login.html';
         });
     }
 });
-</script>
-
-<!-- Additional dropdown debugging scripts -->
-<script>
-    // Direct dropdown fix
-    document.addEventListener('DOMContentLoaded', function() {
-        setTimeout(function() {
-            console.log('Applying direct dropdown fix');
-            const menuBtn = document.querySelector('.menu-button');
-            
-            if (menuBtn) {
-                menuBtn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    const dropdown = document.querySelector('.menu-dropdown');
-                    
-                    if (dropdown) {
-                        // Toggle display directly
-                        if (dropdown.style.display === 'block') {
-                            dropdown.style.display = 'none';
-                        } else {
-                            dropdown.style.display = 'block';
-                        }
-                        console.log('Menu button clicked, dropdown display:', dropdown.style.display);
-                    } else {
-                        console.error('Dropdown element not found');
-                    }
-                });
-                
-                // Close when clicking outside
-                document.addEventListener('click', function(e) {
-                    const dropdown = document.querySelector('.menu-dropdown');
-                    if (dropdown && dropdown.style.display === 'block') {
-                        if (!dropdown.contains(e.target) && !menuBtn.contains(e.target)) {
-                            dropdown.style.display = 'none';
-                        }
-                    }
-                });
-            } else {
-                console.error('Menu button not found for direct fix');
-            }
-        }, 1000);
-    });
 </script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 // Import the supabase client
-import { supabase } from './supabase.js';
+import { supabase, signOut } from './supabase.js';
 
 // Initialize header and footer
 async function initializeHeaderFooter() {
@@ -14,22 +14,22 @@ async function initializeHeaderFooter() {
 
         // Check if user is authenticated
         const { data: { user }, error } = await supabase.auth.getUser();
-        
+
         if (error) {
             console.error('Auth error:', error);
             renderUnauthenticatedHeader();
             return;
         }
-        
+
         if (user) {
             renderAuthenticatedHeader(user);
         } else {
             renderUnauthenticatedHeader();
         }
-        
+
         // Setup menu functionality
         setupHeaderMenu();
-        
+
     } catch (error) {
         console.error('Header initialization error:', error);
         renderUnauthenticatedHeader();
@@ -40,10 +40,10 @@ async function initializeHeaderFooter() {
 function renderAuthenticatedHeader(user) {
     const userSection = document.getElementById('userSection');
     if (!userSection) return;
-    
+
     const initials = user.user_metadata?.initials || user.email?.substring(0, 2).toUpperCase();
     const fullName = user.user_metadata?.full_name || user.email;
-    
+
     userSection.innerHTML = `
         <div class="user-avatar" id="userInitials">${initials}</div>
         <div class="user-info">
@@ -66,20 +66,14 @@ function renderAuthenticatedHeader(user) {
             </a>
         </div>
     `;
-    
-    // Add sign out functionality
+
+    // Add sign out functionality - UPDATED
     const signOutButton = document.getElementById('signOut');
     if (signOutButton) {
         signOutButton.addEventListener('click', async (e) => {
             e.preventDefault();
-            try {
-                const { error } = await supabase.auth.signOut();
-                if (error) throw error;
-                window.location.href = 'login.html';
-            } catch (error) {
-                console.error('Sign out error:', error);
-                alert(`Error signing out: ${error.message}`);
-            }
+            console.log('Sign out button clicked from header');
+            await signOut();
         });
     }
 }
@@ -88,7 +82,7 @@ function renderAuthenticatedHeader(user) {
 function renderUnauthenticatedHeader() {
     const userSection = document.getElementById('userSection');
     if (!userSection) return;
-    
+
     userSection.innerHTML = `
         <div class="auth-links">
             <a href="login.html" class="auth-link">Login</a>
@@ -101,17 +95,17 @@ function renderUnauthenticatedHeader() {
 function setupHeaderMenu() {
     const menuButton = document.querySelector('.menu-button');
     const menuDropdown = document.querySelector('.menu-dropdown');
-    
+
     if (menuButton && menuDropdown) {
         console.log('Menu button and dropdown found, setting up event listeners');
-        
+
         // Toggle menu when button is clicked
         menuButton.addEventListener('click', (e) => {
             e.stopPropagation();
             console.log('Menu button clicked');
-            
+
             menuDropdown.classList.toggle('show');
-            
+
             // Force display with inline style for extra reliability
             if (menuDropdown.classList.contains('show')) {
                 menuDropdown.style.display = 'block';
@@ -121,7 +115,7 @@ function setupHeaderMenu() {
                 console.log('Menu is now hidden');
             }
         });
-        
+
         // Close menu when clicking outside
         document.addEventListener('click', (e) => {
             if (menuDropdown.classList.contains('show')) {
@@ -132,7 +126,7 @@ function setupHeaderMenu() {
                 }
             }
         });
-        
+
         // Close menu when pressing Escape key
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && menuDropdown.classList.contains('show')) {
@@ -142,9 +136,9 @@ function setupHeaderMenu() {
             }
         });
     } else {
-        console.error('Menu dropdown elements not found:', { 
-            menuButton: menuButton ? 'Found' : 'Not found', 
-            menuDropdown: menuDropdown ? 'Found' : 'Not found' 
+        console.error('Menu dropdown elements not found:', {
+            menuButton: menuButton ? 'Found' : 'Not found',
+            menuDropdown: menuDropdown ? 'Found' : 'Not found'
         });
     }
 }
@@ -153,11 +147,11 @@ function setupHeaderMenu() {
 function positionDropdownMenu() {
     const menuBtn = document.querySelector('.menu-button');
     const dropdown = document.getElementById('menuDropdown');
-    
+
     if (menuBtn && dropdown) {
         // Set dropdown position to be directly under the hamburger icon
         const isDesktop = window.innerWidth > 768;
-        
+
         if (isDesktop) {
             dropdown.style.top = '45px';
             dropdown.style.right = '0';
@@ -165,13 +159,13 @@ function positionDropdownMenu() {
             dropdown.style.top = '40px';
             dropdown.style.right = '0';
         }
-        
+
         // Ensure the dropdown has a positioning context
         const userSection = document.querySelector('.user-section');
         if (userSection) {
             userSection.style.position = 'relative';
         }
-        
+
         // Ensure z-index is high
         dropdown.style.zIndex = '9999';
     }
@@ -181,22 +175,22 @@ function positionDropdownMenu() {
 document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM loaded, initializing header-footer');
     initializeHeaderFooter();
-    
+
     // Additional direct dropdown fix with better positioning
     setTimeout(() => {
         const menuBtn = document.querySelector('.menu-button');
         const menuDropdown = document.querySelector('.menu-dropdown');
-        
+
         if (menuBtn && menuDropdown) {
             console.log('Adding additional direct dropdown handler');
-            
+
             // Run positioning function once
             positionDropdownMenu();
-            
+
             menuBtn.addEventListener('click', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
-                
+
                 // Toggle directly with style property
                 if (menuDropdown.style.display === 'block') {
                     menuDropdown.style.display = 'none';
@@ -204,14 +198,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else {
                     menuDropdown.style.display = 'block';
                     menuDropdown.classList.add('show');
-                    
+
                     // Position the dropdown properly when shown
                     setTimeout(positionDropdownMenu, 10);
                 }
-                
+
                 console.log('Direct dropdown toggle, current display:', menuDropdown.style.display);
             });
-            
+
             // Also run positioning when window is resized
             window.addEventListener('resize', positionDropdownMenu);
         }

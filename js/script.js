@@ -1,11 +1,15 @@
-import { supabase } from './supabase.js';
+import { supabase, signOut } from './supabase.js';
 
 let currentUser = null;
 
 // Enhanced error handling function
 function handleError(context, error) {
     console.error(`Error in ${context}:`, error);
-    alert(`Error in ${context}: ${error.message || 'Unknown error'}`);
+
+    // Only show alerts for non-auth errors
+    if (!context.includes('initialize') && !context.includes('auth')) {
+        alert(`Error in ${context}: ${error.message || 'Unknown error'}`);
+    }
 }
 
 // Make delete and edit functions globally available
@@ -14,7 +18,7 @@ window.deleteRound = async (id) => {
         try {
             // Get current user
             const { data: { user }, error: userError } = await supabase.auth.getUser();
-            
+
             if (userError) throw userError;
             if (!user) throw new Error('No authenticated user');
 
@@ -41,7 +45,7 @@ window.editRound = async (id) => {
     try {
         // Remove previous editing highlights
         document.querySelectorAll('.round-row').forEach(row => row.classList.remove('editing'));
-        
+
         // Get the round data
         const { data: round, error } = await supabase
             .from('rounds')
@@ -62,16 +66,16 @@ window.editRound = async (id) => {
         // Add the round ID to the form for updating
         const form = document.querySelector('form');
         form.dataset.editId = id;
-        
+
         // Update UI for edit mode
         setEditMode(true);
-        
+
         // Highlight the round being edited
         const roundRow = document.querySelector(`[data-round-id="${id}"]`);
         if (roundRow) {
             roundRow.classList.add('editing');
         }
-        
+
         // Scroll to form
         form.scrollIntoView({ behavior: 'smooth' });
     } catch (error) {
@@ -90,7 +94,7 @@ async function loadCourses() {
         if (error) throw error;
 
         const courseList = document.getElementById('courseList');
-        courseList.innerHTML = courses.map(course => 
+        courseList.innerHTML = courses.map(course =>
             `<option value="${course.name}"></option>`
         ).join('');
     } catch (error) {
@@ -106,33 +110,34 @@ async function initializeApp() {
         const authResult = await supabase.auth.getUser();
         console.log("Auth result:", authResult);
         const { data: { user }, error: authError } = authResult;
-        
+
         if (authError) {
             console.error("Auth error:", authError);
-            throw authError;
+            // Silently redirect to login instead of showing an error
+            window.location.href = 'login.html';
+            return;
         }
-        
+
         if (!user) {
             console.log("No user found, redirecting to login");
             window.location.href = 'login.html';
             return;
         }
-        
+
         console.log("User authenticated:", user);
         currentUser = user;
         updateUserInterface();
-        
+
         console.log("Loading courses...");
         await loadCourses();
-        
+
         console.log("Loading rounds...");
         await loadRounds();
-        
+
         console.log("App initialization complete");
     } catch (error) {
         console.error("Detailed initialization error:", error);
-        handleError('initializeApp', error);
-        // Redirect to login in case of any authentication issues
+        // Don't show error alert, just redirect
         window.location.href = 'login.html';
     }
 }
@@ -140,9 +145,9 @@ async function initializeApp() {
 // Update UI with user info
 function updateUserInterface() {
     if (currentUser) {
-        document.querySelector('.user-avatar').textContent = 
+        document.querySelector('.user-avatar').textContent =
             currentUser.user_metadata.initials || currentUser.email.substring(0, 2).toUpperCase();
-        document.querySelector('.user-name').textContent = 
+        document.querySelector('.user-name').textContent =
             currentUser.user_metadata.full_name || currentUser.email;
         document.querySelector('.user-email').textContent = currentUser.email;
     }
@@ -179,10 +184,10 @@ async function loadRounds() {
 function updateStats(rounds) {
     // Make sure rounds is an array and handle empty state
     const roundsArray = Array.isArray(rounds) ? rounds : [];
-    
+
     // Display total count (will be 0 if empty)
     document.getElementById('totalRounds').textContent = roundsArray.length;
-    
+
     if (roundsArray.length === 0) {
         // No rounds, show placeholder values
         document.getElementById('avgScore').textContent = '-';
@@ -193,7 +198,7 @@ function updateStats(rounds) {
     // Calculate stats when we have rounds
     const avgScore = Math.round(roundsArray.reduce((acc, round) => acc + round.score, 0) / roundsArray.length);
     const bestScore = Math.min(...roundsArray.map(round => round.score));
-    
+
     document.getElementById('avgScore').textContent = avgScore;
     document.getElementById('bestScore').textContent = bestScore;
 }
@@ -201,10 +206,10 @@ function updateStats(rounds) {
 // Render rounds table
 function renderRounds(rounds) {
     const roundsList = document.getElementById('roundsList');
-    
+
     // Always ensure we're working with an array
     const roundsArray = Array.isArray(rounds) ? rounds : [];
-    
+
     if (roundsArray.length === 0) {
         // Render the attractive empty state
         roundsList.innerHTML = `
@@ -272,7 +277,7 @@ function resetForm() {
 // Form submission handler
 async function handleFormSubmit(e) {
     e.preventDefault();
-    
+
     // Get form values
     const date = document.getElementById('roundDate').value;
     const course = document.getElementById('courseSelect').value;
@@ -280,22 +285,24 @@ async function handleFormSubmit(e) {
     const notes = document.getElementById('notes').value;
     const holes = document.getElementById('holesSelect').value;
     const editId = document.querySelector('form').dataset.editId;
-    
+
     try {
         // Ensure user is authenticated
         const { data: { user }, error: userError } = await supabase.auth.getUser();
-        
+
         if (userError) {
             console.error('User authentication error:', userError);
-            throw userError;
+            window.location.href = 'login.html';
+            return;
         }
         if (!user) {
             console.error('No authenticated user');
-            throw new Error('No authenticated user');
+            window.location.href = 'login.html';
+            return;
         }
 
         let result;
-        
+
         if (editId) {
             // Update existing round
             console.log('Attempting to update round with details:', {
@@ -395,19 +402,13 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('Menu elements not found!');
     }
 
-    // Sign Out functionality
+    // Sign Out functionality - UPDATED
     const signOutButton = document.getElementById('signOut');
     if (signOutButton) {
         signOutButton.addEventListener('click', async (e) => {
             e.preventDefault();
-            try {
-                const { error } = await supabase.auth.signOut();
-                if (error) throw error;
-                window.location.href = 'login.html';
-            } catch (error) {
-                console.error('Sign out error:', error);
-                alert(`Error signing out: ${error.message}`);
-            }
+            console.log('Sign out button clicked');
+            await signOut();
         });
     }
 

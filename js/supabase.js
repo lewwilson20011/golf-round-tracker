@@ -5,15 +5,33 @@ const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
 // Create Supabase client using the global Supabase object from CDN
 export const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
-// Helper function to handle sign-out across the application
+// Enhanced sign out function that works more reliably
 export async function signOut() {
     try {
+        // First manually clear any tokens in localStorage
+        localStorage.removeItem('supabase.auth.token');
+
+        // Try the official signOut method
         const { error } = await supabase.auth.signOut();
-        if (error) throw error;
+
+        if (error) {
+            console.error('Sign out error:', error);
+        }
+
+        // Clear any additional storage items that might be keeping the session alive
+        for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            if (key && key.includes('supabase')) {
+                localStorage.removeItem(key);
+            }
+        }
+
+        // Force redirect to login page regardless of errors
         window.location.href = 'login.html';
     } catch (error) {
         console.error('Sign out error:', error);
-        alert(`Error signing out: ${error.message}`);
+        // Force redirect even if there's an error
+        window.location.href = 'login.html';
     }
 }
 
@@ -21,12 +39,13 @@ export async function signOut() {
 export async function checkAuthentication() {
     try {
         const { data: { user }, error } = await supabase.auth.getUser();
-        
+
         if (error) {
             console.error('Authentication check error:', error);
+            // Don't throw or display errors, just return false silently
             return false;
         }
-        
+
         return !!user;
     } catch (error) {
         console.error('Authentication error:', error);
