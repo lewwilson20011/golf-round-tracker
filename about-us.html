@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>About Us - Round Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Lora:wght@400;500;600&family=Hind+Madurai:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<link href="css/styles.css" rel="stylesheet">
+<link href="css/header-footer.css" rel="stylesheet">
+<link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+<link rel="apple-touch-icon" sizes="60x60" href="icons/apple-icon-60x60.png">
+<link rel="apple-touch-icon" sizes="72x72" href="icons/apple-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="76x76" href="icons/apple-icon-76x76.png">
+<link rel="apple-touch-icon" sizes="114x114" href="icons/apple-icon-114x114.png">
+<link rel="apple-touch-icon" sizes="120x120" href="icons/apple-icon-120x120.png">
+<link rel="apple-touch-icon" sizes="144x144" href="icons/apple-icon-144x144.png">
+<link rel="apple-touch-icon" sizes="152x152" href="icons/apple-icon-152x152.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icons/apple-icon-180x180.png">
+<link rel="icon" type="image/png" sizes="192x192"  href="icons/android-icon-192x192.png">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="icons/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
+<link rel="manifest" href="icons/manifest.json">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="icons/ms-icon-144x144.png">
+<meta name="theme-color" content="#ffffff">
+
+<style>
+/* About Us page specific styles */
+.about-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px var(--spacing-base);
+}
+
+.about-header {
+    text-align: center;
+    margin-bottom: 50px;
+    animation: fadeIn 0.8s ease-out;
+}
+
+.about-header h1 {
+    font-size: 36px;
+    color: white;
+    margin-bottom: 16px;
+}
+
+.about-header p {
+    font-size: 18px;
+    color: black;
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+.about-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-bottom: 60px;
+}
+
+.about-card {
+    background: var(--card-bg);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+    padding: 30px;
+    animation: fadeIn 0.6s ease-out;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.about-card:nth-child(1) {
+    animation-delay: 0.2s;
+}
+
+.about-card:nth-child(2) {
+    animation-delay: 0.3s;
+}
+
+.about-card:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+.card-icon {
+    font-size: 36px;
+    color: var(--primary-green);
+    margin-bottom: 20px;
+}
+
+.about-card h2 {
+    font-size: 22px;
+    margin-bottom: 16px;
+    color: white;
+}
+
+.about-card p {
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 20px;
+    flex-grow: 1;
+}
+
+.about-card ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.about-card li {
+    margin-bottom: 12px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: flex-start;
+}
+
+.about-card li i {
+    color: var(--primary-green);
+    margin-right: 10px;
+    margin-top: 5px;
+}
+
+.team-section {
+    margin-bottom: 60px;
+    animation: fadeIn 0.8s ease-out 0.5s both;
+}
+
+.team-section h2 {
+    text-align: center;
+    font-size: 28px;
+    color: white;
+    margin-bottom: 40px;
+}
+
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+}
+
+.team-member {
+    text-align: center;
+}
+
+.team-photo {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin: 0 auto 20px;
+    background-color: #3b82f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 48px;
+}
+
+.team-name {
+    font-size: 20px;
+    color: white;
+    margin-bottom: 8px;
+}
+
+.team-role {
+    font-size: 16px;
+    color: var(--primary-green);
+    margin-bottom: 16px;
+}
+
+.team-bio {
+    color: var(--text-muted);
+    line-height: 1.5;
+}
+
+.testimonials {
+    margin-bottom: 60px;
+    animation: fadeIn 0.8s ease-out 0.6s both;
+}
+
+.testimonials h2 {
+    text-align: center;
+    font-size: 28px;
+    color: white;
+    margin-bottom: 40px;
+}
+
+.testimonial-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.testimonial {
+    background: var(--card-bg);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+    padding: 30px;
+    height: 100%;
+}
+
+.testimonial-text {
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.testimonial-text::before {
+    content: """;
+    font-size: 60px;
+    font-family: Georgia, serif;
+    color: var(--primary-green);
+    opacity: 0.3;
+    position: absolute;
+    top: -20px;
+    left: -10px;
+}
+
+.testimonial-author {
+    display: flex;
+    align-items: center;
+}
+
+.author-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 15px;
+    background-color: #3b82f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 18px;
+}
+
+.author-info h4 {
+    color: white;
+    margin-bottom: 5px;
+}
+
+.author-info p {
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+.cta-section {
+    background: var(--card-bg);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+    padding: 50px 30px;
+    text-align: center;
+    margin-bottom: 60px;
+    animation: fadeIn 0.8s ease-out 0.7s both;
+}
+
+.cta-section h2 {
+    font-size: 28px;
+    color: white;
+    margin-bottom: 20px;
+}
+
+.cta-section p {
+    color: var(--text-muted);
+    margin-bottom: 30px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+}
+
+.cta-button {
+    display: inline-block;
+    background: var(--primary-green);
+    color: white;
+    padding: 12px 30px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.cta-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(34, 197, 94, 0.2);
+}
+
+/* Mobile Responsive Adjustments */
+@media (max-width: 768px) {
+    .about-header h1 {
+        font-size: 28px;
+    }
+    
+    .about-header p {
+        font-size: 16px;
+    }
+    
+    .about-card {
+        padding: 20px;
+    }
+    
+    .team-photo {
+        width: 120px;
+        height: 120px;
+        font-size: 40px;
+    }
+    
+    .cta-section {
+        padding: 30px 20px;
+    }
+}
+
+/* Dropdown Menu Styles */
+.menu-dropdown {
+    position: fixed;
+    background: #1e293b;
+    border-radius: 12px;
+    width: 220px;
+    display: none;
+    z-index: 99999; /* Extremely high z-index */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    /* Initial position, will be updated by JS */
+    top: 20px;
+    right: 20px;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    font-family: 'Hind Madurai', sans-serif;
+}
+
+.menu-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.menu-divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    margin: 8px 0;
+}
+</style>
+</head>
+<body>
+<!-- HEADER START -->
+<header class="site-header">
+    <div class="header">
+        <div class="logo-container">
+            <a href="index.html">
+                <img src="Images/SVG/Round-Tracker-Logo.svg" alt="Round Tracker" class="logo">
+            </a>
+        </div>
+        <div class="user-section" id="userSection">
+            <div class="user-avatar">LW</div>
+            <div class="user-info">
+                <div class="user-name">Lew Wilson</div>
+                <div class="user-email">lewwilson2001@gmail.com</div>
+            </div>
+            <button class="menu-button">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </div>
+</header>
+<!-- HEADER END -->
+
+<div class="about-container">
+    <!-- Hero Section -->
+    <div class="about-header">
+        <h1>About Round Tracker</h1>
+        <p>Your personal assistant for tracking and improving your golf game. We're passionate about helping golfers of all skill levels track their progress and achieve their goals.</p>
+    </div>
+    
+    <!-- Features Section -->
+    <div class="about-grid">
+        <div class="about-card">
+            <div class="card-icon">
+                <i class="fa-solid fa-chart-line"></i>
+            </div>
+            <h2>Our Mission</h2>
+            <p>Round Tracker was created with a simple mission: to help golfers track their performance and improve their game through data-driven insights.</p>
+            <p>We believe that tracking your golf rounds should be simple, intuitive, and actually help you become a better golfer.</p>
+        </div>
+        
+        <div class="about-card">
+            <div class="card-icon">
+                <i class="fa-solid fa-list-check"></i>
+            </div>
+            <h2>Key Features</h2>
+            <p>Round Tracker provides everything you need to analyze your golf performance:</p>
+            <ul>
+                <li><i class="fa-solid fa-check"></i> Track scores for 9 & 18 hole rounds</li>
+                <li><i class="fa-solid fa-check"></i> View performance statistics and trends</li>
+                <li><i class="fa-solid fa-check"></i> Record notes about your rounds</li>
+                <li><i class="fa-solid fa-check"></i> Access your data from any device</li>
+                <li><i class="fa-solid fa-check"></i> Track your best rounds</li>
+            </ul>
+        </div>
+        
+        <div class="about-card">
+            <div class="card-icon">
+                <i class="fa-solid fa-code"></i>
+            </div>
+            <h2>Technology</h2>
+            <p>Built with modern web technologies, Round Tracker offers a seamless experience across all devices.</p>
+            <ul>
+                <li><i class="fa-solid fa-check"></i> Secure user authentication</li>
+                <li><i class="fa-solid fa-check"></i> Cloud database storage</li>
+                <li><i class="fa-solid fa-check"></i> Responsive design for all devices</li>
+                <li><i class="fa-solid fa-check"></i> Fast, lightweight application</li>
+                <li><i class="fa-solid fa-check"></i> Regular updates and new features</li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- Team Section -->
+<!--
+    <div class="team-section">
+        <h2>Meet Our Team</h2>
+        <div class="team-grid">
+            <div class="team-member">
+                <div class="team-photo">LW</div>
+                <h3 class="team-name">Lew Wilson</h3>
+                <p class="team-role">Founder & Developer</p>
+                <p class="team-bio">Golf enthusiast and software developer with a passion for creating tools that help people improve their game.</p>
+            </div>
+            
+            <div class="team-member">
+                <div class="team-photo">JS</div>
+                <h3 class="team-name">John Smith</h3>
+                <p class="team-role">Golf Analytics Expert</p>
+                <p class="team-bio">Former golf pro with extensive experience in performance analytics and improvement strategies.</p>
+            </div>
+            
+            <div class="team-member">
+                <div class="team-photo">SD</div>
+                <h3 class="team-name">Sarah Davis</h3>
+                <p class="team-role">UX Designer</p>
+                <p class="team-bio">Specializes in creating intuitive user experiences that make tracking your golf game simple and enjoyable.</p>
+            </div>
+        </div>
+    </div>
+-->
+    
+    <!-- Testimonials -->
+<!--
+    <div class="testimonials">
+        <h2>What Our Users Say</h2>
+        <div class="testimonial-grid">
+            <div class="testimonial">
+                <p class="testimonial-text">Round Tracker has completely changed how I approach my golf game. Being able to see my trends over time has helped me focus my practice and drop my handicap by 3 strokes!</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">MB</div>
+                    <div class="author-info">
+                        <h4>Mike Baker</h4>
+                        <p>12 Handicap, Member since 2024</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="testimonial">
+                <p class="testimonial-text">I love how simple it is to log my rounds. The interface is clean and it takes me less than a minute to enter all my data after a round.</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">JT</div>
+                    <div class="author-info">
+                        <h4>Jennifer Taylor</h4>
+                        <p>8 Handicap, Member since 2024</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="testimonial">
+                <p class="testimonial-text">As a beginning golfer, Round Tracker has been invaluable in helping me see my improvement. The notes feature helps me remember what worked and what didn't.</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">RL</div>
+                    <div class="author-info">
+                        <h4>Robert Lee</h4>
+                        <p>28 Handicap, Member since 2025</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+-->
+    
+    <!-- Call to Action -->
+    <div class="cta-section">
+        <h2>Ready to Improve Your Golf Game?</h2>
+        <p>Join thousands of golfers who are using Round Tracker to analyze their performance and lower their scores.</p>
+        <a href="index.html" class="cta-button">Start Tracking Now</a>
+    </div>
+</div>
+
+<!-- FOOTER START -->
+<footer class="site-footer">
+    <div class="footer-content">
+        <div class="footer-logo">
+            <img src="Images/SVG/Round-Tracker-Logo.svg" alt="Round Tracker" class="footer-logo-img">
+        </div>
+        <div class="footer-links">
+            <div class="footer-column">
+                <h4>About</h4>
+                <ul>
+                    <li><a href="about-us.html">About Us</a></li>
+                    <li><a href="#">Our Mission</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Features</h4>
+                <ul>
+                    <li><a href="#">Score Tracking</a></li>
+                    <li><a href="#">Statistics</a></li>
+                    <li><a href="#">Course Database</a></li>
+                    <li><a href="#">Golf Tips</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Feedback</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2025 Round Tracker. All rights reserved.</p>
+        <div class="social-icons">
+            <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="#" aria-label="Twitter"><i class="fa-brands fa-twitter"></i></a>
+            <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        </div>
+    </div>
+</footer>
+<!-- FOOTER END -->
+
+<!-- DROPDOWN MENU HTML -->
+<div id="menuDropdown" class="menu-dropdown">
+    <a href="#" class="menu-item" id="signOutLink">
+        <i class="fa-solid fa-right-from-bracket"></i> Sign Out
+    </a>
+</div>
+
+<!-- Supabase CDN script MUST be loaded first --> 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script> 
+<!-- Load main app scripts --> 
+<script type="module" src="js/supabase.js"></script>
+
+<!-- DROPDOWN MENU SCRIPT -->
+<script type="module">
+import { signOut } from './js/supabase.js';
+
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Setting up sign out functionality');
+    
+    // Simple menu toggle function
+    function toggleMenu(event) {
+        event.stopPropagation();
+        
+        var dropdown = document.getElementById("menuDropdown");
+        if (dropdown.style.display === "block") {
+            dropdown.style.display = "none";
+        } else {
+            dropdown.style.display = "block";
+        }
+    }
+    
+    // Add click handler to menu buttons
+    var menuButtons = document.querySelectorAll('.menu-button');
+    menuButtons.forEach(function(btn) {
+        btn.addEventListener('click', toggleMenu);
+    });
+    
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(event) {
+        var dropdown = document.getElementById("menuDropdown");
+        var isClickInsideMenu = event.target.closest('.menu-dropdown');
+        var isMenuToggleClick = event.target.closest('.menu-button') || event.target.closest('.fa-bars');
+        
+        if (dropdown && dropdown.style.display === "block" && !isClickInsideMenu && !isMenuToggleClick) {
+            dropdown.style.display = "none";
+        }
+    });
+    
+    // Direct sign out handler
+    var signOutLink = document.getElementById('signOutLink');
+    if (signOutLink) {
+        signOutLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log('Sign out link clicked');
+            
+            // Clear localStorage directly
+            for (let i = localStorage.length - 1; i >= 0; i--) {
+                const key = localStorage.key(i);
+                if (key && key.includes('supabase')) {
+                    localStorage.removeItem(key);
+                    console.log('Removed:', key);
+                }
+            }
+            
+            // Force redirect to login page
+            window.location.href = 'login.html';
+        });
+    }
+});
+</script>
+</body>
+</html>
