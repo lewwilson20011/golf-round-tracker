@@ -59,6 +59,145 @@
     background: rgba(255, 255, 255, 0.1);
     margin: 8px 0;
 }
+	/* Introduction Section Styles */
+.intro-section {
+  background: linear-gradient(to bottom, rgba(26, 31, 46, 0.8), rgba(26, 31, 46, 0.95));
+  padding: 60px var(--spacing-base);
+  margin-bottom: 40px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.intro-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.intro-content h1 {
+  font-size: 36px;
+  color: white;
+  margin-bottom: 16px;
+  animation: fadeIn 0.8s ease-out;
+}
+
+.intro-description {
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.9);
+  max-width: 700px;
+  margin: 0 auto 40px;
+  line-height: 1.6;
+  animation: fadeIn 0.8s ease-out 0.2s both;
+}
+
+.intro-features {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+  margin-bottom: 40px;
+  animation: fadeIn 0.8s ease-out 0.4s both;
+}
+
+.intro-feature {
+  max-width: 320px;
+  display: flex;
+  align-items: flex-start;
+  text-align: left;
+  padding: 20px;
+  background: rgba(30, 41, 59, 0.5);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border-color);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.intro-feature:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.feature-icon {
+  font-size: 28px;
+  color: var(--primary-green);
+  margin-right: 15px;
+  margin-top: 3px;
+}
+
+.feature-text h3 {
+  font-size: 18px;
+  color: white;
+  margin-bottom: 8px;
+}
+
+.feature-text p {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.5;
+}
+
+.intro-cta {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 30px;
+  animation: fadeIn 0.8s ease-out 0.6s both;
+}
+
+.cta-button {
+  display: inline-block;
+  padding: 12px 28px;
+  background-color: var(--primary-green);
+  color: white;
+  font-weight: 600;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: all 0.3s;
+  font-family: var(--font-primary);
+  font-size: 16px;
+}
+
+.cta-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(34, 197, 94, 0.25);
+}
+
+.cta-button.secondary {
+  background-color: transparent;
+  border: 1px solid var(--primary-green);
+  color: var(--primary-green);
+}
+
+.cta-button.secondary:hover {
+  background-color: rgba(34, 197, 94, 0.1);
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .intro-section {
+    padding: 40px var(--spacing-base);
+  }
+
+  .intro-content h1 {
+    font-size: 28px;
+  }
+
+  .intro-description {
+    font-size: 16px;
+  }
+
+  .intro-features {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .intro-feature {
+    width: 100%;
+  }
+
+  .intro-cta {
+    flex-direction: column;
+    gap: 15px;
+  }
+}
 </style>
 </head>
 <body>
@@ -77,8 +216,43 @@
   </div>
 </header>
 <!-- HEADER END -->
+	
+<!-- Introduction Section -->
+<div class="intro-section">
+  <div class="intro-content">
+    <h1>Welcome to Round Tracker</h1>
+    <p class="intro-description">Your personal golf companion for tracking scores, analyzing performance, and improving your game.</p>
+    <div class="intro-features">
+      <div class="intro-feature">
+        <i class="fa-solid fa-chart-line feature-icon"></i>
+        <div class="feature-text">
+          <h3>Track Your Progress</h3>
+          <p>Log rounds, view trends, and watch your handicap improve over time.</p>
+        </div>
+      </div>
+      <div class="intro-feature">
+        <i class="fa-solid fa-golf-ball-tee feature-icon"></i>
+        <div class="feature-text">
+          <h3>Detailed Analytics</h3>
+          <p>Get insights on your strengths and weaknesses with our detailed performance metrics.</p>
+        </div>
+      </div>
+      <div class="intro-feature">
+        <i class="fa-solid fa-lightbulb feature-icon"></i>
+        <div class="feature-text">
+          <h3>Expert Tips</h3>
+          <p>Access professional advice to improve your game and lower your scores.</p>
+        </div>
+      </div>
+    </div>
+    <div class="intro-cta">
+      <a href="#main-container" class="cta-button" id="startTrackingBtn">Start Tracking</a>
+      <a href="golf-tips.html" class="cta-button secondary">View Golf Tips</a>
+    </div>
+  </div>
+</div>
 
-<div class="container">
+<div class="container" id="main-container">
   <div class="stats-grid">
     <div class="stat-card">
       <div class="stat-header"> <i class="fa-solid fa-bullseye icon"></i> Average Score </div>
@@ -154,45 +328,51 @@
 
 <!-- FOOTER START -->
 <footer class="site-footer">
-  <div class="footer-content">
-    <div class="footer-logo"> <img src="Images/SVG/Round-Tracker-Logo.svg" alt="Round Tracker" class="footer-logo-img"> </div>
-    <div class="footer-links">
-      <div class="footer-column">
-        <h4>About</h4>
-        <ul>
-          <li><a href="about-us.html">About Us</a></li>
-          <li><a href="privacy-policy.html">Privacy Policy</a></li>
-          <li><a href="terms-of-service.html">Terms of Service</a></li>
-        </ul>
-      </div>
-      <div class="footer-column">
-        <h4>Features</h4>
-        <ul>
-          <li><a href="#">Score Tracking</a></li>
-          <li><a href="#">Statistics</a></li>
-          <li><a href="#">Course Database</a></li>
-          <li><a href="#">Golf Tips</a></li>
-        </ul>
-      </div>
-      <div class="footer-column">
-        <h4>Support</h4>
-        <ul>
-          <li><a href="#">Help Center</a></li>
-          <li><a href="#">Contact Us</a></li>
-          <li><a href="#">FAQ</a></li>
-          <li><a href="#">Feedback</a></li>
-        </ul>
-      </div>
+    <div class="footer-content">
+        <div class="footer-logo">
+            <img src="Images/SVG/Round-Tracker-Logo.svg" alt="Round Tracker" class="footer-logo-img">
+        </div>
+        <div class="footer-links">
+            <div class="footer-column">
+                <h4>About</h4>
+                <ul>
+                    <li><a href="about-us.html">About Us</a></li>
+                    <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                    <li><a href="terms-of-service.html">Terms of Service</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Features</h4>
+                <ul>
+                    <li><a href="#">Statistics</a></li>
+                    <li><a href="#">Course Database</a></li>
+                    <li><a href="golf-tips.html">Golf Tips</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Feedback</a></li>
+                </ul>
+            </div>
+        </div>
     </div>
-  </div>
-  <div class="footer-bottom">
-    <p>&copy; 2025 Round Tracker. All rights reserved.</p>
-    <div class="social-icons"> <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a> <a href="#" aria-label="Twitter"><i class="fa-brands fa-twitter"></i></a> <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a> </div>
-  </div>
+    <div class="footer-bottom">
+        <p>&copy; 2025 Round Tracker. All rights reserved.</p>
+        <div class="social-icons">
+            <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="#" aria-label="Twitter"><i class="fa-brands fa-twitter"></i></a>
+            <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        </div>
+    </div>
 </footer>
 <!-- FOOTER END --> 
 
 <!-- Chatbot container -->
+<!--
 <div class="chat-container">
   <div class="chat-box">
     <div class="chat-header">
@@ -210,6 +390,7 @@
   </div>
   <div class="chat-button">?</div>
 </div>
+-->
 
 <!-- DROPDOWN MENU HTML -->
 <div id="menuDropdown" class="menu-dropdown"> <a href="#" class="menu-item" id="signOutLink"> <i class="fa-solid fa-right-from-bracket"></i> Sign Out </a> </div>
@@ -276,7 +457,22 @@ document.addEventListener('DOMContentLoaded', function() {
 <!-- Back to Top Script -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  // Get the button
+  // Start Tracking button smooth scroll
+  const startTrackingBtn = document.getElementById('startTrackingBtn');
+  if (startTrackingBtn) {
+    startTrackingBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      
+      const mainContainer = document.getElementById('main-container');
+      if (mainContainer) {
+        mainContainer.scrollIntoView({ 
+          behavior: 'smooth' 
+        });
+      }
+    });
+  }
+  
+  // Get the back to top button
   var backToTopBtn = document.getElementById("backToTopBtn");
   
   // When the user scrolls down 300px from the top of the document, show the button
