@@ -308,39 +308,49 @@ function updateStats(rounds) {
     const trend18 = calculateTrend(roundsArray, false);
     const trend9 = calculateTrend(roundsArray, true);
     
-    // Update the average score display with separate 9-hole and 18-hole averages
-    if (document.getElementById('avgScore')) {
-        let avgScoreHTML = '';
-        
-        // 18-hole average with trend arrow
-        avgScoreHTML += `18: ${avgEighteenHoleScore} ${getTrendArrowHTML(trend18)}`;
-        
-        // Divider between averages
-        avgScoreHTML += `<span class="score-divider"></span>`;
-        
-        // 9-hole average with trend arrow
-        avgScoreHTML += `9: ${avgNineHoleScore} ${getTrendArrowHTML(trend9)}`;
-        
-        document.getElementById('avgScore').innerHTML = avgScoreHTML;
+    // Update the average score display with separate 9-hole and 18-hole averages and round counts
+if (document.getElementById('avgScore')) {
+    let avgScoreHTML = '';
+    
+    // Get counts for each category
+    const nineHoleCount = nineHoleRounds.length;
+    const eighteenHoleCount = eighteenHoleRounds.length;
+    
+    // 18-hole average with count
+    avgScoreHTML += `18 Holes: ${avgEighteenHoleScore}`;
+    if (eighteenHoleCount > 0) {
+        avgScoreHTML += ` <small>(${eighteenHoleCount} rounds)</small>`;
     }
+    
+    // Use divider like in best score
+    avgScoreHTML += '<span class="score-divider"></span>';
+    
+    // 9-hole average with count
+    avgScoreHTML += `9 Holes: ${avgNineHoleScore}`;
+    if (nineHoleCount > 0) {
+        avgScoreHTML += ` <small>(${nineHoleCount} rounds)</small>`;
+    }
+    
+    document.getElementById('avgScore').innerHTML = avgScoreHTML;
+}
     
     // Update best score display to show both categories with course and date
     if (document.getElementById('bestScore')) {
         let bestScoreHTML = '';
         
         if (bestEighteenHoleScore !== '-') {
-            bestScoreHTML += `18: ${bestEighteenHoleScore}<br><small>${bestEighteenHoleCourse} (${bestEighteenHoleDate})</small>`;
+            bestScoreHTML += `18 Holes: ${bestEighteenHoleScore}<br><small>${bestEighteenHoleCourse} (${bestEighteenHoleDate})</small>`;
         } else {
-            bestScoreHTML += `18: -<br><small>No rounds played</small>`;
+            bestScoreHTML += `18 Holes: -<br><small>No rounds played</small>`;
         }
         
         // Use a smaller gap between the two sections
         bestScoreHTML += '<span class="score-divider"></span>';
         
         if (bestNineHoleScore !== '-') {
-            bestScoreHTML += `9: ${bestNineHoleScore}<br><small>${bestNineHoleCourse} (${bestNineHoleDate})</small>`;
+            bestScoreHTML += `9 Holes: ${bestNineHoleScore}<br><small>${bestNineHoleCourse} (${bestNineHoleDate})</small>`;
         } else {
-            bestScoreHTML += `9: -<br><small>No rounds played</small>`;
+            bestScoreHTML += `9 Holes: -<br><small>No rounds played</small>`;
         }
         
         document.getElementById('bestScore').innerHTML = bestScoreHTML;
@@ -358,7 +368,7 @@ function updateStats(rounds) {
                 margin-bottom: 4px;
             }
             #bestScore, #avgScore {
-                font-size: 20px;
+                font-size: 18px;
                 line-height: 1.2;
                 display: flex;
                 flex-direction: column;
