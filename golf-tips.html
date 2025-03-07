@@ -1,0 +1,1527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Golf Tips - Round Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Lora:wght@400;500;600&family=Hind+Madurai:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<link href="css/styles.css" rel="stylesheet">
+<link href="css/header-footer.css" rel="stylesheet">
+<link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+<link rel="apple-touch-icon" sizes="60x60" href="icons/apple-icon-60x60.png">
+<link rel="apple-touch-icon" sizes="72x72" href="icons/apple-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="76x76" href="icons/apple-icon-76x76.png">
+<link rel="apple-touch-icon" sizes="114x114" href="icons/apple-icon-114x114.png">
+<link rel="apple-touch-icon" sizes="120x120" href="icons/apple-icon-120x120.png">
+<link rel="apple-touch-icon" sizes="144x144" href="icons/apple-icon-144x144.png">
+<link rel="apple-touch-icon" sizes="152x152" href="icons/apple-icon-152x152.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icons/apple-icon-180x180.png">
+<link rel="icon" type="image/png" sizes="192x192"  href="icons/android-icon-192x192.png">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="icons/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
+<link rel="manifest" href="icons/manifest.json">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="icons/ms-icon-144x144.png">
+<meta name="theme-color" content="#ffffff">
+
+<style>
+/* Golf Tips page specific styles */
+.tips-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px var(--spacing-base);
+}
+
+.tips-header {
+    text-align: center;
+    margin-bottom: 40px;
+    animation: fadeIn 0.8s ease-out;
+}
+
+.tips-header h1 {
+    font-size: 36px;
+    color: black;
+    margin-bottom: 16px;
+}
+
+.tips-header p {
+    font-size: 18px;
+    color: black;
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+.tip-categories {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+.category-btn {
+    background: rgba(30, 41, 59, 0.8);
+    color: white;
+    border: 1px solid var(--border-color);
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: var(--font-primary);
+}
+
+.category-btn:hover {
+    background: var(--primary-green);
+    transform: translateY(-2px);
+}
+
+.category-btn.active {
+    background: var(--primary-green);
+}
+
+.tips-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.tip-card {
+    background: var(--card-bg);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+    animation: fadeIn 0.6s ease-out;
+    transition: transform 0.3s, box-shadow 0.3s;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.tip-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.tip-image {
+    height: 200px;
+    width: 100%;
+    background-color: #334155;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-green);
+    font-size: 60px;
+}
+
+.tip-content {
+    padding: 20px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.tip-category {
+    display: inline-block;
+    background: rgba(34, 197, 94, 0.2);
+    color: var(--primary-green);
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.tip-title {
+    font-size: 20px;
+    color: white;
+    margin-bottom: 10px;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.tip-description {
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.6;
+    margin-bottom: 20px;
+    flex-grow: 1;
+}
+
+.read-more {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.2s;
+    margin-top: auto;
+    text-align: center;
+}
+
+.read-more:hover {
+    background: var(--primary-green);
+}
+
+.tip-detail {
+    background: var(--card-bg);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+    padding: 30px;
+    margin-bottom: 40px;
+    animation: fadeIn 0.6s ease-out;
+    display: none;
+}
+
+.tip-detail.active {
+    display: block;
+}
+
+.tip-detail-header {
+    margin-bottom: 20px;
+}
+
+.tip-detail-title {
+    font-size: 28px;
+    color: white;
+    margin-bottom: 10px;
+}
+
+.tip-detail-category {
+    display: inline-block;
+    background: rgba(34, 197, 94, 0.2);
+    color: var(--primary-green);
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.tip-detail-content {
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.8;
+}
+
+.tip-detail-content h3 {
+    color: white;
+    font-size: 20px;
+    margin: 25px 0 15px;
+}
+
+.tip-detail-content p {
+    margin-bottom: 15px;
+}
+
+.tip-detail-content ul, .tip-detail-content ol {
+    margin-bottom: 20px;
+    padding-left: 20px;
+}
+
+.tip-detail-content li {
+    margin-bottom: 10px;
+}
+
+.tip-footer {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.back-to-tips {
+    display: inline-block;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.2s;
+}
+
+.back-to-tips:hover {
+    color: white;
+}
+
+.tip-nav {
+    display: flex;
+    gap: 10px;
+}
+
+.tip-nav-btn {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.tip-nav-btn:hover {
+    background: var(--primary-green);
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    .tips-container {
+        padding: 20px var(--spacing-base);
+    }
+    
+    .tips-header h1 {
+        font-size: 28px;
+    }
+    
+    .tips-header p {
+        font-size: 16px;
+    }
+    
+    .tips-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 20px;
+    }
+    
+    .tip-title {
+        font-size: 18px;
+    }
+    
+    .tip-detail-title {
+        font-size: 24px;
+    }
+    
+    .tip-detail {
+        padding: 20px;
+    }
+}
+
+/* Dropdown Menu Styles */
+.menu-dropdown {
+    position: fixed;
+    background: #1e293b;
+    border-radius: 12px;
+    width: 220px;
+    display: none;
+    z-index: 99999;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    top: 20px;
+    right: 20px;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    font-family: 'Hind Madurai', sans-serif;
+}
+
+.menu-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.menu-divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    margin: 8px 0;
+}
+</style>
+</head>
+<body>
+<!-- HEADER START -->
+<header class="site-header">
+    <div class="header">
+        <div class="logo-container">
+            <a href="index.html">
+                <img src="Images/SVG/Round-Tracker-Logo.svg" alt="Round Tracker" class="logo">
+            </a>
+        </div>
+        <div class="user-section" id="userSection">
+            <div class="user-avatar">LW</div>
+            <div class="user-info">
+                <div class="user-name">Lew Wilson</div>
+                <div class="user-email">lewwilson2001@gmail.com</div>
+            </div>
+            <button class="menu-button">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </div>
+</header>
+<!-- HEADER END -->
+
+<div class="tips-container">
+    <!-- Tips Header -->
+    <div class="tips-header">
+        <h1>Golf Tips &amp; Advice</h1>
+        <p>Improve your game with expert tips and advice from our golf professionals. Browse by category or search for specific tips.</p>
+    </div>
+    
+    <!-- Tip Categories -->
+    <div class="tip-categories">
+        <button class="category-btn active" data-category="all">All Tips</button>
+        <button class="category-btn" data-category="driving">Driving</button>
+        <button class="category-btn" data-category="iron-play">Iron Play</button>
+        <button class="category-btn" data-category="short-game">Short Game</button>
+        <button class="category-btn" data-category="putting">Putting</button>
+        <button class="category-btn" data-category="strategy">Course Strategy</button>
+        <button class="category-btn" data-category="mental">Mental Game</button>
+    </div>
+    
+    <!-- Tips Grid - Shows on initial load -->
+    <div class="tips-grid" id="tipsGrid">
+        <!-- Driving Tip -->
+        <div class="tip-card" data-category="driving">
+            <div class="tip-image">
+                <i class="fa-solid fa-golf-ball-tee"></i>
+            </div>
+            <div class="tip-content">
+                <span class="tip-category">Driving</span>
+                <h3 class="tip-title">Improve Your Driving Distance</h3>
+                <p class="tip-description">Learn techniques to add yards to your drives through proper setup, swing mechanics, and equipment optimization.</p>
+                <a href="#" class="read-more" data-tip="driving-distance">Read More</a>
+            </div>
+        </div>
+        
+        <!-- Iron Play Tip -->
+        <div class="tip-card" data-category="iron-play">
+            <div class="tip-image">
+                <i class="fa-solid fa-crosshairs"></i>
+            </div>
+            <div class="tip-content">
+                <span class="tip-category">Iron Play</span>
+                <h3 class="tip-title">Control Your Iron Shot Trajectory</h3>
+                <p class="tip-description">Master the ability to hit high, low, and shaped iron shots to navigate any course condition.</p>
+                <a href="#" class="read-more" data-tip="iron-trajectory">Read More</a>
+            </div>
+        </div>
+        
+        <!-- Short Game Tip -->
+        <div class="tip-card" data-category="short-game">
+            <div class="tip-image">
+                <i class="fa-solid fa-mountain"></i>
+            </div>
+            <div class="tip-content">
+                <span class="tip-category">Short Game</span>
+                <h3 class="tip-title">Master the Greenside Bunker Shot</h3>
+                <p class="tip-description">Transform bunkers from hazards to opportunities with these proven sand shot techniques.</p>
+                <a href="#" class="read-more" data-tip="bunker-play">Read More</a>
+            </div>
+        </div>
+        
+        <!-- Putting Tip -->
+        <div class="tip-card" data-category="putting">
+            <div class="tip-image">
+                <i class="fa-solid fa-bullseye"></i>
+            </div>
+            <div class="tip-content">
+                <span class="tip-category">Putting</span>
+                <h3 class="tip-title">3-Point Putting Routine</h3>
+                <p class="tip-description">Develop a consistent putting routine that improves your accuracy and confidence on the greens.</p>
+                <a href="#" class="read-more" data-tip="putting-routine">Read More</a>
+            </div>
+        </div>
+        
+        <!-- Course Strategy Tip -->
+        <div class="tip-card" data-category="strategy">
+            <div class="tip-image">
+                <i class="fa-solid fa-chess"></i>
+            </div>
+            <div class="tip-content">
+                <span class="tip-category">Course Strategy</span>
+                <h3 class="tip-title">Playing Smart Golf</h3>
+                <p class="tip-description">Learn how course management can help you lower your scores without changing your swing.</p>
+                <a href="#" class="read-more" data-tip="course-management">Read More</a>
+            </div>
+        </div>
+        
+        <!-- Mental Game Tip -->
+        <div class="tip-card" data-category="mental">
+            <div class="tip-image">
+                <i class="fa-solid fa-brain"></i>
+            </div>
+            <div class="tip-content">
+                <span class="tip-category">Mental Game</span>
+                <h3 class="tip-title">Pre-Shot Routine for Focus</h3>
+                <p class="tip-description">Develop a mental routine that helps you stay focused and confident before every shot.</p>
+                <a href="#" class="read-more" data-tip="pre-shot-routine">Read More</a>
+            </div>
+        </div>
+        
+        <!-- Weather Tip -->
+        <div class="tip-card" data-category="strategy">
+            <div class="tip-image">
+                <i class="fa-solid fa-cloud-rain"></i>
+            </div>
+            <div class="tip-content">
+                <span class="tip-category">Course Strategy</span>
+                <h3 class="tip-title">Playing in Windy Conditions</h3>
+                <p class="tip-description">Techniques and strategies for managing your game when the wind picks up.</p>
+                <a href="#" class="read-more" data-tip="wind-play">Read More</a>
+            </div>
+        </div>
+        
+        <!-- Fitness Tip -->
+        <div class="tip-card" data-category="mental">
+            <div class="tip-image">
+                <i class="fa-solid fa-dumbbell"></i>
+            </div>
+            <div class="tip-content">
+                <span class="tip-category">Mental Game</span>
+                <h3 class="tip-title">Golf-Specific Fitness Routine</h3>
+                <p class="tip-description">Exercises designed to improve flexibility, strength, and endurance for better golf performance.</p>
+                <a href="#" class="read-more" data-tip="golf-fitness">Read More</a>
+            </div>
+        </div>
+        
+        <!-- Practice Tip -->
+        <div class="tip-card" data-category="mental">
+            <div class="tip-image">
+                <i class="fa-solid fa-chart-line"></i>
+            </div>
+            <div class="tip-content">
+                <span class="tip-category">Mental Game</span>
+                <h3 class="tip-title">Effective Practice Strategies</h3>
+                <p class="tip-description">How to make the most of your practice time with purposeful drills and goals.</p>
+                <a href="#" class="read-more" data-tip="practice-strategies">Read More</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Tip Detail - Shows when a tip is clicked -->
+    <div class="tip-detail" id="tipDetail">
+		<!-- Sample driving distance tip content -->
+        <div class="tip-detail-content" id="driving-distance">
+            <div class="tip-detail-header">
+                <span class="tip-detail-category">Driving</span>
+                <h2 class="tip-detail-title">Improve Your Driving Distance</h2>
+            </div>
+            
+            <p>Adding distance to your drives is one of the most satisfying improvements you can make to your golf game. While it's tempting to just swing harder, that rarely works. Here's a comprehensive approach to gaining more yards off the tee:</p>
+            
+            <h3>Optimize Your Setup</h3>
+            <p>Before you even start your swing, make these adjustments to your setup:</p>
+            <ul>
+                <li><strong>Tee height:</strong> For modern drivers, the ball should be teed so that half of it sits above the crown of the driver when the club is soled. This promotes an upward angle of attack, which is crucial for maximum distance.</li>
+                <li><strong>Ball position:</strong> Place the ball just inside your front heel. This allows you to catch the ball on the upswing, generating more launch and less spin.</li>
+                <li><strong>Stance width:</strong> A slightly wider stance provides a stable base for generating power. Position your feet slightly wider than shoulder-width apart.</li>
+                <li><strong>Alignment:</strong> Align your shoulders parallel to your target line, or even slightly closed (pointed right of target for right-handed golfers) to promote an inside-to-out swing path.</li>
+            </ul>
+            
+            <h3>Swing Mechanics for Power</h3>
+            <p>These key swing elements will help you generate more clubhead speed:</p>
+            <ul>
+                <li><strong>Full shoulder turn:</strong> Make a complete shoulder turn in your backswing. Your back should face the target at the top of your backswing.</li>
+                <li><strong>Maintain width:</strong> Keep your arms extended in the backswing to create a wide arc, which generates more clubhead speed.</li>
+                <li><strong>Use the ground:</strong> Push against the ground with your back foot as you start your downswing to initiate the kinetic chain of power.</li>
+                <li><strong>Sequence is key:</strong> Start the downswing with your lower body, followed by your torso, arms, and finally the club. This proper sequence maximizes power transfer.</li>
+                <li><strong>Release fully:</strong> Allow your arms to extend and your wrists to release through impact. Don't try to steer or guide the ball.</li>
+            </ul>
+            
+            <h3>Equipment Considerations</h3>
+            <p>Modern equipment can help increase your driving distance:</p>
+            <ul>
+                <li><strong>Driver loft:</strong> Most amateurs benefit from more loft (10.5-12 degrees) than they think. More loft can actually increase distance by optimizing launch conditions.</li>
+                <li><strong>Shaft flex:</strong> Make sure your shaft flex matches your swing speed. Too stiff a shaft can rob you of distance.</li>
+                <li><strong>Ball selection:</strong> Play a ball that complements your swing speed. High swing speeds benefit from lower-spinning balls, while moderate speeds need balls with more lift.</li>
+            </ul>
+            
+            <h3>Practice Drills</h3>
+            <p>Try these drills to groove your new distance-producing swing:</p>
+            <ul>
+                <li><strong>Step-through drill:</strong> Practice swinging so aggressively that you have to take a step toward the target after impact. This trains your body to fully commit to the shot.</li>
+                <li><strong>Speed training:</strong> Make practice swings at maximum speed, focusing on maintaining balance. Gradually increase your comfort with higher speeds.</li>
+                <li><strong>Long drive setup:</strong> Practice with the ball teed extra high and positioned forward in your stance to exaggerate an upward hit.</li>
+            </ul>
+            
+            <p>Remember that consistency is more important than raw distance. Focus on finding the optimal balance between distance and accuracy for your game. A 250-yard drive in the fairway is always better than a 280-yard drive in the trees!</p>
+            
+            <div class="tip-footer">
+    <a href="#" class="back-to-tips">← Back to all tips</a>
+</div>
+        </div>
+        
+        <!-- Iron Play Tip Content -->
+        <div class="tip-detail-content" id="iron-trajectory" style="display: none;">
+            <div class="tip-detail-header">
+                <span class="tip-detail-category">Iron Play</span>
+                <h2 class="tip-detail-title">Control Your Iron Shot Trajectory</h2>
+            </div>
+            
+            <p>Being able to control the trajectory of your iron shots is a valuable skill that can help you navigate various course conditions, overcome obstacles, and attack different pin positions. Here's how you can master this aspect of iron play:</p>
+            
+            <h3>The Basics of Ball Flight Control</h3>
+            <p>Understanding these fundamentals will help you manipulate ball flight:</p>
+            <ul>
+                <li><strong>Ball position:</strong> Moving the ball forward in your stance promotes a higher shot, while moving it back creates a lower trajectory.</li>
+                <li><strong>Weight distribution:</strong> More weight on your front foot helps produce lower shots, while a more balanced or slightly rear-biased setup can help hit it higher.</li>
+                <li><strong>Club selection:</strong> Sometimes the simplest solution is to club up (for a lower shot) or club down (for a higher shot) and adjust your swing effort accordingly.</li>
+                <li><strong>Swing path and face angle:</strong> These factors control the shape (draw or fade) of your shots, which is another important aspect of trajectory control.</li>
+            </ul>
+            
+            <h3>How to Hit High Iron Shots</h3>
+            <p>Use these techniques when you need to carry hazards or stop the ball quickly on firm greens:</p>
+            <ul>
+                <li><strong>Ball position:</strong> Place the ball slightly forward in your stance (1-2 inches forward of center).</li>
+                <li><strong>Stance:</strong> Take a slightly wider stance for stability.</li>
+                <li><strong>Weight distribution:</strong> Keep your weight evenly distributed or slightly favoring your back foot at address.</li>
+                <li><strong>Hands:</strong> Position your hands even with or slightly behind the ball at address, avoiding excessive forward shaft lean.</li>
+                <li><strong>Swing thought:</strong> Focus on sweeping the ball and finishing with high hands. Swing slightly more around your body rather than steeply down.</li>
+                <li><strong>Club selection:</strong> Consider using a club with more loft and swinging easier for maximum height.</li>
+            </ul>
+            
+            <h3>How to Hit Low Iron Shots</h3>
+            <p>Master these adjustments for playing in windy conditions or when you need to keep the ball under obstacles:</p>
+            <ul>
+                <li><strong>Ball position:</strong> Place the ball back in your stance (1-2 inches behind center).</li>
+                <li><strong>Stance:</strong> Take a narrower stance than normal.</li>
+                <li><strong>Weight distribution:</strong> Start with 60-70% of your weight on your front foot.</li>
+                <li><strong>Hands:</strong> Position your hands ahead of the ball, creating more shaft lean.</li>
+                <li><strong>Swing adjustments:</strong> Make a three-quarter length backswing and focus on a controlled follow-through with the hands staying low.</li>
+                <li><strong>Grip down:</strong> Choke down an inch on the club for even more control.</li>
+            </ul>
+            
+            <h3>Shaping Shots: Draw and Fade</h3>
+            <p>In addition to height control, being able to curve the ball purposefully adds another dimension to your iron play:</p>
+            <ul>
+                <li><strong>For a draw</strong> (right-to-left for right-handed golfers):
+                    <ul>
+                        <li>Strengthen your grip slightly (rotate both hands clockwise on the club).</li>
+                        <li>Align your feet and shoulders slightly right of target.</li>
+                        <li>Focus on swinging more from inside-to-out through impact.</li>
+                        <li>Allow the clubface to release through impact.</li>
+                    </ul>
+                </li>
+                <li><strong>For a fade</strong> (left-to-right for right-handed golfers):
+                    <ul>
+                        <li>Weaken your grip slightly (rotate both hands counterclockwise on the club).</li>
+                        <li>Align your feet and shoulders slightly left of target.</li>
+                        <li>Keep the clubface slightly open to your swing path through impact.</li>
+                        <li>Feel like you're holding off the release slightly through impact.</li>
+                    </ul>
+                </li>
+            </ul>
+            
+            <h3>Practice Drills</h3>
+            <p>Try these drills to develop your trajectory control skills:</p>
+            <ul>
+                <li><strong>Window drill:</strong> Set up two alignment sticks—one on the ground along your target line and another propped up at an angle (creating a "window"). Practice hitting shots under or over the stick based on your trajectory goal.</li>
+                <li><strong>Nine-ball challenge:</strong> Hit nine consecutive shots with your 7-iron—three low, three medium, and three high trajectories. Focus on making the appropriate adjustments for each set.</li>
+                <li><strong>Landing zone practice:</strong> Set targets at different distances and try to land the ball in those zones using different trajectories with the same club.</li>
+            </ul>
+            
+            <p>Remember that trajectory control comes with practice and feel. Start by exaggerating the adjustments until you understand how they affect ball flight, then refine them for on-course situations. Having this skill in your arsenal will make you a more versatile and confident iron player.</p>
+            
+            <div class="tip-footer">
+    <a href="#" class="back-to-tips">← Back to all tips</a>
+</div>
+        </div>
+		<!-- Short Game Tip Content -->
+<div class="tip-detail-content" id="bunker-play" style="display: none;">
+    <div class="tip-detail-header">
+        <span class="tip-detail-category">Short Game</span>
+        <h2 class="tip-detail-title">Master the Greenside Bunker Shot</h2>
+    </div>
+    
+    <p>Many amateur golfers fear bunkers, but with proper technique, these hazards can actually provide some of the most predictable lies on the course. Here's how to turn sand traps into opportunities:</p>
+    
+    <h3>Understanding the Fundamentals</h3>
+    <p>The basic principle of bunker play is different from other golf shots:</p>
+    <ul>
+        <li><strong>Hit the sand, not the ball:</strong> In a standard greenside bunker shot, you intentionally hit the sand before the ball, using the sand to lift the ball out.</li>
+        <li><strong>Bounce is your friend:</strong> The bounce on your sand wedge is designed to prevent the club from digging too deep. Understanding how to use it is key to consistent bunker play.</li>
+        <li><strong>Open face for height:</strong> Opening the clubface increases the effective loft and bounce, helping the club glide through the sand.</li>
+    </ul>
+    
+    <h3>The Perfect Setup</h3>
+    <p>Position yourself for success with these setup adjustments:</p>
+    <ul>
+        <li><strong>Stance:</strong> Dig your feet into the sand for stability, creating a slightly lower body position.</li>
+        <li><strong>Ball position:</strong> Position the ball forward in your stance, just inside your front heel.</li>
+        <li><strong>Open stance:</strong> Align your feet left of the target (for right-handed golfers), which promotes an outside-to-in swing path.</li>
+        <li><strong>Clubface:</strong> Open the clubface before gripping the club. This increases both loft and bounce.</li>
+        <li><strong>Weight distribution:</strong> Favor your front foot (60% of weight) to steepen your angle of attack.</li>
+        <li><strong>Grip:</strong> Grip down slightly on the club for better control, and grip pressure should be light to moderate.</li>
+    </ul>
+    
+    <h3>The Bunker Swing</h3>
+    <p>Execute your bunker swing with these key elements:</p>
+    <ul>
+        <li><strong>Entry point:</strong> Aim to hit the sand about 1-2 inches behind the ball.</li>
+        <li><strong>Full wrist hinge:</strong> Create an early wrist hinge in the backswing to help the club enter the sand at a steeper angle.</li>
+        <li><strong>Full follow-through:</strong> Accelerate through the shot and finish with a full follow-through. Don't decelerate or quit on the shot.</li>
+        <li><strong>Focus point:</strong> Focus your eyes on a spot in the sand behind the ball, not on the ball itself.</li>
+        <li><strong>Swing path:</strong> Swing slightly out-to-in along your open stance line, not toward the target.</li>
+        <li><strong>Commitment:</strong> Commit to the shot with confidence and acceleration.</li>
+    </ul>
+    
+    <h3>Adjusting for Different Conditions</h3>
+    <p>Adapt your technique based on these sand conditions:</p>
+    <ul>
+        <li><strong>Soft, fluffy sand:</strong> Use more bounce by opening the clubface more. The club will slide easily, so you can hit 2 inches behind the ball.</li>
+        <li><strong>Hard, packed sand:</strong> Reduce the bounce by squaring the clubface slightly. Enter the sand closer to the ball (about 1 inch behind) and follow through with less height.</li>
+        <li><strong>Wet sand:</strong> Treat like hard sand but with a slightly more aggressive swing. The sand will offer more resistance.</li>
+    </ul>
+    
+    <h3>Advanced Bunker Shots</h3>
+    <p>Once you've mastered the basic technique, try these specialty shots:</p>
+    <ul>
+        <li><strong>High, soft bunker shot:</strong> Open the clubface even more, add more sand, and swing with greater speed to create maximum height and minimum roll.</li>
+        <li><strong>Low runner:</strong> Square the clubface, position the ball slightly back in your stance, and make a punch-like swing, hitting just a small amount of sand.</li>
+        <li><strong>Long bunker shot:</strong> Use a pitching wedge or 9-iron instead of a sand wedge, maintain your normal bunker technique but with less sand, and follow through toward the target.</li>
+        <li><strong>Buried lie:</strong> Square or even slightly close the clubface, play the ball back in your stance, and hit down steeply with a descending blow, with less follow-through.</li>
+    </ul>
+    
+    <h3>Practice Drills</h3>
+    <p>Improve your bunker play with these focused practice sessions:</p>
+    <ul>
+        <li><strong>Draw a line drill:</strong> Draw a line in the sand and practice hitting just behind it without touching the line.</li>
+        <li><strong>No-ball practice:</strong> Make practice swings focusing only on hitting a specific spot in the sand.</li>
+        <li><strong>Distance control drill:</strong> Place three balls in a line and practice hitting them different distances using the same swing length but varying the amount of sand you take.</li>
+    </ul>
+    
+    <p>Remember that successful bunker play requires commitment and confidence. Don't be afraid to hit the sand with authority—more bunker shots are missed due to deceleration than any other factor. With practice, you'll start to see bunkers as strategic opportunities rather than penalties.</p>
+    
+    <div class="tip-footer">
+    <a href="#" class="back-to-tips">← Back to all tips</a>
+</div>
+</div>
+
+<!-- Putting Tip Content -->
+<div class="tip-detail-content" id="putting-routine" style="display: none;">
+    <div class="tip-detail-header">
+        <span class="tip-detail-category">Putting</span>
+        <h2 class="tip-detail-title">3-Point Putting Routine</h2>
+    </div>
+    
+    <p>A consistent putting routine is one of the most powerful tools for improving your performance on the greens. The 3-Point Putting Routine provides a simple but effective framework that addresses the three critical elements of every putt: read, aim, and execution.</p>
+    
+    <h3>Point 1: Reading the Green</h3>
+    <p>The first point in your routine should be a thorough but efficient read of the green:</p>
+    <ul>
+        <li><strong>Walk the full circumference:</strong> First, walk from your ball to the hole, then around behind the hole to view the overall slope and contour.</li>
+        <li><strong>Look for macro slopes:</strong> Note the general lay of the land and how water would flow on the green.</li>
+        <li><strong>Check multiple perspectives:</strong> View the putt from behind the ball, from the low side, and from behind the hole.</li>
+        <li><strong>Consider speed factors:</strong> Assess green speed, grain direction, and moisture levels.</li>
+        <li><strong>Visualization:</strong> Imagine the ball rolling along your intended line and entering the hole. See it before you do it.</li>
+    </ul>
+    
+    <h3>Point 2: Alignment and Setup</h3>
+    <p>The second point establishes your precise alignment and proper setup:</p>
+    <ul>
+        <li><strong>Mark and align your ball:</strong> Place a line on your ball pointing in your intended start direction.</li>
+        <li><strong>Aim your putter face:</strong> Square the putter face precisely to your start line.</li>
+        <li><strong>Body alignment:</strong> Position your feet, hips, and shoulders parallel to your start line (not necessarily at the hole for breaking putts).</li>
+        <li><strong>Stance width:</strong> Keep feet shoulder-width apart for stability.</li>
+        <li><strong>Eye position:</strong> Position your eyes directly over or slightly inside the ball line.</li>
+        <li><strong>Distance from ball:</strong> Stand so your arms hang naturally, with your hands under your shoulders.</li>
+        <li><strong>Grip pressure:</strong> Use light to medium grip pressure (3-4 on a scale of 10) for optimal feel.</li>
+    </ul>
+    
+    <h3>Point 3: Execution Sequence</h3>
+    <p>The third point is your consistent stroke execution sequence:</p>
+    <ul>
+        <li><strong>Look-Look routine:</strong> Take a final look at the hole, then return your gaze to the ball.</li>
+        <li><strong>Practice strokes:</strong> Make 2-3 practice strokes focusing on distance control, feeling the correct speed.</li>
+        <li><strong>Trigger move:</strong> Use a personal trigger (a forward press, a deep breath, etc.) to initiate your stroke.</li>
+        <li><strong>Pendulum stroke:</strong> Make a smooth, pendulum-like stroke with the shoulders, minimizing hand and wrist action.</li>
+        <li><strong>Acceleration:</strong> Ensure the putter head accelerates through impact—never decelerate.</li>
+        <li><strong>Hold the finish:</strong> Keep the putter head low and still after impact until you hear the ball drop or stop rolling.</li>
+    </ul>
+    
+    <h3>Speed Control Fundamentals</h3>
+    <p>While line is important, speed control often determines putting success:</p>
+    <ul>
+        <li><strong>Backswing length:</strong> Control distance primarily through backswing length, not by manipulating speed during the stroke.</li>
+        <li><strong>The 3-foot circle:</strong> Aim to finish all putts within 3 feet past the hole if they miss. This gives maximum chance for the ball to fall while avoiding excessive comeback putts.</li>
+        <li><strong>Uphill vs. downhill:</strong> For uphill putts, add 10% more force. For downhill putts, reduce force by 10-20% and focus on precision.</li>
+    </ul>
+    
+    <h3>Practice Drills</h3>
+    <p>Ingrain your 3-Point Routine with these focused practice sessions:</p>
+    <ul>
+        <li><strong>Clock drill:</strong> Place 12 balls in a circle around a hole, each 3-6 feet away. Use your full routine for each putt, rotating around the clock.</li>
+        <li><strong>Ladder drill:</strong> Set up putts at progressive distances (3, 6, 9, 12, 15 feet). Focus on consistent routine and speed control.</li>
+        <li><strong>Pressure routine practice:</strong> For the last 10 minutes of practice, use your full routine on every putt and keep score, simulating on-course pressure.</li>
+        <li><strong>One-handed putting:</strong> Practice putting with just your dominant hand to improve feel and face control.</li>
+    </ul>
+    
+    <h3>Mental Approach</h3>
+    <p>The mental side of putting is crucial to success:</p>
+    <ul>
+        <li><strong>Commitment:</strong> Once you've made your read, commit fully to it. Indecision is a putt-killer.</li>
+        <li><strong>Positive expectation:</strong> Expect the ball to go in every time. Visualize success, not failure.</li>
+        <li><strong>Acceptance:</strong> Accept that perfect putting isn't possible. Focus on your process, not outcomes.</li>
+        <li><strong>Consistency:</strong> Use your routine on every putt, regardless of length or importance.</li>
+    </ul>
+    
+    <p>The beauty of a 3-Point Routine is its simplicity and repeatability. Under pressure, golfers tend to revert to instinct. By practicing this routine until it becomes automatic, you create a reliable framework that holds up even in high-pressure situations. Commit to using this routine for every putt, from tap-ins to long-range attempts, and you'll see remarkable improvement in your putting consistency and confidence.</p>
+    
+    <div class="tip-footer">
+    <a href="#" class="back-to-tips">← Back to all tips</a>
+</div>
+</div>
+		<!-- Course Strategy Tip Content -->
+<div class="tip-detail-content" id="course-management" style="display: none;">
+    <div class="tip-detail-header">
+        <span class="tip-detail-category">Course Strategy</span>
+        <h2 class="tip-detail-title">Playing Smart Golf</h2>
+    </div>
+    
+    <p>Course management—the strategic decisions you make around club selection, target selection, and risk assessment—can help you significantly lower your scores without changing your swing. Here's how to play smarter golf:</p>
+    
+    <h3>Know Your Game</h3>
+    <p>Smart course management starts with honest self-assessment:</p>
+    <ul>
+        <li><strong>Distance reality:</strong> Base decisions on your actual averages, not your career-best shots. Know your typical distances with each club.</li>
+        <li><strong>Dispersion patterns:</strong> Understand your typical miss. Do you tend to slice your driver? Pull your irons? Plan accordingly.</li>
+        <li><strong>Strength and weakness analysis:</strong> Identify the strongest and weakest parts of your game, then create a strategy that maximizes your strengths and minimizes exposure to your weaknesses.</li>
+    </ul>
+    
+    <h3>Tee Shot Strategy</h3>
+    <p>The decisions you make on the tee set up everything that follows:</p>
+    <ul>
+        <li><strong>Driver isn't always the answer:</strong> On shorter or tighter holes, consider a 3-wood, hybrid, or even long iron for better position.</li>
+        <li><strong>Find your safe zone:</strong> Identify the widest part of the fairway or the side that gives you the best angle for your approach, then aim there.</li>
+        <li><strong>Consider your miss:</strong> If you typically slice, aim more left and allow for the curve. Position yourself so your typical miss still leaves a playable second shot.</li>
+        <li><strong>Risk vs. reward:</strong> Only take on high-risk tee shots when the potential reward justifies it. On most holes, prioritize finding the fairway.</li>
+    </ul>
+    
+    <h3>Approach Shot Decision-Making</h3>
+    <p>Smart approach shots can dramatically reduce your scores:</p>
+    <ul>
+        <li><strong>Aim for the fat part:</strong> The middle of the green is almost always a good target, regardless of pin position.</li>
+        <li><strong>Know the "miss spots":</strong> Identify where you absolutely cannot miss (bunkers, water, etc.) and aim away from these areas.</li>
+        <li><strong>Club selection:</strong> When in doubt, take one more club than you think you need and swing smoothly. Most amateurs come up short far more often than they go long.</li>
+        <li><strong>Front pin vs. back pin:</strong> For front pins, land the ball just on the green. For back pins, land the ball in the front-middle of the green and let it release.</li>
+    </ul>
+    
+    <h3>Playing to Your Strengths</h3>
+    <p>Design your strategy to maximize opportunities where you excel:</p>
+    <ul>
+        <li><strong>Strong driver:</strong> If your driving is a strength, play more aggressively off the tee on holes with wide landing areas.</li>
+        <li><strong>Good putter:</strong> If putting is your strength, focus on getting the ball on the green in regulation, even if it means a longer putt.</li>
+        <li><strong>Skilled with wedges:</strong> If your short game is strong, it might be better to lay up to your favorite wedge distance than risk a difficult long approach.</li>
+    </ul>
+    
+    <h3>Managing Trouble</h3>
+    <p>When you find yourself in difficult situations, minimize the damage:</p>
+    <ul>
+        <li><strong>Take your medicine:</strong> When in trouble, focus on getting back into play with minimal risk. Bogey is better than double bogey.</li>
+        <li><strong>The "percentage play":</strong> Always ask yourself, "What shot gives me the highest percentage chance of success?" rather than "What's the perfect shot here?"</li>
+        <li><strong>Lay-up strategy:</strong> When laying up, pick a specific target and favorite distance rather than just hitting "somewhere out there."</li>
+    </ul>
+    
+    <h3>Course Preparation</h3>
+    <p>Do your homework before you play:</p>
+    <ul>
+        <li><strong>Study the course:</strong> Review the layout online or via a yardage book before playing.</li>
+        <li><strong>Identify key holes:</strong> Note the most difficult holes and plan a conservative approach for them.</li>
+        <li><strong>Know the hazards:</strong> Pay special attention to water hazards, out-of-bounds areas, and other major trouble spots.</li>
+        <li><strong>Pre-round planning:</strong> For each hole, develop a basic plan for where you want your tee shot and approach to go.</li>
+    </ul>
+    
+    <h3>Mental Approach</h3>
+    <p>Course management is largely mental:</p>
+    <ul>
+        <li><strong>Play within yourself:</strong> Resist the temptation to hit shots you haven't mastered in practice.</li>
+        <li><strong>Manage expectations:</strong> Understand that golf is a game of misses. Even pros don't hit every shot perfectly.</li>
+        <li><strong>Stay in the present:</strong> Focus on one shot at a time. Don't let previous mistakes affect current decisions.</li>
+        <li><strong>The 80% rule:</strong> Try to play at about 80% of your maximum effort for better control and consistency.</li>
+    </ul>
+    
+    <h3>Implementation Plan</h3>
+    <p>Here's how to put these principles into practice:</p>
+    <ul>
+        <li><strong>Pre-shot routine:</strong> Include strategic thinking in your pre-shot routine. Ask yourself, "What's the smart play here?"</li>
+        <li><strong>Shot tracking:</strong> Keep detailed notes about your typical distances and dispersion patterns to inform future decisions.</li>
+        <li><strong>Post-round analysis:</strong> After each round, identify the decisions that worked well and those you'd change.</li>
+        <li><strong>Incremental adoption:</strong> Don't try to change everything at once. Start by focusing on smarter tee shots, then gradually apply better strategy to all aspects of your game.</li>
+    </ul>
+    
+    <p>Remember that playing smart doesn't mean playing overly conservative. It means making strategic choices that maximize your chances of success given your specific abilities. The world's best players aren't just technically skilled—they're smart strategists who know when to attack and when to play safe. By adopting a similar mindset, you can start shooting lower scores without changing your swing.</p>
+    
+    <div class="tip-footer">
+    <a href="#" class="back-to-tips">← Back to all tips</a>
+</div>
+</div>
+		<!-- Mental Game Tip Content -->
+<div class="tip-detail-content" id="pre-shot-routine" style="display: none;">
+    <div class="tip-detail-header">
+        <span class="tip-detail-category">Mental Game</span>
+        <h2 class="tip-detail-title">Pre-Shot Routine for Focus</h2>
+    </div>
+    
+    <p>A consistent pre-shot routine is one of the most powerful tools in golf. It helps you transition from thinking to doing, maintains focus, builds confidence, and provides a reliable process that works under pressure. Here's how to develop and implement an effective pre-shot routine:</p>
+    
+    <h3>Why Pre-Shot Routines Matter</h3>
+    <p>Understanding the benefits will help you commit to practicing your routine:</p>
+    <ul>
+        <li><strong>Focus control:</strong> A routine helps you narrow your focus from broad awareness to specific execution.</li>
+        <li><strong>Consistency trigger:</strong> Your routine becomes a trigger for your body to perform the motion you've practiced.</li>
+        <li><strong>Pressure management:</strong> Under pressure, a familiar routine provides comfort and prevents overthinking.</li>
+        <li><strong>Distraction filter:</strong> A structured routine helps block out irrelevant stimuli and thoughts.</li>
+        <li><strong>Confidence builder:</strong> Going through the same successful process builds trust in your ability to execute.</li>
+    </ul>
+    
+    <h3>The Four Phases of an Effective Pre-Shot Routine</h3>
+    <p>A complete pre-shot routine has four distinct phases:</p>
+    
+    <h4>1. The Planning Phase (Behind the Ball)</h4>
+    <ul>
+        <li><strong>Assess the situation:</strong> Consider lie, wind, hazards, and other relevant factors.</li>
+        <li><strong>Make clear decisions:</strong> Decide on club, target, shot shape, and trajectory.</li>
+        <li><strong>Visualization:</strong> See the shot you want to hit in your mind's eye, including trajectory, landing spot, and roll.</li>
+        <li><strong>Commitment:</strong> Fully commit to your decision before moving to the next phase.</li>
+    </ul>
+    
+    <h4>2. The Setup Phase (Approaching the Ball)</h4>
+    <ul>
+        <li><strong>Alignment routine:</strong> Use consistent steps to align your clubface to the target, then position your body parallel.</li>
+        <li><strong>Stance adjustments:</strong> Make any needed adjustments for the specific shot you're playing.</li>
+        <li><strong>Grip check:</strong> Take your grip in a consistent way every time.</li>
+        <li><strong>Posture setup:</strong> Establish athletic posture with consistent spine angle and weight distribution.</li>
+    </ul>
+    
+    <h4>3. The Trigger Phase (Ready to Swing)</h4>
+    <ul>
+        <li><strong>Final look:</strong> Take one final look at your target to reinforce intention.</li>
+        <li><strong>Physical trigger:</strong> Use a consistent physical movement (waggle, forward press, etc.) to initiate your swing.</li>
+        <li><strong>Mental trigger:</strong> Use a simple swing thought or feeling to focus your mind.</li>
+        <li><strong>Rhythm reminder:</strong> Think of a word or phrase that promotes your ideal tempo.</li>
+    </ul>
+    
+    <h4>4. The Acceptance Phase (After the Shot)</h4>
+    <ul>
+        <li><strong>Hold your finish:</strong> Maintain your balanced finish position.</li>
+        <li><strong>Process evaluation:</strong> Did you execute your routine properly? (Not result evaluation)</li>
+        <li><strong>Reset:</strong> Let go of the previous shot, positive or negative, before starting the next routine.</li>
+    </ul>
+    
+    <h3>Building Your Personal Routine</h3>
+    <p>Follow these steps to create a routine that works for you:</p>
+    <ul>
+        <li><strong>Keep it simple:</strong> Your routine should take 30-45 seconds total. Avoid complexity.</li>
+        <li><strong>Make it yours:</strong> While the framework is universal, the specifics should match your personality and preferences.</li>
+        <li><strong>Consistency is key:</strong> The routine should be nearly identical for every full swing (with minor adjustments for different types of shots).</li>
+        <li><strong>Practice deliberately:</strong> Practice your routine on the range just as much as your swing mechanics.</li>
+        <li><strong>Adjust as needed:</strong> Refine your routine based on what helps you perform best, but avoid frequent changes.</li>
+    </ul>
+    
+    <h3>Sample Pre-Shot Routines</h3>
+    <p>Here are two examples of effective routines:</p>
+    
+    <h4>Example 1: The Methodical Approach</h4>
+    <ol>
+        <li>Stand behind ball, identify target and visualize shot trajectory</li>
+        <li>Choose club and make one practice swing behind the ball focusing on feel</li>
+        <li>Walk to the side of the ball and aim clubface at target</li>
+        <li>Set feet and body parallel to target line</li>
+        <li>Take one look at target</li>
+        <li>Make two gentle waggles as a trigger</li>
+        <li>Focus on smooth tempo and begin swing</li>
+        <li>Hold finish position and observe ball flight</li>
+    </ol>
+    
+    <h4>Example 2: The Rhythm-Based Approach</h4>
+    <ol>
+        <li>Stand behind ball, see target, and take a deep breath</li>
+        <li>Walk to ball while visualizing shot shape</li>
+        <li>Set clubface behind ball pointed at target</li>
+        <li>Take stance while looking at target</li>
+        <li>Look at ball, make a single pronounced forward press as trigger</li>
+        <li>Think of a tempo word like "smooth" or "flow"</li>
+        <li>Begin swing with minimal delay</li>
+        <li>Watch ball flight completely before looking away</li>
+    </ol>
+    
+    <h3>Troubleshooting Your Routine</h3>
+    <p>If you're struggling with your pre-shot routine, consider these adjustments:</p>
+    <ul>
+        <li><strong>Overthinking:</strong> If you're taking too long, simplify your routine and add a time constraint.</li>
+        <li><strong>Inconsistency:</strong> Use a checklist approach until the routine becomes automatic.</li>
+        <li><strong>Rushing:</strong> Add a deliberate pause before your trigger move.</li>
+        <li><strong>Technical thoughts:</strong> Replace swing mechanics thoughts with feel-based or target-based thoughts.</li>
+        <li><strong>Doubt:</strong> Build a decisive confirmation step into your routine ("This is the right club" or "I've got this").</li>
+    </ul>
+    
+    <h3>Advanced Concepts</h3>
+    <p>As your routine becomes more established, consider these refinements:</p>
+    <ul>
+        <li><strong>Situation-specific adjustments:</strong> Develop slight variations for different situations (tee shots vs. approach shots vs. pressure situations).</li>
+        <li><strong>Breathing techniques:</strong> Incorporate specific breathing patterns to manage tension and focus.</li>
+        <li><strong>Anchor states:</strong> Use your routine to recall feelings from your best performances.</li>
+        <li><strong>Abbreviated versions:</strong> Develop a shortened version for casual rounds or practice.</li>
+    </ul>
+    
+    <p>Remember that your pre-shot routine is personal—what works for one golfer may not work for another. The key is finding a sequence that reliably gets you into a focused, confident state before every shot. With practice, your routine will become second nature, providing a trustworthy foundation for your golf game, especially when the pressure is on.</p>
+    
+    <div class="tip-footer">
+    <a href="#" class="back-to-tips">← Back to all tips</a>
+</div>
+</div>
+		
+		<!-- Weather/Wind Tip Content -->
+<div class="tip-detail-content" id="wind-play" style="display: none;">
+    <div class="tip-detail-header">
+        <span class="tip-detail-category">Course Strategy</span>
+        <h2 class="tip-detail-title">Playing in Windy Conditions</h2>
+    </div>
+    
+    <p>Wind is one of golf's greatest challenges, but with the right approach, you can turn this difficult condition into a competitive advantage. Here's your complete guide to playing better golf when the wind blows:</p>
+    
+    <h3>Understanding Wind Effects</h3>
+    <p>Before adapting your technique, understand how wind affects ball flight:</p>
+    <ul>
+        <li><strong>Headwind:</strong> Increases backspin, creates higher ball flight, and significantly reduces distance (up to 25% loss in strong winds).</li>
+        <li><strong>Tailwind:</strong> Reduces backspin effect, may not add as much distance as you expect, and creates a lower, faster landing angle.</li>
+        <li><strong>Crosswind:</strong> Exaggerates any sidespin on the ball. A slight fade becomes a strong fade in right-to-left wind.</li>
+        <li><strong>Upwind shots:</strong> Height is your enemy. The higher the ball goes, the more the wind affects it.</li>
+        <li><strong>Wind gusts:</strong> Variable winds are particularly challenging. Watch flags, trees, and grass movements for real-time indications.</li>
+    </ul>
+    
+    <h3>The "Into the Wind" Strategy</h3>
+    <p>When playing into the wind, employ these techniques:</p>
+    <ul>
+        <li><strong>Club up:</strong> Take at least one extra club for every 10 mph of headwind. In strong winds, you might need 2-3 more clubs.</li>
+        <li><strong>Ball position:</strong> Play the ball slightly back in your stance to promote a lower trajectory.</li>
+        <li><strong>Wider stance:</strong> Widen your stance slightly for more stability.</li>
+        <li><strong>Grip down:</strong> Hold down on the club an inch or so for more control.</li>
+        <li><strong>Swing at 75-80%:</strong> Swing smoother with less effort to reduce spin and height.</li>
+        <li><strong>Weight forward:</strong> Keep 60% of your weight on your front foot throughout the swing.</li>
+        <li><strong>Abbreviated finish:</strong> Use a shorter, more controlled follow-through.</li>
+        <li><strong>Mental approach:</strong> Accept that the shot will be difficult and that the wind will affect the ball—don't fight it.</li>
+    </ul>
+    
+    <h3>The "Downwind" Strategy</h3>
+    <p>When playing with the wind at your back:</p>
+    <ul>
+        <li><strong>Don't automatically club down:</strong> Tailwinds don't add as much distance as you might expect.</li>
+        <li><strong>Anticipate a lower trajectory:</strong> The ball will fly lower and roll more.</li>
+        <li><strong>Softer landing strategy:</strong> Consider using a higher-lofted club than normal and swinging easier to help the ball stop.</li>
+        <li><strong>Ball position:</strong> Play the ball slightly forward in your stance to help achieve height.</li>
+        <li><strong>Green reading adjustment:</strong> Remember that downwind putts are typically faster than they look.</li>
+    </ul>
+    
+    <h3>The "Crosswind" Strategy</h3>
+    <p>When playing in wind blowing across your target line:</p>
+    <ul>
+        <li><strong>Use the wind:</strong> If possible, work your shot with the wind direction (fade with right-to-left wind, draw with left-to-right wind).</li>
+        <li><strong>Aim into the wind:</strong> Allow enough room for the wind to move your ball back toward the target.</li>
+        <li><strong>Adjust alignment, not swing:</strong> Don't try to manipulate your swing to fight the wind—change your aim and let the wind do its work.</li>
+        <li><strong>Setup tweaks:</strong> For right-to-left winds, play the ball slightly back; for left-to-right winds, play it slightly forward.</li>
+        <li><strong>Club selection:</strong> Use more club in crosswinds too, as they also reduce distance.</li>
+    </ul>
+    
+    <h3>The "Knock-Down" Shot</h3>
+    <p>Master this essential shot for windy conditions:</p>
+    <ul>
+        <li><strong>Club selection:</strong> Choose 1-3 more clubs than normal.</li>
+        <li><strong>Ball position:</strong> Place the ball 1-2 inches back of center in your stance.</li>
+        <li><strong>Grip:</strong> Choke down 1-2 inches on the club.</li>
+        <li><strong>Setup:</strong> Play with hands ahead of the ball and 60-70% of weight on front foot.</li>
+        <li><strong>Backswing:</strong> Make a three-quarter backswing with controlled tempo.</li>
+        <li><strong>Downswing focus:</strong> Keep hands ahead of the clubhead through impact.</li>
+        <li><strong>Finish:</strong> Use a abbreviated, low finish position with clubhead pointing at target.</li>
+    </ul>
+    
+    <h3>Tee Shot Strategies in Wind</h3>
+    <p>Adapt your driving approach based on wind conditions:</p>
+    <ul>
+        <li><strong>Headwind driving:</strong> Consider a 3-wood or long iron for more control and less spin. Accept the distance loss.</li>
+        <li><strong>Tailwind driving:</strong> Take advantage by playing a normal drive, but adjust your target accounting for extra roll.</li>
+        <li><strong>Crosswind driving:</strong> Widen your target zone and aim to the side where the wind is coming from.</li>
+        <li><strong>Tee height:</strong> Use a lower tee height in all wind conditions to promote a lower trajectory.</li>
+    </ul>
+    
+    <h3>Short Game Adjustments</h3>
+    <p>Even around the greens, wind requires strategy changes:</p>
+    <ul>
+        <li><strong>Chip and pitch shots:</strong> Keep the ball low with bump-and-run shots when possible.</li>
+        <li><strong>Bunker play:</strong> In headwinds, open the face less and swing more firmly; in tailwinds, open the face more for added height.</li>
+        <li><strong>Putting:</strong> Wind affects putts more than you think. For crosswinds on long putts, play 1 cup of break for every 15 mph of wind.</li>
+        <li><strong>Wind reading:</strong> On exposed greens, look at flagsticks, nearby trees, and even the movement of grass to gauge wind direction and strength.</li>
+    </ul>
+    
+    <h3>Mental Approach to Windy Rounds</h3>
+    <p>Your mindset is crucial for success in the wind:</p>
+    <ul>
+        <li><strong>Lower expectations:</strong> Accept that scores will likely be higher and focus on relative performance.</li>
+        <li><strong>Decision commitment:</strong> Once you choose a strategy, commit fully—doubt leads to poor execution.</li>
+        <li><strong>Pace of play:</strong> Take extra time when needed to assess changing wind conditions, but stay ready to hit when it's your turn.</li>
+        <li><strong>Patience:</strong> Wind tests your patience more than any other condition. Stay positive through difficult stretches.</li>
+        <li><strong>Competitive mindset:</strong> Remember that everyone is playing in the same conditions—those who adapt best gain an advantage.</li>
+    </ul>
+    
+    <h3>Practice Drills for Wind</h3>
+    <p>Prepare for windy rounds with these focused practice sessions:</p>
+    <ul>
+        <li><strong>Low shot practice:</strong> Deliberately practice knock-down shots on regular practice days.</li>
+        <li><strong>Wind simulator:</strong> Practice on windy days rather than avoiding them.</li>
+        <li><strong>Half-set challenge:</strong> Practice with only half your clubs to learn to manipulate trajectory and shape.</li>
+        <li><strong>Trajectory control:</strong> Practice hitting three different heights with each iron.</li>
+    </ul>
+    
+    <p>While many golfers dread windy conditions, those who master these techniques can use the wind to their advantage. The wind challenges everyone equally—it's your adaptation and execution that will set you apart. Embrace these conditions as an opportunity to demonstrate your skill and versatility as a golfer.</p>
+    
+    <div class="tip-footer">
+    <a href="#" class="back-to-tips">← Back to all tips</a>
+</div>
+</div>
+
+<!-- Fitness Tip Content -->
+<div class="tip-detail-content" id="golf-fitness" style="display: none;">
+    <div class="tip-detail-header">
+        <span class="tip-detail-category">Mental Game</span>
+        <h2 class="tip-detail-title">Golf-Specific Fitness Routine</h2>
+    </div>
+    
+    <p>A targeted fitness routine can significantly improve your golf performance, prevent injuries, and extend your playing career. This golf-specific program focuses on the key physical attributes that directly translate to better golf: mobility, stability, power, and endurance.</p>
+    
+    <h3>The Golf Fitness Foundation</h3>
+    <p>Understanding these physical components will help you create an effective routine:</p>
+    <ul>
+        <li><strong>Mobility:</strong> The ability to achieve proper positions in your golf swing. Key areas include hip rotation, thoracic spine rotation, shoulder mobility, and ankle flexibility.</li>
+        <li><strong>Stability:</strong> The ability to maintain posture and balance throughout the swing. Core strength, single-leg stability, and scapular control are essential.</li>
+        <li><strong>Power:</strong> The ability to generate and transfer force through the kinetic chain. Power development focuses on the lower body, core, and rotational strength.</li>
+        <li><strong>Endurance:</strong> The ability to maintain performance throughout an entire round. This includes cardiovascular fitness and muscular endurance.</li>
+    </ul>
+    
+    <h3>Mobility Exercises</h3>
+    <p>Perform these exercises to improve key golf movement patterns:</p>
+    <ul>
+        <li><strong>90/90 Hip Stretch:</strong> Sit on the floor with one leg bent at 90 degrees in front of you and the other bent at 90 degrees to your side. Rotate your torso toward the back leg, then switch sides. Hold each position for 30 seconds.</li>
+        <li><strong>Thoracic Rotation:</strong> On all fours, place one hand behind your head. Rotate that elbow toward the opposite arm, then toward the ceiling, following with your eyes. Perform 10 reps each side.</li>
+        <li><strong>Shoulder Windmills:</strong> Lie on your side with knees bent at 90 degrees. Extend your arms straight out, then rotate the top arm in a large arc until it reaches the floor on the opposite side, following with your eyes. Perform 8-10 reps each side.</li>
+        <li><strong>Ankle Mobility:</strong> In a half-kneeling position, place one foot forward and rock forward, trying to bring your knee over your toes without your heel lifting. Perform 10-12 reps each side.</li>
+    </ul>
+    
+    <h3>Stability Exercises</h3>
+    <p>Develop the ability to maintain proper posture and balance with these exercises:</p>
+    <ul>
+        <li><strong>Plank with Shoulder Tap:</strong> In a push-up position, alternately lift one hand to tap the opposite shoulder while maintaining a stable core. Perform 20 total taps.</li>
+        <li><strong>Single-Leg Balance with Reach:</strong> Balance on one leg while reaching the opposite hand toward the ground in different directions. Perform 8 reaches in each direction per leg.</li>
+        <li><strong>Bird Dog:</strong> On all fours, simultaneously extend one arm forward and the opposite leg backward while maintaining a neutral spine. Hold for 3 seconds and repeat 10 times each side.</li>
+        <li><strong>Side Plank with Rotation:</strong> From a side plank position, rotate your top arm under your body and then up toward the ceiling. Perform 8-10 reps each side.</li>
+    </ul>
+    
+    <h3>Power Development</h3>
+    <p>Build golf-specific power with these exercises:</p>
+    <ul>
+        <li><strong>Medicine Ball Rotational Throw:</strong> Stand perpendicular to a wall with feet shoulder-width apart. Hold a medicine ball at your chest, rotate away from the wall, then explosively rotate toward the wall and throw the ball. Perform 10-12 reps each side.</li>
+        <li><strong>Lateral Bounds:</strong> Stand on one leg and jump laterally to land on the opposite leg, mimicking weight transfer in the golf swing. Perform 10 bounds in each direction.</li>
+        <li><strong>Cable Rotation:</strong> Using a cable machine or resistance band, stand perpendicular to the anchor point. Pull the handle across your body with extended arms, rotating your torso. Perform 12 reps each side.</li>
+        <li><strong>Kettlebell Swing:</strong> With feet shoulder-width apart, hinge at the hips and swing a kettlebell between your legs, then forcefully extend your hips to swing the weight to chest height. Perform 15-20 reps.</li>
+    </ul>
+    
+    <h3>Endurance Training</h3>
+    <p>Build the stamina needed for a full round:</p>
+    <ul>
+        <li><strong>Interval Walking/Jogging:</strong> Alternate between 2 minutes of brisk walking and 1 minute of jogging for 20-30 minutes.</li>
+        <li><strong>Circuit Training:</strong> Perform 6-8 exercises back-to-back with minimal rest, rest for 2 minutes, and repeat 3-4 times.</li>
+        <li><strong>Golf-Specific Cardio:</strong> Perform 30 seconds of quick practice swings followed by 30 seconds of lateral shuffles. Continue alternating for 10-15 minutes.</li>
+    </ul>
+    
+    <h3>Sample Weekly Routine</h3>
+    <p>Here's a balanced weekly plan that addresses all components:</p>
+    <ul>
+        <li><strong>Monday:</strong> Mobility (15 minutes) + Strength/Stability (30 minutes)</li>
+        <li><strong>Tuesday:</strong> Power Development (30 minutes) + Light Cardio (20 minutes)</li>
+        <li><strong>Wednesday:</strong> Rest or light mobility work</li>
+        <li><strong>Thursday:</strong> Mobility (15 minutes) + Strength/Stability (30 minutes)</li>
+        <li><strong>Friday:</strong> Power Development (20 minutes) + Endurance (20 minutes)</li>
+        <li><strong>Saturday/Sunday:</strong> Golf days with a pre-round dynamic warm-up</li>
+    </ul>
+    
+    <h3>Pre-Round Warm-Up (10 minutes)</h3>
+    <p>Perform this routine before playing for optimal performance:</p>
+    <ol>
+        <li>Hip circles: 10 each direction</li>
+        <li>Arm circles: 10 forward, 10 backward</li>
+        <li>Torso rotations: 10 each side</li>
+        <li>Lateral lunges: 8 each side</li>
+        <li>Practice swings with progressive intensity: 10 swings</li>
+    </ol>
+    
+    <h3>Implementation Tips</h3>
+    <p>Make your fitness routine sustainable with these strategies:</p>
+    <ul>
+        <li><strong>Start gradual:</strong> Begin with 2-3 sessions per week and increase as your fitness improves.</li>
+        <li><strong>Consistency trumps intensity:</strong> Regular, moderate workouts are better than occasional intense sessions.</li>
+        <li><strong>Track progress:</strong> Monitor improvements in your flexibility, strength, and on-course performance.</li>
+        <li><strong>Seasonal adjustments:</strong> Increase fitness work in the off-season and maintain during playing season.</li>
+        <li><strong>Professional guidance:</strong> Consider working with a golf fitness specialist to address your specific needs.</li>
+    </ul>
+    
+    <p>Remember that golf fitness is about targeted, functional improvements—not just general exercise. By focusing on the specific physical attributes that impact your golf swing, you'll see more direct transfer to your on-course performance. Even 15-20 minutes of dedicated golf fitness work several times a week can produce noticeable improvements in your game and help prevent common golf injuries.</p>
+    
+    <div class="tip-footer">
+    <a href="#" class="back-to-tips">← Back to all tips</a>
+</div>
+</div>
+		<!-- Practice Tip Content -->
+<div class="tip-detail-content" id="practice-strategies" style="display: none;">
+    <div class="tip-detail-header">
+        <span class="tip-detail-category">Mental Game</span>
+        <h2 class="tip-detail-title">Effective Practice Strategies</h2>
+    </div>
+    
+    <p>The difference between casual practice and deliberate practice can be the difference between stagnation and improvement. This guide will help you transform your practice sessions from mindless ball-hitting to purposeful skill development.</p>
+    
+    <h3>The Science of Effective Practice</h3>
+    <p>Understanding these principles will help you maximize your practice time:</p>
+    <ul>
+        <li><strong>Purposeful repetition:</strong> Every practice shot should have a specific goal and focus.</li>
+        <li><strong>Feedback loops:</strong> You need immediate and clear feedback on whether each attempt was successful.</li>
+        <li><strong>Variable practice:</strong> Constantly changing targets, clubs, and scenarios leads to better skill transfer to the course.</li>
+        <li><strong>Interleaved practice:</strong> Mixing different skills in one session is more effective than blocking practice (practicing one skill repeatedly).</li>
+        <li><strong>Challenge point:</strong> Practice should be difficult enough to challenge you but not so difficult that success is rare.</li>
+    </ul>
+    
+    <h3>Practice Planning</h3>
+    <p>Structure your practice with these components:</p>
+    <ul>
+        <li><strong>Technical practice:</strong> Focusing on swing mechanics and movement patterns.</li>
+        <li><strong>Skills practice:</strong> Developing specific shot-making abilities like trajectory control or distance control.</li>
+        <li><strong>Performance practice:</strong> Simulating on-course situations with consequences and pressure.</li>
+        <li><strong>Balanced approach:</strong> Divide your practice time between these three components and all aspects of the game (driving, iron play, short game, putting).</li>
+    </ul>
+    
+    <h3>Driving Range Strategies</h3>
+    <p>Transform your range sessions with these approaches:</p>
+    <ul>
+        <li><strong>Pre-practice routine:</strong> Spend 5-10 minutes on mobility exercises and slow, deliberate practice swings before hitting balls.</li>
+        <li><strong>Target focus:</strong> Always pick a specific target for every shot, not just a general direction.</li>
+        <li><strong>Process goals:</strong> Focus on executing your swing thoughts or feels rather than just ball flight.</li>
+        <li><strong>Golf course simulation:</strong> Play an imaginary round, going through your full pre-shot routine and changing clubs as you would on the course.</li>
+        <li><strong>Consequence practice:</strong> Create simple rules that simulate on-course pressure (e.g., if you miss the target, you must hit a more difficult shot next).</li>
+        <li><strong>Feedback tools:</strong> Use alignment sticks, impact tape, or a launch monitor when available to get objective feedback.</li>
+    </ul>
+    
+    <h3>Short Game Practice</h3>
+    <p>Improve your scoring shots with these methods:</p>
+    <ul>
+        <li><strong>Pitching ladder:</strong> Practice pitches to targets at increasing distances (10, 20, 30, 40 yards) with the same club, then repeat with different clubs.</li>
+        <li><strong>Around-the-world chipping:</strong> Place 6-8 balls in a circle around a practice green and hit each with a different club or trajectory to the same target.</li>
+        <li><strong>Versatility training:</strong> Practice the same distance shot with three different clubs and trajectories (low, medium, high).</li>
+        <li><strong>Landing spot focus:</strong> Rather than focusing on where the ball finishes, pick specific landing spots and evaluate your success in hitting them.</li>
+        <li><strong>Up-and-down challenge:</strong> Give yourself one chance to get up and down from various positions. Keep score out of 10 attempts.</li>
+    </ul>
+    
+    <h3>Putting Practice</h3>
+    <p>Develop your putting skills with these proven drills:</p>
+    <ul>
+        <li><strong>Gate drill:</strong> Set up tees or coins just wider than your putter head and practice hitting putts without hitting the "gates."</li>
+        <li><strong>Clock drill:</strong> Place 12 balls in a circle around a hole at 3-5 feet and try to make all 12 consecutively.</li>
+        <li><strong>Random distance drill:</strong> Rather than hitting several putts from the same distance, constantly vary your distance (5 feet, 20 feet, 8 feet, etc.).</li>
+        <li><strong>Completion challenge:</strong> Start with a 1-foot putt and move back 1 foot after each make. If you miss, start over. Try to get to 10 feet.</li>
+        <li><strong>Lag putting zone:</strong> Create a 3-foot circle around the hole and practice getting long putts to stop within this zone.</li>
+    </ul>
+    
+    <h3>Practice Games</h3>
+    <p>Add enjoyment and pressure to your practice with these games:</p>
+    <ul>
+        <li><strong>Par 18:</strong> Create a 9-hole short course around the practice area with par 2 for each hole. Try to shoot under 18.</li>
+        <li><strong>100 points:</strong> Assign point values to different targets (10 points for center, 5 points for near miss, etc.). Try to reach 100 points in as few shots as possible.</li>
+        <li><strong>Worst ball:</strong> Hit two balls and always play your next shot from the position of your worst ball.</li>
+        <li><strong>21:</strong> For putting practice, score 3 points for a make, 1 point for a putt that stops within one putter-length. First to 21 wins.</li>
+    </ul>
+    
+    <h3>Time Management</h3>
+    <p>Make the most of limited practice time:</p>
+    <ul>
+        <li><strong>30-minute plan:</strong> 5 minutes warm-up, 10 minutes technical practice, 15 minutes performance practice.</li>
+        <li><strong>One-hour plan:</strong> 10 minutes warm-up, 15 minutes full swing, 20 minutes short game, 15 minutes putting.</li>
+        <li><strong>Lunch break special:</strong> 20 minutes of putting and short game practice can fit into a workday lunch break.</li>
+        <li><strong>Home practice:</strong> Develop a routine of swing drills and putting practice you can do at home without hitting balls.</li>
+    </ul>
+    
+    <h3>Tracking Progress</h3>
+    <p>Measure your improvement with these methods:</p>
+    <ul>
+        <li><strong>Skills tests:</strong> Create benchmark tests for different skills (e.g., how many out of 10 putts you can make from 5 feet) and re-test regularly.</li>
+        <li><strong>Practice journal:</strong> Keep notes on what you're working on, what's improving, and what needs more attention.</li>
+        <li><strong>Video progress:</strong> Take swing videos from the same angles every few weeks to track changes visually.</li>
+        <li><strong>Statistics:</strong> Track key performance stats during rounds to identify areas needing practice focus.</li>
+    </ul>
+    
+    <p>Remember that the quality of your practice is far more important than the quantity. One hour of deliberate, focused practice will produce better results than three hours of mindless ball-hitting. By incorporating these strategies into your practice routine, you'll maximize your improvement rate and see those improvements translate more effectively to the golf course.</p>
+    
+    <div class="tip-footer">
+    <a href="#" class="back-to-tips">← Back to all tips</a>
+</div>
+</div>
+		</div>
+</div>
+
+<!-- FOOTER START -->
+<footer class="site-footer">
+    <div class="footer-content">
+        <div class="footer-logo">
+            <img src="Images/SVG/Round-Tracker-Logo.svg" alt="Round Tracker" class="footer-logo-img">
+        </div>
+        <div class="footer-links">
+            <div class="footer-column">
+                <h4>About</h4>
+                <ul>
+                    <li><a href="about-us.html">About Us</a></li>
+                    <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                    <li><a href="terms-of-service.html">Terms of Service</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Features</h4>
+                <ul>
+                    <li><a href="#">Score Tracking</a></li>
+                    <li><a href="#">Statistics</a></li>
+                    <li><a href="#">Course Database</a></li>
+                    <li><a href="golf-tips.html">Golf Tips</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Feedback</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2025 Round Tracker. All rights reserved.</p>
+        <div class="social-icons">
+            <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="#" aria-label="Twitter"><i class="fa-brands fa-twitter"></i></a>
+            <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        </div>
+    </div>
+</footer>
+<!-- FOOTER END -->
+
+<!-- DROPDOWN MENU HTML -->
+<div id="menuDropdown" class="menu-dropdown">
+    <a href="#" class="menu-item" id="signOutLink">
+        <i class="fa-solid fa-right-from-bracket"></i> Sign Out
+    </a>
+</div>
+	
+	<!-- Back to Top Button -->
+<button id="backToTopBtn" title="Go to top"><i class="fa-solid fa-chevron-up"></i></button>
+
+<!-- Supabase CDN script MUST be loaded first --> 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script> 
+<!-- Load main app scripts --> 
+<script type="module" src="js/supabase.js"></script>
+
+<!-- GOLF TIPS SCRIPT -->
+<script type="module">
+import { signOut } from './js/supabase.js';
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Menu toggle functionality
+    function toggleMenu(event) {
+        event.stopPropagation();
+        
+        var dropdown = document.getElementById("menuDropdown");
+        if (dropdown.style.display === "block") {
+            dropdown.style.display = "none";
+        } else {
+            dropdown.style.display = "block";
+        }
+    }
+    
+    // Add click handler to menu buttons
+    var menuButtons = document.querySelectorAll('.menu-button');
+    menuButtons.forEach(function(btn) {
+        btn.addEventListener('click', toggleMenu);
+    });
+    
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(event) {
+        var dropdown = document.getElementById("menuDropdown");
+        var isClickInsideMenu = event.target.closest('.menu-dropdown');
+        var isMenuToggleClick = event.target.closest('.menu-button') || event.target.closest('.fa-bars');
+        
+        if (dropdown && dropdown.style.display === "block" && !isClickInsideMenu && !isMenuToggleClick) {
+            dropdown.style.display = "none";
+        }
+    });
+    
+    // Sign out functionality
+    var signOutLink = document.getElementById('signOutLink');
+    if (signOutLink) {
+        signOutLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            signOut();
+        });
+    }
+    
+    // Golf Tips functionality
+    const categoryButtons = document.querySelectorAll('.category-btn');
+    const tipCards = document.querySelectorAll('.tip-card');
+    const tipsGrid = document.getElementById('tipsGrid');
+    const tipDetail = document.getElementById('tipDetail');
+    const readMoreLinks = document.querySelectorAll('.read-more');
+    
+    // Get all tip detail content divs
+    const tipContents = document.querySelectorAll('.tip-detail-content');
+    
+    // Function to show a specific tip
+    function showTip(tipId) {
+        // Hide all tip contents
+        tipContents.forEach(content => {
+            content.style.display = 'none';
+        });
+        
+        // Show the selected tip
+        const selectedTip = document.getElementById(tipId);
+        if (selectedTip) {
+            selectedTip.style.display = 'block';
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+    }
+    
+    // Category filter
+    categoryButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            // Update active class
+            categoryButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+            
+            const category = button.getAttribute('data-category');
+            
+            // Make sure we're showing the grid view when category is changed
+            tipDetail.style.display = 'none';
+            tipsGrid.style.display = 'grid';
+            
+            // Show/hide tip cards based on category
+            tipCards.forEach(card => {
+                if (category === 'all' || card.getAttribute('data-category') === category) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    });
+    
+    // Read more functionality
+    readMoreLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            
+            const tipId = link.getAttribute('data-tip');
+            
+            // Hide tips grid, show tip detail
+            tipsGrid.style.display = 'none';
+            tipDetail.style.display = 'block';
+            
+            // Show the selected tip content
+            showTip(tipId);
+        });
+    });
+    
+    // Back to tips button
+    document.querySelectorAll('.back-to-tips').forEach(button => {
+        button.addEventListener('click', (e) => {
+            e.preventDefault();
+            
+            // Find the "All Tips" button and activate it
+            categoryButtons.forEach(btn => {
+                if (btn.getAttribute('data-category') === 'all') {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+            
+            // Show all tip cards
+            tipCards.forEach(card => {
+                card.style.display = 'flex';
+            });
+            
+            // Hide tip detail, show tips grid
+            tipDetail.style.display = 'none';
+            tipsGrid.style.display = 'grid';
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        });
+    });
+    
+    // Handle initial display for direct links
+    function handleInitialDisplay() {
+        // Check if there's a hash in the URL
+        if (window.location.hash) {
+            const tipId = window.location.hash.substring(1);
+            
+            // Find the tip by id
+            const tipElement = document.getElementById(tipId);
+            if (tipElement) {
+                // Hide grid, show detail
+                tipsGrid.style.display = 'none';
+                tipDetail.style.display = 'block';
+                
+                // Show the selected tip
+                showTip(tipId);
+            }
+        }
+    }
+    
+    // Call this function when the page loads
+    handleInitialDisplay();
+    
+    // Initial update of tip display
+    if (document.getElementById('tipDetail').style.display === 'block') {
+        document.getElementById('driving-distance').style.display = 'block';
+    }
+});
+</script>
+	
+	<!-- Back to Top Script -->
+<!-- Back to Top Script -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Get the button
+  var backToTopBtn = document.getElementById("backToTopBtn");
+  
+  // When the user scrolls down 300px from the top of the document, show the button
+  window.onscroll = function() {
+    if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+      backToTopBtn.style.display = "block";
+    } else {
+      backToTopBtn.style.display = "none";
+    }
+  };
+  
+  // When the user clicks on the button, scroll to the top of the document
+  backToTopBtn.addEventListener('click', function() {
+    // Smooth scroll to top
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  });
+});
+</script>
+</body>
+</html>
