@@ -651,6 +651,217 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 });
+	// Add this JavaScript to implement the forgot password functionality
+
+// When DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+  // Get the forgot password link
+  const forgotPasswordLink = document.querySelector('.forgot-password');
+  
+  if (forgotPasswordLink) {
+    // Add click event listener
+    forgotPasswordLink.addEventListener('click', function(e) {
+      e.preventDefault();
+      
+      // Get the email from the login form
+      const email = document.getElementById('loginEmail').value;
+      
+      // Create modal overlay
+      const overlay = document.createElement('div');
+      overlay.className = 'modal-overlay';
+      overlay.style.position = 'fixed';
+      overlay.style.top = '0';
+      overlay.style.left = '0';
+      overlay.style.width = '100%';
+      overlay.style.height = '100%';
+      overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+      overlay.style.display = 'flex';
+      overlay.style.justifyContent = 'center';
+      overlay.style.alignItems = 'center';
+      overlay.style.zIndex = '9999';
+      
+      // Create modal content
+      const modal = document.createElement('div');
+      modal.className = 'forgot-password-modal';
+      modal.style.backgroundColor = 'var(--card-bg)';
+      modal.style.padding = '2rem';
+      modal.style.borderRadius = 'var(--border-radius)';
+      modal.style.width = '90%';
+      modal.style.maxWidth = '400px';
+      modal.style.boxShadow = '0 10px 25px rgba(0, 0, 0, 0.3)';
+      
+      // Modal header
+      const header = document.createElement('h3');
+      header.textContent = 'Reset Password';
+      header.style.marginBottom = '1.5rem';
+      header.style.color = 'white';
+      header.style.fontFamily = 'var(--font-primary)';
+      
+      // Modal form
+      const form = document.createElement('form');
+      form.className = 'reset-password-form';
+      
+      // Email input
+      const inputGroup = document.createElement('div');
+      inputGroup.className = 'form-group';
+      inputGroup.style.marginBottom = '1.5rem';
+      
+      const label = document.createElement('label');
+      label.textContent = 'Email Address';
+      label.style.display = 'block';
+      label.style.marginBottom = '0.5rem';
+      label.style.color = 'var(--text-muted)';
+      label.style.fontSize = '0.9rem';
+      label.style.fontFamily = 'var(--font-primary)';
+      
+      const input = document.createElement('input');
+      input.type = 'email';
+      input.value = email;
+      input.required = true;
+      input.style.width = '100%';
+      input.style.padding = '0.9rem 1rem';
+      input.style.background = 'rgba(15, 23, 42, 0.6)';
+      input.style.border = '1px solid var(--border-color)';
+      input.style.borderRadius = '0.5rem';
+      input.style.color = 'white';
+      input.style.fontSize = '1rem';
+      
+      inputGroup.appendChild(label);
+      inputGroup.appendChild(input);
+      
+      // Error message area
+      const errorMessage = document.createElement('div');
+      errorMessage.className = 'auth-error';
+      errorMessage.style.color = '#ef4444';
+      errorMessage.style.fontSize = '0.875rem';
+      errorMessage.style.marginBottom = '1rem';
+      errorMessage.style.minHeight = '20px';
+      
+      // Button group
+      const buttonGroup = document.createElement('div');
+      buttonGroup.style.display = 'flex';
+      buttonGroup.style.gap = '1rem';
+      
+      // Submit button
+      const submitButton = document.createElement('button');
+      submitButton.className = 'login-btn';
+      submitButton.textContent = 'Send Reset Link';
+      submitButton.type = 'submit';
+      submitButton.style.flex = '1';
+      submitButton.style.background = 'var(--primary-green)';
+      submitButton.style.color = 'white';
+      submitButton.style.border = 'none';
+      submitButton.style.padding = '0.9rem 1rem';
+      submitButton.style.borderRadius = '0.5rem';
+      submitButton.style.fontWeight = '600';
+      submitButton.style.cursor = 'pointer';
+      
+      // Cancel button
+      const cancelButton = document.createElement('button');
+      cancelButton.textContent = 'Cancel';
+      cancelButton.type = 'button';
+      cancelButton.style.flex = '1';
+      cancelButton.style.background = 'rgba(255, 255, 255, 0.1)';
+      cancelButton.style.color = 'white';
+      cancelButton.style.border = 'none';
+      cancelButton.style.padding = '0.9rem 1rem';
+      cancelButton.style.borderRadius = '0.5rem';
+      cancelButton.style.fontWeight = '600';
+      cancelButton.style.cursor = 'pointer';
+      
+      buttonGroup.appendChild(cancelButton);
+      buttonGroup.appendChild(submitButton);
+      
+      // Add elements to form
+      form.appendChild(inputGroup);
+      form.appendChild(errorMessage);
+      form.appendChild(buttonGroup);
+      
+      // Add elements to modal
+      modal.appendChild(header);
+      modal.appendChild(form);
+      
+      // Add modal to overlay
+      overlay.appendChild(modal);
+      
+      // Add overlay to body
+      document.body.appendChild(overlay);
+      
+      // Focus on email input
+      input.focus();
+      
+      // Close modal on cancel button click
+      cancelButton.addEventListener('click', function() {
+        document.body.removeChild(overlay);
+      });
+      
+      // Close modal on overlay click (outside modal)
+      overlay.addEventListener('click', function(e) {
+        if (e.target === overlay) {
+          document.body.removeChild(overlay);
+        }
+      });
+      
+      // Handle form submission
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const email = input.value.trim();
+        
+        if (!email) {
+          errorMessage.textContent = 'Please enter your email address';
+          return;
+        }
+        
+        // Here you would typically call your password reset API
+        // For now, we'll just simulate it with a timeout
+        
+        submitButton.disabled = true;
+        submitButton.textContent = 'Sending...';
+        
+        setTimeout(function() {
+          // This is where you would handle the API response
+          
+          // For now, just show a success message
+          modal.innerHTML = '';
+          
+          const successIcon = document.createElement('div');
+          successIcon.innerHTML = '<i class="fas fa-check-circle"></i>';
+          successIcon.style.fontSize = '3rem';
+          successIcon.style.color = 'var(--primary-green)';
+          successIcon.style.textAlign = 'center';
+          successIcon.style.marginBottom = '1rem';
+          
+          const successMessage = document.createElement('div');
+          successMessage.innerHTML = `<p>Password reset instructions have been sent to <strong>${email}</strong>.</p>`;
+          successMessage.style.textAlign = 'center';
+          successMessage.style.marginBottom = '1.5rem';
+          successMessage.style.color = 'white';
+          
+          const closeButton = document.createElement('button');
+          closeButton.textContent = 'Close';
+          closeButton.className = 'login-btn';
+          closeButton.style.width = '100%';
+          closeButton.style.background = 'var(--primary-green)';
+          closeButton.style.color = 'white';
+          closeButton.style.border = 'none';
+          closeButton.style.padding = '0.9rem 1rem';
+          closeButton.style.borderRadius = '0.5rem';
+          closeButton.style.fontWeight = '600';
+          closeButton.style.cursor = 'pointer';
+          
+          closeButton.addEventListener('click', function() {
+            document.body.removeChild(overlay);
+          });
+          
+          modal.appendChild(successIcon);
+          modal.appendChild(successMessage);
+          modal.appendChild(closeButton);
+          
+        }, 1500);
+      });
+    });
+  }
+});
   </script> 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script> 
 <script type="module" src="js/supabase.js"></script> 
