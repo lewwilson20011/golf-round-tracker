@@ -326,6 +326,76 @@ input:focus {
   width: auto;
 }
 }
+
+/* User section styles */
+.user-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+}
+
+.user-avatar {
+  width: 32px;
+  height: 32px;
+  background: var(--primary-green);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.user-avatar i {
+  font-size: 16px;
+}
+
+.user-avatar:hover {
+  background: #1db954;
+  cursor: pointer;
+}
+
+/* Menu styles */
+.menu-button {
+  background: none;
+  border: none;
+  color: #ffffff;
+  padding: 8px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.menu-dropdown {
+  position: fixed;
+  background: #1e293b;
+  border-radius: 12px;
+  width: 220px;
+  display: none;
+  z-index: 99999; /* Extremely high z-index */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  /* Initial position, will be updated by JS */
+  top: 20px;
+  right: 20px;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: all 0.2s;
+  font-family: var(--font-body);
+}
+
+.menu-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: white;
+}
 </style>
 </head>
 <body>
@@ -337,7 +407,13 @@ input:focus {
           <img src="Images/SVG/Round-Tracker-Logo.svg" alt="Round Tracker" class="logo">
         </a>
       </div>
-      <!-- No user section here for login page -->
+      <!-- Added user section with avatar and menu -->
+      <div class="user-section">
+        <div class="user-avatar"><i class="fas fa-user"></i></div>
+        <button class="menu-button">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
     </div>
   </header>
   <!-- HEADER END -->
@@ -457,6 +533,18 @@ input:focus {
   </footer>
   <!-- FOOTER END -->
 
+  <!-- DROPDOWN MENU HTML -->
+  <div id="menuDropdown" class="menu-dropdown">
+    <a href="#" class="menu-item login-tab-trigger" data-tab="login">
+      <i class="fas fa-sign-in-alt"></i>
+      <span>Login</span>
+    </a>
+    <a href="#" class="menu-item login-tab-trigger" data-tab="register">
+      <i class="fas fa-user-plus"></i>
+      <span>Register</span>
+    </a>
+  </div>
+
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       const tabs = document.querySelectorAll('.login-tab');
@@ -480,6 +568,61 @@ input:focus {
           
           document.getElementById('loginError').textContent = '';
           document.getElementById('registerError').textContent = '';
+        });
+      });
+      
+      // Menu functionality - simplified
+      const menuButton = document.querySelector('.menu-button');
+      const menuDropdown = document.getElementById('menuDropdown');
+
+      if (menuButton && menuDropdown) {
+        // Simple toggle for dropdown
+        menuButton.addEventListener('click', function(event) {
+            event.stopPropagation();
+            
+            if (menuDropdown.style.display === "block") {
+                menuDropdown.style.display = "none";
+            } else {
+                // Position the dropdown
+                const buttonRect = menuButton.getBoundingClientRect();
+                menuDropdown.style.top = (buttonRect.bottom + window.scrollY) + 'px';
+                menuDropdown.style.right = (window.innerWidth - buttonRect.right) + 'px';
+                menuDropdown.style.display = "block";
+            }
+        });
+        
+        // Close when clicking elsewhere
+        document.addEventListener('click', function(event) {
+            if (!menuDropdown.contains(event.target) && !menuButton.contains(event.target)) {
+                menuDropdown.style.display = "none";
+            }
+        });
+        
+        // Close on Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape' && menuDropdown.style.display === "block") {
+                menuDropdown.style.display = "none";
+            }
+        });
+      }
+      
+      // Login tab triggers from menu
+      const loginTabTriggers = document.querySelectorAll('.login-tab-trigger');
+      
+      loginTabTriggers.forEach(trigger => {
+        trigger.addEventListener('click', (e) => {
+          e.preventDefault();
+          const tabName = trigger.dataset.tab;
+          
+          // Activate the corresponding tab
+          tabs.forEach(tab => {
+            if (tab.dataset.tab === tabName) {
+              tab.click();
+            }
+          });
+          
+          // Hide the menu
+          menuDropdown.style.display = "none";
         });
       });
       
