@@ -59,18 +59,24 @@
     background: rgba(255, 255, 255, 0.1);
     margin: 8px 0;
 }
-	/* Introduction Section Styles */
+/* Introduction Section Styles */
 .intro-section {
   background: linear-gradient(to bottom, rgba(26, 31, 46, 0.8), rgba(26, 31, 46, 0.95));
-  padding: 60px var(--spacing-base);
+  padding: 0; /* Remove padding to use height instead */
   margin-bottom: 40px;
   border-bottom: 1px solid var(--border-color);
+  min-height: calc(100vh - 80px); /* Full viewport height minus header height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .intro-content {
   max-width: 1200px;
   margin: 0 auto;
   text-align: center;
+  padding: 60px var(--spacing-base);
+  width: 100%;
 }
 
 .intro-content h1 {
@@ -173,6 +179,10 @@
 /* Mobile adjustments */
 @media (max-width: 768px) {
   .intro-section {
+    min-height: calc(100vh - 70px); /* Adjust for smaller header on mobile */
+  }
+  
+  .intro-content {
     padding: 40px var(--spacing-base);
   }
 
@@ -246,7 +256,7 @@
       </div>
     </div>
     <div class="intro-cta">
-      <a href="#main-container" class="cta-button" id="startTrackingBtn">Start Tracking</a>
+      <a href="#main-container" class="cta-button" id="startTrackingBtn">Track Your Rounds</a>
       <a href="golf-tips.html" class="cta-button secondary">View Golf Tips</a>
     </div>
   </div>
