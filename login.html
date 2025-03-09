@@ -319,6 +319,36 @@ input:focus {
     background: #1db954;
     cursor: pointer;
 }
+/* Auth links styles */
+.auth-links {
+    display: flex;
+    gap: 16px;
+}
+.auth-link {
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+.auth-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+.register-link {
+    background-color: var(--primary-green);
+}
+.register-link:hover {
+    background-color: #1db954;
+}
+/* Active state for header links */
+.auth-link.active-link {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+.auth-link.register-link.active-link {
+    background-color: #1db954;
+}
 /* Menu styles */
 .menu-button {
     background: none;
@@ -358,77 +388,69 @@ input:focus {
 }
 /* Remember Me and Forgot Password Styles */
 .remember-me-group {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
 }
-
 .checkbox-container {
-  display: flex;
-  align-items: center;
-  white-space: nowrap;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
 }
-
 .checkbox-container input[type="checkbox"] {
-  width: auto;
-  height: auto;
-  margin-right: 8px;
-  cursor: pointer;
-  accent-color: var(--primary-green);
-  min-width: auto;
+    width: auto;
+    height: auto;
+    margin-right: 8px;
+    cursor: pointer;
+    accent-color: var(--primary-green);
+    min-width: auto;
 }
-
 .checkbox-label {
-  color: var(--text-muted);
-  font-size: 0.9rem;
-  margin-bottom: 0;
-  cursor: pointer;
-  white-space: nowrap;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 0;
+    cursor: pointer;
+    white-space: nowrap;
 }
-
 .forgot-password {
-  color: var(--primary-green);
-  font-size: 0.9rem;
-  text-decoration: none;
-  transition: opacity 0.2s;
-  white-space: nowrap;
+    color: var(--primary-green);
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: opacity 0.2s;
+    white-space: nowrap;
 }
-
 .forgot-password:hover {
-  opacity: 0.8;
-  text-decoration: underline;
+    opacity: 0.8;
+    text-decoration: underline;
 }
-	/* Additional fixes for remember-me group */
+/* Additional fixes for remember-me group */
 .form-group.remember-me-group {
-  margin-bottom: 1rem !important;
+    margin-bottom: 1rem !important;
 }
-
 .form-group.remember-me-group label {
-  margin-bottom: 0 !important;
+    margin-bottom: 0 !important;
 }
-
 /* Override any other potential styles that could affect label margins */
 .auth-form label.checkbox-label {
-  margin-bottom: 0 !important;
-  display: inline-flex;
-  align-items: center;
+    margin-bottom: 0 !important;
+    display: inline-flex;
+    align-items: center;
 }
 </style>
 </head>
 <body>
-<!-- HEADER START -->
-<header class="site-header site-header-auth login-header">
+<!-- Custom header for login page -->
+<header class="site-header login-header">
   <div class="header">
-    <div class="logo-container"> <a href="index.html"> <img src="Images/SVG/Round-Tracker-Logo.svg" alt="Round Tracker" class="logo"> </a> </div>
-    <!-- Added user section with avatar and menu -->
-    <div class="user-section">
-      <div class="user-avatar"><i class="fas fa-user"></i></div>
-      <button class="menu-button"> <i class="fas fa-bars"></i> </button>
+    <div class="logo-container"> 
+      <a href="index.html"> 
+        <img src="Images/SVG/Round-Tracker-Logo.svg" alt="Round Tracker" class="logo"> 
+      </a> 
     </div>
+    <!-- User section with auth links removed -->
   </div>
 </header>
-<!-- HEADER END --> 
 
 <!-- Main Content -->
 <main class="main-content"> 
@@ -493,139 +515,90 @@ input:focus {
   </div>
 </main>
 
-<!-- FOOTER START -->
-<footer class="site-footer">
-  <div class="footer-content">
-    <div class="footer-logo"> <img src="Images/SVG/Round-Tracker-Logo.svg" alt="Round Tracker" class="footer-logo-img"> </div>
-    <div class="footer-links">
-      <div class="footer-column">
-        <h4>About</h4>
-        <ul>
-          <li><a href="#">About Us</a></li>
-          <li><a href="#">Our Mission</a></li>
-          <li><a href="#">Privacy Policy</a></li>
-          <li><a href="#">Terms of Service</a></li>
-        </ul>
-      </div>
-      <div class="footer-column">
-        <h4>Features</h4>
-        <ul>
-          <li><a href="#">Score Tracking</a></li>
-          <li><a href="#">Statistics</a></li>
-          <li><a href="#">Course Database</a></li>
-          <li><a href="#">Golf Tips</a></li>
-        </ul>
-      </div>
-      <div class="footer-column">
-        <h4>Support</h4>
-        <ul>
-          <li><a href="#">Help Center</a></li>
-          <li><a href="#">Contact Us</a></li>
-          <li><a href="#">FAQ</a></li>
-          <li><a href="#">Feedback</a></li>
-        </ul>
-      </div>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <p>&copy; 2025 Round Tracker. All rights reserved.</p>
-    <div class="social-icons"> <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a> <a href="#" aria-label="Twitter"><i class="fa-brands fa-twitter"></i></a> <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a> </div>
-  </div>
-</footer>
-<!-- FOOTER END --> 
+<!-- Include footer -->
+<div data-include="includes/footer.html"></div>
 
-<!-- DROPDOWN MENU HTML -->
-<div id="menuDropdown" class="menu-dropdown"> <a href="#" class="menu-item login-tab-trigger" data-tab="login"> <i class="fas fa-sign-in-alt"></i> <span>Login</span> </a> <a href="#" class="menu-item login-tab-trigger" data-tab="register"> <i class="fas fa-user-plus"></i> <span>Register</span> </a> </div>
+<!-- Load the header-footer.js script for footer only -->
+<script type="module">
+  import { loadIncludes } from './js/header-footer.js';
+  // Just use the loadIncludes function, don't run the full header initialization
+  document.addEventListener('DOMContentLoaded', function() {
+    loadIncludes();
+  });
+</script>
+
+<!-- Then load other scripts -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script> 
+<script type="module" src="js/supabase.js"></script> 
+<script type="module" src="js/login.js"></script> 
+
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const tabs = document.querySelectorAll('.login-tab');
-      const loginForm = document.getElementById('loginForm');
-      const registerForm = document.getElementById('registerForm');
-      
-      tabs.forEach(tab => {
-        tab.addEventListener('click', () => {
-          const tabName = tab.dataset.tab;
-          
-          tabs.forEach(t => t.classList.remove('active'));
-          tab.classList.add('active');
-          
-          if (tabName === 'login') {
-            loginForm.style.display = 'block';
-            registerForm.style.display = 'none';
-          } else {
-            loginForm.style.display = 'none';
-            registerForm.style.display = 'block';
-          }
-          
-          document.getElementById('loginError').textContent = '';
-          document.getElementById('registerError').textContent = '';
-        });
-      });
-      
-      // Menu functionality - simplified
-      const menuButton = document.querySelector('.menu-button');
-      const menuDropdown = document.getElementById('menuDropdown');
-
-      if (menuButton && menuDropdown) {
-        // Simple toggle for dropdown
-        menuButton.addEventListener('click', function(event) {
-            event.stopPropagation();
-            
-            if (menuDropdown.style.display === "block") {
-                menuDropdown.style.display = "none";
-            } else {
-                // Position the dropdown
-                const buttonRect = menuButton.getBoundingClientRect();
-                menuDropdown.style.top = (buttonRect.bottom + window.scrollY) + 'px';
-                menuDropdown.style.right = (window.innerWidth - buttonRect.right) + 'px';
-                menuDropdown.style.display = "block";
-            }
-        });
-        
-        // Close when clicking elsewhere
-        document.addEventListener('click', function(event) {
-            if (!menuDropdown.contains(event.target) && !menuButton.contains(event.target)) {
-                menuDropdown.style.display = "none";
-            }
-        });
-        
-        // Close on Escape key
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape' && menuDropdown.style.display === "block") {
-                menuDropdown.style.display = "none";
-            }
-        });
-      }
-      
-      // Login tab triggers from menu
-      const loginTabTriggers = document.querySelectorAll('.login-tab-trigger');
-      
-      loginTabTriggers.forEach(trigger => {
-        trigger.addEventListener('click', (e) => {
-          e.preventDefault();
-          const tabName = trigger.dataset.tab;
-          
-          // Activate the corresponding tab
-          tabs.forEach(tab => {
-            if (tab.dataset.tab === tabName) {
-              tab.click();
-            }
-          });
-          
-          // Hide the menu
-          menuDropdown.style.display = "none";
-        });
-      });
-      
-      // Parallax effect
-      window.addEventListener('scroll', function() {
-        const scrollPosition = window.pageYOffset;
-        document.querySelector('.parallax-bg').style.transform = 'translateY(' + scrollPosition * 0.4 + 'px)';
-      });
+    function initLoginPage() {
+  const tabs = document.querySelectorAll('.login-tab');
+  const loginForm = document.getElementById('loginForm');
+  const registerForm = document.getElementById('registerForm');
+  const headerLinks = document.querySelectorAll('.auth-links .auth-link');
+  
+  // Function to activate a tab
+  function activateTab(tabName) {
+    console.log('Activating tab:', tabName);
+    
+    // Update form display
+    if (tabName === 'login') {
+      loginForm.style.display = 'block';
+      registerForm.style.display = 'none';
+    } else {
+      loginForm.style.display = 'none';
+      registerForm.style.display = 'block';
+    }
+    
+    // Update tab buttons
+    tabs.forEach(tab => {
+      tab.classList.toggle('active', tab.dataset.tab === tabName);
     });
-	  // Check if there's a saved email when the page loads
-document.addEventListener('DOMContentLoaded', function() {
-  // Check for saved email in localStorage
+    
+    // Update header links
+    headerLinks.forEach(link => {
+      if (link.dataset.tab === 'register') {
+        // Always keep register-link class for the register button
+        link.classList.add('register-link');
+        // But only add active-link if it's the active tab
+        link.classList.toggle('active-link', link.dataset.tab === tabName);
+      } else {
+        // For login button
+        link.classList.toggle('active-link', link.dataset.tab === tabName);
+      }
+    });
+    
+    // Clear error messages
+    document.getElementById('loginError').textContent = '';
+    document.getElementById('registerError').textContent = '';
+  }
+  
+  // Add click handlers to tabs in the form
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      activateTab(tab.dataset.tab);
+    });
+  });
+  
+  // Add click handlers to header links
+  headerLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      activateTab(link.dataset.tab);
+    });
+  });
+  
+  // Check hash for tab selection
+  const hash = window.location.hash;
+  if (hash === '#register') {
+    activateTab('register');
+  } else {
+    activateTab('login');
+  }
+  
+  // Set up remember me functionality
   const savedEmail = localStorage.getItem('rememberedEmail');
   const rememberMeCheckbox = document.getElementById('rememberMe');
   const emailInput = document.getElementById('loginEmail');
@@ -635,11 +608,9 @@ document.addEventListener('DOMContentLoaded', function() {
     rememberMeCheckbox.checked = true;
   }
   
-  // Handle form submission with remember me functionality
-  const loginForm = document.getElementById('loginForm');
+  // Handle login form submission with remember me
   if (loginForm) {
     loginForm.addEventListener('submit', function() {
-      // This doesn't prevent the normal form submission, just adds to it
       const rememberMe = document.getElementById('rememberMe').checked;
       const email = document.getElementById('loginEmail').value;
       
@@ -650,221 +621,25 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   }
-});
-	// Add this JavaScript to implement the forgot password functionality
-
-// When DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
-  // Get the forgot password link
-  const forgotPasswordLink = document.querySelector('.forgot-password');
   
+  // Set up forgot password functionality
+  const forgotPasswordLink = document.querySelector('.forgot-password');
   if (forgotPasswordLink) {
-    // Add click event listener
-    forgotPasswordLink.addEventListener('click', function(e) {
-      e.preventDefault();
-      
-      // Get the email from the login form
-      const email = document.getElementById('loginEmail').value;
-      
-      // Create modal overlay
-      const overlay = document.createElement('div');
-      overlay.className = 'modal-overlay';
-      overlay.style.position = 'fixed';
-      overlay.style.top = '0';
-      overlay.style.left = '0';
-      overlay.style.width = '100%';
-      overlay.style.height = '100%';
-      overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-      overlay.style.display = 'flex';
-      overlay.style.justifyContent = 'center';
-      overlay.style.alignItems = 'center';
-      overlay.style.zIndex = '9999';
-      
-      // Create modal content
-      const modal = document.createElement('div');
-      modal.className = 'forgot-password-modal';
-      modal.style.backgroundColor = 'var(--card-bg)';
-      modal.style.padding = '2rem';
-      modal.style.borderRadius = 'var(--border-radius)';
-      modal.style.width = '90%';
-      modal.style.maxWidth = '400px';
-      modal.style.boxShadow = '0 10px 25px rgba(0, 0, 0, 0.3)';
-      
-      // Modal header
-      const header = document.createElement('h3');
-      header.textContent = 'Reset Password';
-      header.style.marginBottom = '1.5rem';
-      header.style.color = 'white';
-      header.style.fontFamily = 'var(--font-primary)';
-      
-      // Modal form
-      const form = document.createElement('form');
-      form.className = 'reset-password-form';
-      
-      // Email input
-      const inputGroup = document.createElement('div');
-      inputGroup.className = 'form-group';
-      inputGroup.style.marginBottom = '1.5rem';
-      
-      const label = document.createElement('label');
-      label.textContent = 'Email Address';
-      label.style.display = 'block';
-      label.style.marginBottom = '0.5rem';
-      label.style.color = 'var(--text-muted)';
-      label.style.fontSize = '0.9rem';
-      label.style.fontFamily = 'var(--font-primary)';
-      
-      const input = document.createElement('input');
-      input.type = 'email';
-      input.value = email;
-      input.required = true;
-      input.style.width = '100%';
-      input.style.padding = '0.9rem 1rem';
-      input.style.background = 'rgba(15, 23, 42, 0.6)';
-      input.style.border = '1px solid var(--border-color)';
-      input.style.borderRadius = '0.5rem';
-      input.style.color = 'white';
-      input.style.fontSize = '1rem';
-      
-      inputGroup.appendChild(label);
-      inputGroup.appendChild(input);
-      
-      // Error message area
-      const errorMessage = document.createElement('div');
-      errorMessage.className = 'auth-error';
-      errorMessage.style.color = '#ef4444';
-      errorMessage.style.fontSize = '0.875rem';
-      errorMessage.style.marginBottom = '1rem';
-      errorMessage.style.minHeight = '20px';
-      
-      // Button group
-      const buttonGroup = document.createElement('div');
-      buttonGroup.style.display = 'flex';
-      buttonGroup.style.gap = '1rem';
-      
-      // Submit button
-      const submitButton = document.createElement('button');
-      submitButton.className = 'login-btn';
-      submitButton.textContent = 'Send Reset Link';
-      submitButton.type = 'submit';
-      submitButton.style.flex = '1';
-      submitButton.style.background = 'var(--primary-green)';
-      submitButton.style.color = 'white';
-      submitButton.style.border = 'none';
-      submitButton.style.padding = '0.9rem 1rem';
-      submitButton.style.borderRadius = '0.5rem';
-      submitButton.style.fontWeight = '600';
-      submitButton.style.cursor = 'pointer';
-      
-      // Cancel button
-      const cancelButton = document.createElement('button');
-      cancelButton.textContent = 'Cancel';
-      cancelButton.type = 'button';
-      cancelButton.style.flex = '1';
-      cancelButton.style.background = 'rgba(255, 255, 255, 0.1)';
-      cancelButton.style.color = 'white';
-      cancelButton.style.border = 'none';
-      cancelButton.style.padding = '0.9rem 1rem';
-      cancelButton.style.borderRadius = '0.5rem';
-      cancelButton.style.fontWeight = '600';
-      cancelButton.style.cursor = 'pointer';
-      
-      buttonGroup.appendChild(cancelButton);
-      buttonGroup.appendChild(submitButton);
-      
-      // Add elements to form
-      form.appendChild(inputGroup);
-      form.appendChild(errorMessage);
-      form.appendChild(buttonGroup);
-      
-      // Add elements to modal
-      modal.appendChild(header);
-      modal.appendChild(form);
-      
-      // Add modal to overlay
-      overlay.appendChild(modal);
-      
-      // Add overlay to body
-      document.body.appendChild(overlay);
-      
-      // Focus on email input
-      input.focus();
-      
-      // Close modal on cancel button click
-      cancelButton.addEventListener('click', function() {
-        document.body.removeChild(overlay);
-      });
-      
-      // Close modal on overlay click (outside modal)
-      overlay.addEventListener('click', function(e) {
-        if (e.target === overlay) {
-          document.body.removeChild(overlay);
-        }
-      });
-      
-      // Handle form submission
-      form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        const email = input.value.trim();
-        
-        if (!email) {
-          errorMessage.textContent = 'Please enter your email address';
-          return;
-        }
-        
-        // Here you would typically call your password reset API
-        // For now, we'll just simulate it with a timeout
-        
-        submitButton.disabled = true;
-        submitButton.textContent = 'Sending...';
-        
-        setTimeout(function() {
-          // This is where you would handle the API response
-          
-          // For now, just show a success message
-          modal.innerHTML = '';
-          
-          const successIcon = document.createElement('div');
-          successIcon.innerHTML = '<i class="fas fa-check-circle"></i>';
-          successIcon.style.fontSize = '3rem';
-          successIcon.style.color = 'var(--primary-green)';
-          successIcon.style.textAlign = 'center';
-          successIcon.style.marginBottom = '1rem';
-          
-          const successMessage = document.createElement('div');
-          successMessage.innerHTML = `<p>Password reset instructions have been sent to <strong>${email}</strong>.</p>`;
-          successMessage.style.textAlign = 'center';
-          successMessage.style.marginBottom = '1.5rem';
-          successMessage.style.color = 'white';
-          
-          const closeButton = document.createElement('button');
-          closeButton.textContent = 'Close';
-          closeButton.className = 'login-btn';
-          closeButton.style.width = '100%';
-          closeButton.style.background = 'var(--primary-green)';
-          closeButton.style.color = 'white';
-          closeButton.style.border = 'none';
-          closeButton.style.padding = '0.9rem 1rem';
-          closeButton.style.borderRadius = '0.5rem';
-          closeButton.style.fontWeight = '600';
-          closeButton.style.cursor = 'pointer';
-          
-          closeButton.addEventListener('click', function() {
-            document.body.removeChild(overlay);
-          });
-          
-          modal.appendChild(successIcon);
-          modal.appendChild(successMessage);
-          modal.appendChild(closeButton);
-          
-        }, 1500);
-      });
-    });
+    forgotPasswordLink.addEventListener('click', handleForgotPassword);
   }
-});
-  </script> 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script> 
-<script type="module" src="js/supabase.js"></script> 
-<script type="module" src="js/login.js"></script>
+  
+  // Parallax effect
+  window.addEventListener('scroll', function() {
+    const scrollPosition = window.pageYOffset;
+    const parallaxBg = document.querySelector('.parallax-bg');
+    if (parallaxBg) {
+      parallaxBg.style.transform = 'translateY(' + scrollPosition * 0.4 + 'px)';
+    }
+  });
+}
+
+// Initialize when DOM is fully loaded
+window.addEventListener('DOMContentLoaded', initLoginPage);
+</script>
 </body>
 </html>

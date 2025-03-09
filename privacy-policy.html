@@ -249,27 +249,8 @@
 </style>
 </head>
 <body>
-<!-- HEADER START -->
-<header class="site-header">
-    <div class="header">
-        <div class="logo-container">
-            <a href="index.html">
-                <img src="Images/SVG/Round-Tracker-Logo.svg" alt="Round Tracker" class="logo">
-            </a>
-        </div>
-        <div class="user-section" id="userSection">
-            <div class="user-avatar">LW</div>
-            <div class="user-info">
-                <div class="user-name">Lew Wilson</div>
-                <div class="user-email">lewwilson2001@gmail.com</div>
-            </div>
-            <button class="menu-button">
-                <i class="fa-solid fa-bars"></i>
-            </button>
-        </div>
-    </div>
-</header>
-<!-- HEADER END -->
+	
+<div data-include="includes/header.html"></div>
 
 <div class="privacy-container">
     <!-- Privacy Policy Header -->
@@ -347,50 +328,9 @@
     </div>
 </div>
 
-<!-- FOOTER START -->
-<footer class="site-footer">
-    <div class="footer-content">
-        <div class="footer-logo">
-            <img src="Images/SVG/Round-Tracker-Logo.svg" alt="Round Tracker" class="footer-logo-img">
-        </div>
-        <div class="footer-links">
-            <div class="footer-column">
-                <h4>About</h4>
-                <ul>
-                    <li><a href="about-us.html">About Us</a></li>
-                    <li><a href="privacy-policy.html">Privacy Policy</a></li>
-                    <li><a href="terms-of-service.html">Terms of Service</a></li>
-                </ul>
-            </div>
-            <div class="footer-column">
-                <h4>Features</h4>
-                <ul>
-                    <li><a href="#">Statistics</a></li>
-                    <li><a href="#">Course Database</a></li>
-                    <li><a href="golf-tips.html">Golf Tips</a></li>
-                </ul>
-            </div>
-            <div class="footer-column">
-                <h4>Support</h4>
-                <ul>
-                    <li><a href="#">Help Center</a></li>
-                    <li><a href="#">Contact Us</a></li>
-                    <li><a href="#">FAQ</a></li>
-                    <li><a href="#">Feedback</a></li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <div class="footer-bottom">
-        <p>&copy; 2025 Round Tracker. All rights reserved.</p>
-        <div class="social-icons">
-            <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
-            <a href="#" aria-label="Twitter"><i class="fa-brands fa-twitter"></i></a>
-            <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
-        </div>
-    </div>
-</footer>
-<!-- FOOTER END --> <!-- DROPDOWN MENU HTML -->
+<div data-include="includes/footer.html"></div>
+
+<!-- DROPDOWN MENU HTML -->
 <div id="menuDropdown" class="menu-dropdown">
     <a href="#" class="menu-item" id="signOutLink">
         <i class="fa-solid fa-right-from-bracket"></i> Sign Out
@@ -507,6 +447,10 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 });
+</script>
+	<script type="module">
+  import { initializeHeaderFooter } from './js/header-footer.js';
+  initializeHeaderFooter();
 </script>
 </body>
 </html>
