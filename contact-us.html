@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Contact Us - Round Tracker</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Lora:wght@400;500;600&family=Hind+Madurai:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+    <link href="css/header-footer.css" rel="stylesheet">
+    
+    <style>
+        /* Add any specific styles for the contact page here */
+        .contact-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px var(--spacing-base);
+        }
+
+        .contact-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+            padding: 30px;
+        }
+
+        .contact-form .form-group {
+            margin-bottom: 20px;
+        }
+
+        .contact-form label {
+            display: block;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        .contact-form input,
+        .contact-form textarea,
+        .contact-form select {
+            width: 100%;
+            padding: 10px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--border-color);
+            color: white;
+            border-radius: 6px;
+        }
+
+        .contact-form button {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary-green);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div data-include="includes/header.html"></div>
+
+    <div class="contact-container">
+        <div class="contact-header">
+            <h1>Contact Support</h1>
+            <p>We're here to help you with any questions or concerns about Round Tracker.</p>
+        </div>
+
+        <form class="contact-form">
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" placeholder="Enter your full name" required>
+            </div>
+
+            <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" placeholder="Enter your email" required>
+            </div>
+
+            <div class="form-group">
+                <label>Subject</label>
+                <select required>
+                    <option value="">Select a subject</option>
+                    <option>Technical Support</option>
+                    <option>Account Issues</option>
+                    <option>Feature Request</option>
+                    <option>Other Inquiry</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Your Message</label>
+                <textarea rows="5" placeholder="Describe your issue or question" required></textarea>
+            </div>
+
+            <button type="submit">Send Message</button>
+        </form>
+    </div>
+
+    <div data-include="includes/footer.html"></div><!-- Back to Top Button -->
+<button id="backToTopBtn" title="Go to top"><i class="fa-solid fa-chevron-up"></i></button>
+
+<!-- Supabase CDN script MUST be loaded first --> 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script> 
+<!-- Load main app scripts --> 
+<script type="module" src="js/supabase.js"></script>
+
+<!-- GOLF TIPS SCRIPT -->
+<script type="module">
+import { signOut } from './js/supabase.js';
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Menu toggle functionality
+    function toggleMenu(event) {
+        event.stopPropagation();
+        
+        var dropdown = document.getElementById("menuDropdown");
+        if (dropdown.style.display === "block") {
+            dropdown.style.display = "none";
+        } else {
+            dropdown.style.display = "block";
+        }
+    }
+    
+    // Add click handler to menu buttons
+    var menuButtons = document.querySelectorAll('.menu-button');
+    menuButtons.forEach(function(btn) {
+        btn.addEventListener('click', toggleMenu);
+    });
+    
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(event) {
+        var dropdown = document.getElementById("menuDropdown");
+        var isClickInsideMenu = event.target.closest('.menu-dropdown');
+        var isMenuToggleClick = event.target.closest('.menu-button') || event.target.closest('.fa-bars');
+        
+        if (dropdown && dropdown.style.display === "block" && !isClickInsideMenu && !isMenuToggleClick) {
+            dropdown.style.display = "none";
+        }
+    });
+    
+    // Sign out functionality
+    var signOutLink = document.getElementById('signOutLink');
+    if (signOutLink) {
+        signOutLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            signOut();
+        });
+    }
+    
+    // Golf Tips functionality
+    const categoryButtons = document.querySelectorAll('.category-btn');
+    const tipCards = document.querySelectorAll('.tip-card');
+    const tipsGrid = document.getElementById('tipsGrid');
+    const tipDetail = document.getElementById('tipDetail');
+    const readMoreLinks = document.querySelectorAll('.read-more');
+    
+    // Get all tip detail content divs
+    const tipContents = document.querySelectorAll('.tip-detail-content');
+    
+    // Function to show a specific tip
+    function showTip(tipId) {
+        // Hide all tip contents
+        tipContents.forEach(content => {
+            content.style.display = 'none';
+        });
+        
+        // Show the selected tip
+        const selectedTip = document.getElementById(tipId);
+        if (selectedTip) {
+            selectedTip.style.display = 'block';
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+    }
+    
+    // Category filter
+    categoryButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            // Update active class
+            categoryButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+            
+            const category = button.getAttribute('data-category');
+            
+            // Make sure we're showing the grid view when category is changed
+            tipDetail.style.display = 'none';
+            tipsGrid.style.display = 'grid';
+            
+            // Show/hide tip cards based on category
+            tipCards.forEach(card => {
+                if (category === 'all' || card.getAttribute('data-category') === category) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    });
+    
+    // Read more functionality
+    readMoreLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            
+            const tipId = link.getAttribute('data-tip');
+            
+            // Hide tips grid, show tip detail
+            tipsGrid.style.display = 'none';
+            tipDetail.style.display = 'block';
+            
+            // Show the selected tip content
+            showTip(tipId);
+        });
+    });
+    
+    // Back to tips button
+    document.querySelectorAll('.back-to-tips').forEach(button => {
+        button.addEventListener('click', (e) => {
+            e.preventDefault();
+            
+            // Find the "All Tips" button and activate it
+            categoryButtons.forEach(btn => {
+                if (btn.getAttribute('data-category') === 'all') {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+            
+            // Show all tip cards
+            tipCards.forEach(card => {
+                card.style.display = 'flex';
+            });
+            
+            // Hide tip detail, show tips grid
+            tipDetail.style.display = 'none';
+            tipsGrid.style.display = 'grid';
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        });
+    });
+    
+    // Handle initial display for direct links
+    function handleInitialDisplay() {
+        // Check if there's a hash in the URL
+        if (window.location.hash) {
+            const tipId = window.location.hash.substring(1);
+            
+            // Find the tip by id
+            const tipElement = document.getElementById(tipId);
+            if (tipElement) {
+                // Hide grid, show detail
+                tipsGrid.style.display = 'none';
+                tipDetail.style.display = 'block';
+                
+                // Show the selected tip
+                showTip(tipId);
+            }
+        }
+    }
+    
+    // Call this function when the page loads
+    handleInitialDisplay();
+    
+    // Initial update of tip display
+    if (document.getElementById('tipDetail').style.display === 'block') {
+        document.getElementById('driving-distance').style.display = 'block';
+    }
+});
+</script>
+	
+	<!-- Back to Top Script -->
+<!-- Back to Top Script -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Get the button
+  var backToTopBtn = document.getElementById("backToTopBtn");
+  
+  // When the user scrolls down 300px from the top of the document, show the button
+  window.onscroll = function() {
+    if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+      backToTopBtn.style.display = "block";
+    } else {
+      backToTopBtn.style.display = "none";
+    }
+  };
+  
+  // When the user clicks on the button, scroll to the top of the document
+  backToTopBtn.addEventListener('click', function() {
+    // Smooth scroll to top
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  });
+});
+</script>
+	<script type="module">
+  import { initializeHeaderFooter } from './js/header-footer.js';
+  initializeHeaderFooter();
+</script>
+</body>

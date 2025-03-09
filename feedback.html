@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Feedback - Round Tracker</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Lora:wght@400;500;600&family=Hind+Madurai:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+    <link href="css/header-footer.css" rel="stylesheet">
+    
+    <style>
+        .feedback-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px var(--spacing-base);
+        }
+
+        .feedback-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .feedback-form {
+            max-width: 700px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+            padding: 30px;
+        }
+
+        .feedback-form .form-group {
+            margin-bottom: 20px;
+        }
+
+        .feedback-form label {
+            display: block;
+            margin-bottom: 10px;
+            color: white;
+            font-size: 16px;
+        }
+
+        .feedback-form input,
+        .feedback-form textarea,
+        .feedback-form select {
+            width: 100%;
+            padding: 12px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--border-color);
+            color: white;
+            border-radius: 6px;
+        }
+
+        .feedback-form textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .feedback-form button {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary-green);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .feedback-form button:hover {
+            background: #1db954;
+            transform: translateY(-2px);
+        }
+
+        .satisfaction-options {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .satisfaction-option {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            margin: 0 5px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--border-color);
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .satisfaction-option:hover,
+        .satisfaction-option.selected {
+            background: var(--primary-green);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div data-include="includes/header.html"></div>
+
+    <div class="feedback-container">
+        <div class="feedback-header">
+            <h1>We Value Your Feedback</h1>
+            <p>Help us improve Round Tracker by sharing your thoughts, suggestions, and experiences.</p>
+        </div>
+
+        <form class="feedback-form">
+            <div class="form-group">
+                <label>Overall Satisfaction</label>
+                <div class="satisfaction-options">
+                    <div class="satisfaction-option" data-value="very-satisfied">Very Satisfied</div>
+                    <div class="satisfaction-option" data-value="satisfied">Satisfied</div>
+                    <div class="satisfaction-option" data-value="neutral">Neutral</div>
+                    <div class="satisfaction-option" data-value="dissatisfied">Dissatisfied</div>
+                    <div class="satisfaction-option" data-value="very-dissatisfied">Very Dissatisfied</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>What do you like about Round Tracker?</label>
+                <textarea placeholder="Tell us about the features or aspects you enjoy"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>What could we improve?</label>
+                <textarea placeholder="Share your suggestions for enhancing our application"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Your Email (Optional)</label>
+                <input type="email" placeholder="Enter your email if you'd like us to follow up">
+            </div>
+
+            <button type="submit">Submit Feedback</button>
+        </form>
+    </div>
+
+    <div data-include="includes/footer.html"></div>
+
+    <!-- Supabase CDN script MUST be loaded first --> 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script> 
+    <!-- Load main app scripts --> 
+    <script type="module" src="js/supabase.js"></script>
+
+    <script type="module">
+    import { signOut } from './js/supabase.js';
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Satisfaction options interaction
+        const satisfactionOptions = document.querySelectorAll('.satisfaction-option');
+        
+        satisfactionOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                // Remove selected class from all options
+                satisfactionOptions.forEach(opt => opt.classList.remove('selected'));
+                
+                // Add selected class to clicked option
+                this.classList.add('selected');
+            });
+        });
+
+        // Form submission handler
+        const feedbackForm = document.querySelector('.feedback-form');
+        
+        feedbackForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Basic form validation
+            const satisfactionSelected = document.querySelector('.satisfaction-option.selected');
+            const positiveInput = feedbackForm.querySelector('textarea:nth-of-type(1)');
+            const improvementInput = feedbackForm.querySelector('textarea:nth-of-type(2)');
+            
+            if (!satisfactionSelected) {
+                alert('Please select your overall satisfaction level.');
+                return;
+            }
+            
+            if (!positiveInput.value.trim()) {
+                alert('Please share what you like about Round Tracker.');
+                return;
+            }
+            
+            if (!improvementInput.value.trim()) {
+                alert('Please share suggestions for improvement.');
+                return;
+            }
+            
+            // Here you would typically send the feedback to your backend
+            console.log('Feedback submitted:', {
+                satisfaction: satisfactionSelected.dataset.value,
+                likes: positiveInput.value,
+                improvements: improvementInput.value
+            });
+            
+            // Optional: Show success message
+            alert('Thank you for your feedback!');
+            
+            // Reset form
+            feedbackForm.reset();
+            satisfactionOptions.forEach(opt => opt.classList.remove('selected'));
+        });
+    });
+    </script>
+    
+    <script type="module">
+        import { initializeHeaderFooter } from './js/header-footer.js';
+        initializeHeaderFooter();
+    </script>
+</body>
+</html>
