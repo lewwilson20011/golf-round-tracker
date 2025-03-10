@@ -208,6 +208,122 @@
     gap: 15px;
   }
 }
+	/* Enhanced Add Round Card Styles */
+.card {
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+/* Make the Add Round card stand out */
+.card:first-of-type {
+  border: 2px solid var(--primary-green);
+  box-shadow: 0 8px 24px rgba(34, 197, 94, 0.15);
+  transform: translateY(-5px);
+}
+
+.card:first-of-type .card-header {
+  background: linear-gradient(to right, var(--primary-green), #20b073);
+  color: white;
+  padding: 18px 24px;
+  border-radius: .5rem;
+}
+
+.card:first-of-type .card-title {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.card:first-of-type .card-title .icon {
+  color: white;
+}
+
+.card:first-of-type form {
+  padding: 24px;
+}
+
+/* Style the save button more prominently */
+.save-btn {
+  background: var(--primary-green);
+  color: white;
+  font-weight: 600;
+  padding: 14px 28px;
+  font-size: 16px;
+  border-radius: 6px;
+  transition: all 0.3s;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.save-btn:hover {
+  background: #1db863;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+}
+
+.save-btn:active {
+  transform: translateY(0);
+}
+
+.save-btn::after {
+  content: '→';
+  font-size: 18px;
+  transition: transform 0.3s;
+}
+
+.save-btn:hover::after {
+  transform: translateX(5px);
+}
+
+/* Enhanced form controls */
+.form-group {
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  font-weight: 500;
+  display: block;
+  margin-bottom: 8px;
+  color: white;
+}
+
+.form-group input, 
+.form-group select, 
+.form-group textarea {
+  border: 1px solid #e2e8f0;
+  padding: 12px 16px;
+  border-radius: 6px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  width: 100%;
+}
+
+.form-group input:focus, 
+.form-group select:focus, 
+.form-group textarea:focus {
+  border-color: var(--primary-green);
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.2);
+  outline: none;
+}
+
+/* Add a "New" badge to the card */
+.card:first-of-type .card-header::after {
+  content: 'New';
+  background-color: white;
+  color: var(--primary-green);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 20px;
+  margin-left: 10px;
+  position: relative;
+  top: -1px;
+}
+	
+	
 </style>
 </head>
 <body>
@@ -452,6 +568,124 @@ document.addEventListener('DOMContentLoaded', function() {
 	<script type="module">
   import { initializeHeaderFooter } from './js/header-footer.js';
   initializeHeaderFooter();
+</script>
+<!-- Add this at the end of your body tag, just before the closing </body> -->
+
+<style>
+/* Simple fade-in animation */
+@keyframes simpleAppear {
+  from { 
+    opacity: 0; 
+    transform: translateY(20px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Make sure the main container and its children are hidden initially */
+.container#main-container {
+  visibility: hidden;
+}
+
+/* Animation classes that will be applied by JavaScript */
+.fade-in {
+  animation: simpleAppear 0.6s ease forwards;
+  visibility: visible !important;
+}
+
+.delay-1 {
+  animation-delay: 0.1s;
+}
+
+.delay-2 {
+  animation-delay: 0.3s;
+}
+
+.delay-3 {
+  animation-delay: 0.5s;
+}
+
+.delay-4 {
+  animation-delay: 0.7s;
+}
+</style>
+
+<script>
+// Simple animation script
+window.addEventListener('load', function() {
+  console.log('Page fully loaded - running animations');
+  
+  // Select elements to animate
+  const mainContainer = document.getElementById('main-container');
+  if (!mainContainer) {
+    console.error('Main container not found');
+    return;
+  }
+  
+  // Add fade-in class to container first
+  mainContainer.classList.add('fade-in');
+  
+  // Then animate children with delays
+  setTimeout(function() {
+    const statsGrid = mainContainer.querySelector('.stats-grid');
+    if (statsGrid) {
+      statsGrid.classList.add('fade-in', 'delay-1');
+    }
+    
+    const cards = mainContainer.querySelectorAll('.card');
+    cards.forEach((card, index) => {
+      const delay = index === 0 ? 'delay-2' : 'delay-3';
+      setTimeout(function() {
+        card.classList.add('fade-in', delay);
+      }, 200 * (index + 1));
+    });
+  }, 100);
+  
+  // Also animate on button click
+  const startTrackingBtn = document.getElementById('startTrackingBtn');
+  if (startTrackingBtn) {
+    startTrackingBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      
+      // Scroll to the container
+      mainContainer.scrollIntoView({behavior: 'smooth'});
+      
+      // Get all animatable elements
+      const statsGrid = mainContainer.querySelector('.stats-grid');
+      const cards = mainContainer.querySelectorAll('.card');
+      
+      // Remove existing animation classes
+      mainContainer.classList.remove('fade-in');
+      if (statsGrid) statsGrid.classList.remove('fade-in', 'delay-1');
+      cards.forEach(card => {
+        card.classList.remove('fade-in', 'delay-2', 'delay-3');
+      });
+      
+      // Force reflow to restart animations
+      void mainContainer.offsetWidth;
+      
+      // Re-add animation classes after a short delay
+      setTimeout(function() {
+        mainContainer.classList.add('fade-in');
+        
+        setTimeout(function() {
+          if (statsGrid) {
+            statsGrid.classList.add('fade-in', 'delay-1');
+          }
+          
+          cards.forEach((card, index) => {
+            const delay = index === 0 ? 'delay-2' : 'delay-3';
+            setTimeout(function() {
+              card.classList.add('fade-in', delay);
+            }, 200 * (index + 1));
+          });
+        }, 100);
+      }, 400);
+    });
+  }
+});
 </script>
 </body>
 </html>	
