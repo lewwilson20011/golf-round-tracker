@@ -40,6 +40,7 @@
  * 5. Form Styles
  * 6. Animations
  * 7. Mobile Responsiveness
+ * 8. Rounds Table Notes Truncation
  */
 
 /* ========================================
@@ -468,6 +469,96 @@
         gap: 15px;
     }
 }
+
+/* ========================================
+   8. ROUNDS TABLE NOTES TRUNCATION
+   ======================================== */
+/* Basic table layout styles */
+.rounds-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.rounds-header {
+    display: grid;
+    grid-template-columns: 0.8fr 1.2fr 0.6fr 2fr 0.6fr;
+    font-weight: 600;
+    border-bottom: 1px solid #e2e8f0;
+    padding: 12px 0;
+}
+
+.round-item {
+    display: grid;
+    grid-template-columns: 0.8fr 1.2fr 0.6fr 2fr 0.6fr;
+    border-bottom: 1px solid #f1f5f9;
+    padding: 12px 0;
+    align-items: center;
+}
+
+/* Notes text truncation */
+.round-item .notes-cell {
+    max-height: 2.8em;           /* Limit to approximately 2 lines */
+    overflow: hidden;            /* Hide overflow content */
+    text-overflow: ellipsis;     /* Show ellipsis for overflow */
+    display: -webkit-box;        /* Use box layout for multi-line truncation */
+    -webkit-line-clamp: 2;       /* Limit to 2 lines */
+    -webkit-box-orient: vertical;/* Orient text vertically */
+    line-height: 1.4;            /* Set consistent line height */
+    position: relative;          /* For tooltip positioning */
+}
+
+/* Tooltip for hover to see full notes */
+.round-item .notes-cell:hover {
+    cursor: pointer;
+}
+
+/* Add tooltip functionality with CSS only */
+.round-item .notes-cell[title]:hover:after {
+    content: attr(title);
+    position: absolute;
+    left: 0;
+    top: 100%;
+    z-index: 1;
+    background-color: #1e293b;
+    color: white;
+    padding: 10px;
+    border-radius: 6px;
+    width: 250px;
+    max-width: 100%;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* Ensure all cells have proper padding */
+.rounds-header > div,
+.round-item > div {
+    padding: 8px;
+}
+
+/* Make sure the rounds list container has proper spacing */
+#roundsList {
+    width: 100%;
+}
+
+/* Empty state styling */
+.empty-state {
+    text-align: center;
+    padding: 30px;
+    color: #64748b;
+}
+/* Add this to the end of your existing <style> tag */
+
+/* Truncate notes to 2 lines in rounds table */
+.round-item > div:nth-child(4) {
+  max-height: 2.8em;           /* Limit to approximately 2 lines */
+  overflow: hidden;            /* Hide overflow content */
+  text-overflow: ellipsis;     /* Show ellipsis for overflow */
+  display: -webkit-box;        /* Use box layout for multi-line truncation */
+  -webkit-line-clamp: 2;       /* Limit to 2 lines */
+  -webkit-box-orient: vertical;/* Orient text vertically */
+  line-height: 1.4;            /* Set consistent line height */
+}
 </style>
 </head>
 <body>
@@ -785,6 +876,54 @@ window.addEventListener('load', function() {
             }, 400);
         });
     }
+});
+</script>
+	<script>
+// Add this script to truncate notes to 2 lines
+document.addEventListener('DOMContentLoaded', function() {
+  // Function to apply truncation to existing round items
+  function applyNoteTruncation() {
+    // Find all round items
+    const roundItems = document.querySelectorAll('.round-item');
+    
+    roundItems.forEach(item => {
+      // Find the notes cell (4th child, index 3)
+      const notesCell = item.children[3];
+      if (notesCell) {
+        // Apply styles directly
+        Object.assign(notesCell.style, {
+          maxHeight: '2.8em',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          display: '-webkit-box',
+          WebkitLineClamp: '2',
+          WebkitBoxOrient: 'vertical',
+          lineHeight: '1.4'
+        });
+        
+        // Store full text as attribute for tooltip
+        const fullText = notesCell.textContent;
+        notesCell.setAttribute('title', fullText);
+      }
+    });
+  }
+  
+  // Apply immediately to existing round items
+  applyNoteTruncation();
+  
+  // Watch for new rounds being added and apply truncation
+  // This uses a MutationObserver to detect changes to the roundsList
+  const roundsList = document.getElementById('roundsList');
+  if (roundsList) {
+    const observer = new MutationObserver(function(mutations) {
+      applyNoteTruncation();
+    });
+    
+    observer.observe(roundsList, { 
+      childList: true,    // Watch for added/removed rounds
+      subtree: true       // Watch for changes in descendants too
+    });
+  }
 });
 </script>
 </body>

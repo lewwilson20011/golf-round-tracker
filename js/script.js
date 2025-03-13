@@ -399,7 +399,7 @@ if (document.getElementById('avgScore')) {
     }
 }
 
-// Render rounds table
+// Modified renderRounds function with expandable notes and properly aligned header
 function renderRounds(rounds) {
     const roundsList = document.getElementById('roundsList');
 
@@ -424,7 +424,10 @@ function renderRounds(rounds) {
             <div class="date">${formatDateCorrectly(round.date)}</div>
             <div class="course">${round.course}</div>
             <div class="score">${round.score}</div>
-            <div class="notes">${round.notes || ''}</div>
+            <div class="notes collapsed" onclick="toggleNotesExpansion(this)" style="cursor:pointer;">
+                <div class="notes-content" title="${round.notes || ''}">${round.notes || ''}</div>
+                ${round.notes && round.notes.length > 50 ? '<div class="expand-indicator">+ Show More</div>' : ''}
+            </div>
             <div class="action-buttons">
                 <button class="edit-btn" onclick="editRound('${round.id}')">
                     <i class="fa-solid fa-pencil"></i>
@@ -435,7 +438,117 @@ function renderRounds(rounds) {
             </div>
         </div>
     `).join('');
+
+    // Add necessary CSS for the expandable notes with fixed header alignment
+    if (!document.getElementById('expandable-notes-styles')) {
+        const styleEl = document.createElement('style');
+        styleEl.id = 'expandable-notes-styles';
+        styleEl.textContent = `
+            /* Apply consistent grid layout to both header and rows */
+            .rounds-header,
+            .round-row {
+                display: grid;
+                grid-template-columns: 0.8fr 1.2fr 0.6fr 2fr 0.6fr;
+                border-bottom: 1px solid #e2e8f0;
+                padding: 0;
+                align-items: flex-start !important;
+            }
+            
+            /* Ensure header text and cell content have the same padding/alignment */
+            .rounds-header > div,
+            .round-row > div {
+                padding: 12px 8px;
+                align-self: flex-start;
+            }
+            
+            /* Make the header text stand out */
+            .rounds-header > div {
+                font-weight: 600;
+                color: #94a3b8;
+                text-transform: uppercase;
+                font-size: 0.9em;
+                letter-spacing: 0.05em;
+            }
+            
+            /* Round row specific styling */
+            .round-row {
+                border-bottom: 1px solid #f1f5f9;
+            }
+            
+            /* Style for the notes cell */
+            .notes.collapsed .notes-content {
+                max-height: 2.8em;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                line-height: 1.4;
+            }
+            
+            .notes.expanded .notes-content {
+                max-height: none;
+                display: block;
+            }
+            
+            .expand-indicator {
+                font-size: 12px;
+                color: var(--primary-green, #22c55e);
+                margin-top: 4px;
+                font-weight: 500;
+            }
+            
+            .notes.expanded .expand-indicator {
+                content: "- Show Less";
+            }
+            
+            .notes {
+                padding: 12px 8px !important;
+            }
+            
+            .notes.collapsed:hover {
+                background-color: rgba(255, 255, 255, 0.05);
+            }
+            
+            /* Fix action buttons alignment */
+            .action-buttons {
+                display: flex;
+                gap: 8px;
+                justify-content: flex-start;
+                align-items: center;
+            }
+            
+            /* Fix for dark theme compatibility */
+            .round-row {
+                color: inherit;
+            }
+            
+            .round-row .score {
+                color: var(--primary-green, #22c55e);
+                font-weight: 600;
+            }
+        `;
+        document.head.appendChild(styleEl);
+    }
 }
+
+// Add this function to your script (globally available)
+window.toggleNotesExpansion = function(noteElement) {
+    const wasCollapsed = noteElement.classList.contains('collapsed');
+    
+    // Toggle the class
+    noteElement.classList.toggle('collapsed');
+    noteElement.classList.toggle('expanded');
+    
+    // Update the indicator text
+    const indicator = noteElement.querySelector('.expand-indicator');
+    if (indicator) {
+        indicator.textContent = wasCollapsed ? '- Show Less' : '+ Show More';
+    }
+    
+    // Stop event propagation to prevent triggering edit on click
+    event.stopPropagation();
+};
 
 // Set edit mode function
 function setEditMode(isEditing) {
