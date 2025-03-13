@@ -399,7 +399,7 @@ if (document.getElementById('avgScore')) {
     }
 }
 
-// Modified renderRounds function with expandable notes and properly aligned header
+// Modified renderRounds function with consistent card spacing
 function renderRounds(rounds) {
     const roundsList = document.getElementById('roundsList');
 
@@ -439,43 +439,105 @@ function renderRounds(rounds) {
         </div>
     `).join('');
 
-    // Add necessary CSS for the expandable notes with fixed header alignment
-    if (!document.getElementById('expandable-notes-styles')) {
+    // Add necessary CSS for consistent card styling
+    if (!document.getElementById('fixed-ui-styles')) {
         const styleEl = document.createElement('style');
-        styleEl.id = 'expandable-notes-styles';
+        styleEl.id = 'fixed-ui-styles';
         styleEl.textContent = `
-            /* Apply consistent grid layout to both header and rows */
-            .rounds-header,
+            /* ===== FIXED UI STYLES ===== */
+            
+            /* Override card styles to match both cards */
+            .card {
+                background-color: #2A3541;
+                border-radius: 12px;
+                overflow: hidden;
+                margin-bottom: 24px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                border: none !important;
+                transform: none !important;
+            }
+            
+            /* Remove all card header background and special card styles */
+            .card:first-of-type {
+                border: none !important;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+                transform: none !important;
+            }
+            
+            .card-title, .card-header {
+                background-color: transparent !important;
+                color: white !important;
+                padding: 8px 24px 24px !important;
+                font-size: 32px !important;
+                font-weight: 600 !important;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+                margin-bottom: 0 !important;
+            }
+            
+            .card .icon {
+                margin-right: 10px;
+            }
+            
+            /* Consistent form padding */
+            .card form {
+                padding: 24px;
+            }
+            
+            /* Form styles */
+            .form-group {
+                margin-bottom: 20px;
+            }
+            
+            .form-group label {
+                display: block;
+                margin-bottom: 12px;
+                font-weight: 500;
+                color: #E0E0E0;
+            }
+            
+            /* Rounds table consistent styling */
+            .rounds-table {
+                
+            }
+            
+            /* Header row styling */
+            .rounds-header {
+                display: grid;
+                grid-template-columns: 0.8fr 1.2fr 0.6fr 2fr 0.6fr;
+                padding: 0 0 12px 0;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
+            
+            .rounds-header > div {
+                color: #94A3B8;
+                font-size: 14px;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                padding: 8px;
+            }
+            
+            /* Data row styling */
             .round-row {
                 display: grid;
                 grid-template-columns: 0.8fr 1.2fr 0.6fr 2fr 0.6fr;
-                border-bottom: 1px solid #e2e8f0;
-                padding: 0;
-                align-items: flex-start !important;
+                padding: 8px 0;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                align-items: left;
             }
             
-            /* Ensure header text and cell content have the same padding/alignment */
-            .rounds-header > div,
             .round-row > div {
-                padding: 12px 8px;
-                align-self: flex-start;
+                padding: 8px;
+                color: #E0E0E0;
             }
             
-            /* Make the header text stand out */
-            .rounds-header > div {
+            /* Score styling */
+            .round-row .score {
+                color: #4CAF50;
                 font-weight: 600;
-                color: #94a3b8;
-                text-transform: uppercase;
-                font-size: 0.9em;
-                letter-spacing: 0.05em;
             }
             
-            /* Round row specific styling */
-            .round-row {
-                border-bottom: 1px solid #f1f5f9;
-            }
-            
-            /* Style for the notes cell */
+            /* Notes styling */
             .notes.collapsed .notes-content {
                 max-height: 2.8em;
                 overflow: hidden;
@@ -493,46 +555,64 @@ function renderRounds(rounds) {
             
             .expand-indicator {
                 font-size: 12px;
-                color: var(--primary-green, #22c55e);
+                color: #4CAF50;
                 margin-top: 4px;
                 font-weight: 500;
             }
             
-            .notes.expanded .expand-indicator {
-                content: "- Show Less";
+            /* Save button styling */
+            .save-btn {
+                background-color: #4CAF50;
+                color: white;
+                border: none;
+                border-radius: 6px;
+                padding: 12px 20px;
+                font-size: 16px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.2s;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 8px;
+                width: auto;
+                max-width: 200px;
             }
             
-            .notes {
-                padding: 12px 8px !important;
-            }
-            
-            .notes.collapsed:hover {
-                background-color: rgba(255, 255, 255, 0.05);
-            }
-            
-            /* Fix action buttons alignment */
+            /* Action buttons styling */
             .action-buttons {
                 display: flex;
                 gap: 8px;
                 justify-content: flex-start;
+            }
+            
+            .action-buttons button {
+                border-radius: 6px;
+                display: flex;
                 align-items: center;
+                justify-content: center;
+                width: 36px;
+                height: 36px;
             }
             
-            /* Fix for dark theme compatibility */
-            .round-row {
-                color: inherit;
+            .edit-btn {
+                background: rgba(59, 130, 246, 0.1);
+                color: #3b82f6;
+                border: none;
+                cursor: pointer;
             }
             
-            .round-row .score {
-                color: var(--primary-green, #22c55e);
-                font-weight: 600;
+            .delete-btn {
+                background: rgba(239, 68, 68, 0.1);
+                color: #ef4444; 
+                border: none;
+                cursor: pointer;
             }
         `;
         document.head.appendChild(styleEl);
     }
 }
 
-// Add this function to your script (globally available)
 window.toggleNotesExpansion = function(noteElement) {
     const wasCollapsed = noteElement.classList.contains('collapsed');
     
