@@ -122,8 +122,22 @@ window.editRound = async (id) => {
         dateInput.value = round.date;
         document.getElementById('courseSelect').value = round.course;
         document.getElementById('holesSelect').value = round.holes || '18 Holes';
-        document.getElementById('scoreInput').value = round.score;
         document.getElementById('notes').value = round.notes || '';
+        
+        // Set incomplete round checkbox if available
+        const incompleteCheckbox = document.getElementById('incompleteRound');
+        if (incompleteCheckbox) {
+            incompleteCheckbox.checked = round.is_incomplete || false;
+            
+            // Trigger change event to update form visibility
+            const event = new Event('change');
+            incompleteCheckbox.dispatchEvent(event);
+        }
+        
+        // Only set score if it's not an incomplete round
+        if (!round.is_incomplete) {
+            document.getElementById('scoreInput').value = round.score;
+        }
 
         // Add the round ID to the form for updating
         const form = document.querySelector('form');
@@ -215,6 +229,107 @@ function updateUserInterface() {
     }
 }
 
+// Modify the form to handle incomplete rounds
+function setupIncompleteRoundsUI() {
+    // Add checkbox for incomplete round
+    const scoreFormGroup = document.getElementById('scoreInput').closest('.form-group');
+    const incompleteCheckboxHTML = `
+      <div class="form-group incomplete-round-toggle">
+        <label class="checkbox-container">
+          <input type="checkbox" id="incompleteRound">
+          <span class="checkmark"></span>
+          Track as incomplete round (no score)
+        </label>
+      </div>
+    `;
+    
+    // Insert the checkbox before the score input
+    scoreFormGroup.insertAdjacentHTML('beforebegin', incompleteCheckboxHTML);
+    
+    // Add event listener to toggle score input visibility
+    const incompleteCheckbox = document.getElementById('incompleteRound');
+    incompleteCheckbox.addEventListener('change', function() {
+      const scoreInput = document.getElementById('scoreInput');
+      const scoreLabel = scoreInput.closest('.form-group').querySelector('label');
+      
+      if (this.checked) {
+        // Hide score input when incomplete is checked
+        scoreInput.closest('.form-group').style.display = 'none';
+        scoreInput.removeAttribute('required');
+      } else {
+        // Show score input when incomplete is unchecked
+        scoreInput.closest('.form-group').style.display = 'block';
+        scoreInput.setAttribute('required', 'required');
+      }
+    });
+    
+    // Add CSS for the checkbox
+    const style = document.createElement('style');
+    style.textContent = `
+      .incomplete-round-toggle {
+        margin-bottom: 10px;
+      }
+      
+      .checkbox-container {
+        display: block;
+        position: relative;
+        padding-left: 35px;
+        cursor: pointer;
+        user-select: none;
+      }
+      
+      .checkbox-container input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+        height: 0;
+        width: 0;
+      }
+      
+      .checkmark {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 22px;
+        width: 22px;
+        background-color: #1e293b;
+        border: 1px solid #475569;
+        border-radius: 4px;
+        transition: all 0.2s;
+      }
+      
+      .checkbox-container:hover input ~ .checkmark {
+        background-color: #2c3e50;
+      }
+      
+      .checkbox-container input:checked ~ .checkmark {
+        background-color: var(--primary-green);
+        border-color: var(--primary-green);
+      }
+      
+      .checkmark:after {
+        content: "";
+        position: absolute;
+        display: none;
+      }
+      
+      .checkbox-container input:checked ~ .checkmark:after {
+        display: block;
+      }
+      
+      .checkbox-container .checkmark:after {
+        left: 8px;
+        top: 4px;
+        width: 5px;
+        height: 10px;
+        border: solid white;
+        border-width: 0 2px 2px 0;
+        transform: rotate(45deg);
+      }
+    `;
+    document.head.appendChild(style);
+}
+
 // Load rounds from Supabase
 async function loadRounds() {
     try {
@@ -247,19 +362,22 @@ function updateStats(rounds) {
     // Make sure rounds is an array and handle empty state
     const roundsArray = Array.isArray(rounds) ? rounds : [];
     
-    // Display total count (will be 0 if empty)
+    // Filter out incomplete rounds for statistics calculation
+    const completedRounds = roundsArray.filter(round => !round.is_incomplete);
+    
+    // Display total count (including incomplete rounds)
     document.getElementById('totalRounds').textContent = roundsArray.length;
     
-    if (roundsArray.length === 0) {
-        // No rounds, show placeholder values
+    if (completedRounds.length === 0) {
+        // No completed rounds, show placeholder values
         document.getElementById('avgScore').textContent = '-';
         document.getElementById('bestScore').textContent = '-';
         return;
     }
 
     // Separate rounds by hole count
-    const nineHoleRounds = roundsArray.filter(round => round.holes === '9 Holes');
-    const eighteenHoleRounds = roundsArray.filter(round => round.holes !== '9 Holes');
+    const nineHoleRounds = completedRounds.filter(round => round.holes === '9 Holes');
+    const eighteenHoleRounds = completedRounds.filter(round => round.holes !== '9 Holes');
     
     // Calculate average scores for both categories separately
     let avgNineHoleScore = '-';
@@ -305,34 +423,34 @@ function updateStats(rounds) {
     }
     
     // Calculate trends for both 9 and 18 holes
-    const trend18 = calculateTrend(roundsArray, false);
-    const trend9 = calculateTrend(roundsArray, true);
+    const trend18 = calculateTrend(completedRounds, false);
+    const trend9 = calculateTrend(completedRounds, true);
     
     // Update the average score display with separate 9-hole and 18-hole averages and round counts
-if (document.getElementById('avgScore')) {
-    let avgScoreHTML = '';
-    
-    // Get counts for each category
-    const nineHoleCount = nineHoleRounds.length;
-    const eighteenHoleCount = eighteenHoleRounds.length;
-    
-    // 18-hole average with count
-    avgScoreHTML += `18 Holes: ${avgEighteenHoleScore}`;
-    if (eighteenHoleCount > 0) {
-        avgScoreHTML += ` <small>(${eighteenHoleCount} rounds)</small>`;
+    if (document.getElementById('avgScore')) {
+        let avgScoreHTML = '';
+        
+        // Get counts for each category
+        const nineHoleCount = nineHoleRounds.length;
+        const eighteenHoleCount = eighteenHoleRounds.length;
+        
+        // 18-hole average with count
+        avgScoreHTML += `18 Holes: ${avgEighteenHoleScore}`;
+        if (eighteenHoleCount > 0) {
+            avgScoreHTML += ` <small>(${eighteenHoleCount} rounds)</small>`;
+        }
+        
+        // Use divider like in best score
+        avgScoreHTML += '<span class="score-divider"></span>';
+        
+        // 9-hole average with count
+        avgScoreHTML += `9 Holes: ${avgNineHoleScore}`;
+        if (nineHoleCount > 0) {
+            avgScoreHTML += ` <small>(${nineHoleCount} rounds)</small>`;
+        }
+        
+        document.getElementById('avgScore').innerHTML = avgScoreHTML;
     }
-    
-    // Use divider like in best score
-    avgScoreHTML += '<span class="score-divider"></span>';
-    
-    // 9-hole average with count
-    avgScoreHTML += `9 Holes: ${avgNineHoleScore}`;
-    if (nineHoleCount > 0) {
-        avgScoreHTML += ` <small>(${nineHoleCount} rounds)</small>`;
-    }
-    
-    document.getElementById('avgScore').innerHTML = avgScoreHTML;
-}
     
     // Update best score display to show both categories with course and date
     if (document.getElementById('bestScore')) {
@@ -420,10 +538,14 @@ function renderRounds(rounds) {
 
     // Render the rounds when we have data
     roundsList.innerHTML = roundsArray.map((round) => `
-        <div class="round-row" data-round-id="${round.id}">
+        <div class="round-row ${round.is_incomplete ? 'incomplete-round' : ''}" data-round-id="${round.id}">
             <div class="date">${formatDateCorrectly(round.date)}</div>
             <div class="course">${round.course}</div>
-            <div class="score">${round.score}</div>
+            <div class="score">
+                ${round.is_incomplete 
+                ? '<span class="incomplete-badge">Incomplete</span>' 
+                : round.score}
+            </div>
             <div class="notes collapsed" onclick="toggleNotesExpansion(this)" style="cursor:pointer;">
                 <div class="notes-content" title="${round.notes || ''}">${round.notes || ''}</div>
                 ${round.notes && round.notes.length > 50 ? '<div class="expand-indicator">+ Show More</div>' : ''}
@@ -608,6 +730,21 @@ function renderRounds(rounds) {
                 border: none;
                 cursor: pointer;
             }
+            
+            /* Incomplete round styling */
+            .incomplete-round {
+                background-color: rgba(255, 255, 255, 0.03);
+            }
+            
+            .incomplete-badge {
+                display: inline-block;
+                background-color: #334155;
+                color: #94a3b8;
+                font-size: 12px;
+                padding: 2px 8px;
+                border-radius: 12px;
+                font-weight: 500;
+            }
         `;
         document.head.appendChild(styleEl);
     }
@@ -661,6 +798,19 @@ function resetForm() {
     document.getElementById('roundDate').valueAsDate = new Date();
     setEditMode(false);
     document.querySelectorAll('.round-row').forEach(row => row.classList.remove('editing'));
+    
+    // Reset incomplete round checkbox
+    const incompleteCheckbox = document.getElementById('incompleteRound');
+    if (incompleteCheckbox) {
+        incompleteCheckbox.checked = false;
+        
+        // Show score input
+        const scoreInput = document.getElementById('scoreInput');
+        if (scoreInput) {
+            scoreInput.closest('.form-group').style.display = 'block';
+            scoreInput.setAttribute('required', 'required');
+        }
+    }
 }
 
 // Form submission handler
@@ -670,10 +820,15 @@ async function handleFormSubmit(e) {
     // Get form values
     const date = document.getElementById('roundDate').value;
     const course = document.getElementById('courseSelect').value;
-    const score = parseInt(document.getElementById('scoreInput').value);
     const notes = document.getElementById('notes').value;
     const holes = document.getElementById('holesSelect').value;
     const editId = document.querySelector('form').dataset.editId;
+    
+    // Check if this is an incomplete round
+    const isIncomplete = document.getElementById('incompleteRound')?.checked || false;
+    
+    // Only get score if it's not an incomplete round
+    const score = isIncomplete ? null : parseInt(document.getElementById('scoreInput').value);
 
     try {
         // Ensure user is authenticated
@@ -691,130 +846,131 @@ async function handleFormSubmit(e) {
         }
 
         let result;
+        
+        // Prepare round data object
+        const roundData = {
+            date,
+            course,
+            notes,
+            holes,
+            is_incomplete: isIncomplete
+        };
+        
+        // Only include score if it's not an incomplete round
+        if (!isIncomplete) {
+            roundData.score = score;
+        }
 
         if (editId) {
             // Update existing round
             console.log('Attempting to update round with details:', {
                 id: editId,
-                date,
-                course,
-                score,
-                notes,
-                holes,
+                ...roundData,
                 user_id: user.id
             });
 
             // First, verify the round exists and belongs to the user
-            const { data: existingRound, error: fetchError } = await supabase
-                .from('rounds')
-                .select('*')
-                .eq('id', editId)
-                .eq('user_id', user.id)
-                .single();
+           const { data: existingRound, error: fetchError } = await supabase
+               .from('rounds')
+               .select('*')
+               .eq('id', editId)
+               .eq('user_id', user.id)
+               .single();
 
-            if (fetchError) {
-                console.error('Error finding round to update:', fetchError);
-                throw fetchError;
-            }
+           if (fetchError) {
+               console.error('Error finding round to update:', fetchError);
+               throw fetchError;
+           }
 
-            // Perform the update
-            result = await supabase
-                .from('rounds')
-                .update({
-                    date,
-                    course,
-                    score,
-                    notes,
-                    holes
-                })
-                .eq('id', editId)
-                .eq('user_id', user.id);
-        } else {
-            // Insert new round
-            result = await supabase
-                .from('rounds')
-                .insert([{
-                    date,
-                    course,
-                    score,
-                    notes,
-                    holes,
-                    user_id: user.id
-                }]);
-        }
+           // Perform the update
+           result = await supabase
+               .from('rounds')
+               .update(roundData)
+               .eq('id', editId)
+               .eq('user_id', user.id);
+       } else {
+           // Insert new round with user_id
+           roundData.user_id = user.id;
+           result = await supabase
+               .from('rounds')
+               .insert([roundData]);
+       }
 
-        // Check for errors
-        if (result.error) {
-            console.error('Form submission error:', result.error);
-            throw result.error;
-        }
+       // Check for errors
+       if (result.error) {
+           console.error('Form submission error:', result.error);
+           throw result.error;
+       }
 
-        // Reset form and reload rounds
-        resetForm();
-        await loadRounds();
-    } catch (error) {
-        console.error('Complete form submission error:', error);
-        alert(`Error: ${error.message}`);
-    }
+       // Reset form and reload rounds
+       resetForm();
+       await loadRounds();
+   } catch (error) {
+       console.error('Complete form submission error:', error);
+       alert(`Error: ${error.message}`);
+   }
 }
 
 // Set up event listeners when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    // Set up the menu functionality with improved reliability
-    const menuButton = document.querySelector('.menu-button');
-    const menuDropdown = document.querySelector('.menu-dropdown');
+   // Set up the menu functionality with improved reliability
+   const menuButton = document.querySelector('.menu-button');
+   const menuDropdown = document.querySelector('.menu-dropdown');
 
-    if (menuButton && menuDropdown) {
-        // Toggle menu when the button is clicked
-        menuButton.addEventListener('click', (e) => {
-            e.stopPropagation();
-            menuDropdown.classList.toggle('show');
-            console.log('Menu toggled:', menuDropdown.classList.contains('show'));
-        });
+   if (menuButton && menuDropdown) {
+       // Toggle menu when the button is clicked
+       menuButton.addEventListener('click', (e) => {
+           e.stopPropagation();
+           menuDropdown.classList.toggle('show');
+           console.log('Menu toggled:', menuDropdown.classList.contains('show'));
+       });
 
-        // Close menu when clicking outside
-        document.addEventListener('click', (e) => {
-            if (menuDropdown.classList.contains('show')) {
-                if (!menuDropdown.contains(e.target) && !menuButton.contains(e.target)) {
-                    menuDropdown.classList.remove('show');
-                }
-            }
-        });
+       // Close menu when clicking outside
+       document.addEventListener('click', (e) => {
+           if (menuDropdown.classList.contains('show')) {
+               if (!menuDropdown.contains(e.target) && !menuButton.contains(e.target)) {
+                   menuDropdown.classList.remove('show');
+               }
+           }
+       });
 
-        // Close menu when pressing Escape key
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && menuDropdown.classList.contains('show')) {
-                menuDropdown.classList.remove('show');
-            }
-        });
-    } else {
-        console.error('Menu elements not found!');
-    }
+       // Close menu when pressing Escape key
+       document.addEventListener('keydown', (e) => {
+           if (e.key === 'Escape' && menuDropdown.classList.contains('show')) {
+               menuDropdown.classList.remove('show');
+           }
+       });
+   } else {
+       console.error('Menu elements not found!');
+   }
 
-    // Sign Out functionality - UPDATED
-    const signOutButton = document.getElementById('signOut');
-    if (signOutButton) {
-        signOutButton.addEventListener('click', async (e) => {
-            e.preventDefault();
-            console.log('Sign out button clicked');
-            await signOut();
-        });
-    }
+   // Sign Out functionality - UPDATED
+   const signOutButton = document.getElementById('signOut');
+   if (signOutButton) {
+       signOutButton.addEventListener('click', async (e) => {
+           e.preventDefault();
+           console.log('Sign out button clicked');
+           await signOut();
+       });
+   }
 
-    // Form submission
-    const form = document.querySelector('form');
-    if (form) {
-        form.addEventListener('submit', handleFormSubmit);
-    }
+   // Set up the incomplete rounds UI
+   setupIncompleteRoundsUI();
 
-    // Set initial date
-    const dateInput = document.getElementById('roundDate');
-    if (dateInput) {
-        dateInput.valueAsDate = new Date();
-    }
+   // Form submission
+   const form = document.querySelector('form');
+   if (form) {
+       form.addEventListener('submit', handleFormSubmit);
+   }
 
-    // Initialize the application
-    initializeApp();
+   // Set initial date
+   const dateInput = document.getElementById('roundDate');
+   if (dateInput) {
+       dateInput.valueAsDate = new Date();
+   }
+
+   // Initialize the application
+   initializeApp();
 });
 
 // Logging for debugging
