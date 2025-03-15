@@ -1,0 +1,223 @@
+/* Responsive Header Styles - for all pages */
+
+/* Base header styling */
+.intro-header h1,
+.about-header h1,
+.tips-header h1,
+.privacy-header h1,
+.terms-header h1,
+.feedback-header h1 {
+    font-family: 'Lora', serif;
+    color: #1e293b;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+    margin-bottom: 20px;
+    transition: font-size 0.3s ease;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+}
+
+.intro-content h1,
+.intro-section .intro-content h1 {
+    font-size: 4rem; /* 64px base size */
+}
+
+.about-header h1,
+.tips-header h1,
+.privacy-header h1,
+.terms-header h1,
+.feedback-header h1 {
+    font-size: 3.5rem; /* 56px base size */
+}
+
+.intro-description,
+.about-header p,
+.tips-header p,
+.privacy-header p,
+.terms-header p,
+.feedback-header p {
+    color: #334155;
+    max-width: 700px;
+    margin: 0 auto 40px;
+    line-height: 1.6;
+    font-weight: 400;
+    transition: font-size 0.3s ease, margin 0.3s ease;
+    font-size: 1.5rem; /* 24px base size */
+}
+
+/* Large tablet breakpoint */
+@media (max-width: 1024px) {
+    .intro-content h1,
+    .intro-section .intro-content h1 {
+        font-size: 3.25rem; /* 52px */
+    }
+    
+    .about-header h1,
+    .tips-header h1,
+    .privacy-header h1,
+    .terms-header h1,
+    .feedback-header h1 {
+        font-size: 3rem; /* 48px */
+    }
+    
+    .intro-description,
+    .about-header p,
+    .tips-header p,
+    .privacy-header p,
+    .terms-header p,
+    .feedback-header p {
+        font-size: 1.25rem; /* 20px */
+        margin-bottom: 30px;
+        max-width: 600px;
+    }
+}
+
+/* Medium tablet / small desktop breakpoint */
+@media (max-width: 900px) {
+    .intro-content h1,
+    .intro-section .intro-content h1 {
+        font-size: 2.75rem; /* 44px */
+    }
+    
+    .about-header h1,
+    .tips-header h1,
+    .privacy-header h1,
+    .terms-header h1,
+    .feedback-header h1 {
+        font-size: 2.5rem; /* 40px */
+    }
+    
+    .intro-description,
+    .about-header p,
+    .tips-header p,
+    .privacy-header p,
+    .terms-header p,
+    .feedback-header p {
+        font-size: 1.125rem; /* 18px */
+        max-width: 550px;
+    }
+}
+
+/* Small tablet breakpoint */
+@media (max-width: 768px) {
+    .intro-content h1,
+    .intro-section .intro-content h1 {
+        font-size: 2.25rem; /* 36px */
+    }
+    
+    .about-header h1,
+    .tips-header h1,
+    .privacy-header h1,
+    .terms-header h1,
+    .feedback-header h1 {
+        font-size: 2rem; /* 32px */
+    }
+    
+    .intro-description,
+    .about-header p,
+    .tips-header p,
+    .privacy-header p,
+    .terms-header p,
+    .feedback-header p {
+        font-size: 1rem; /* 16px */
+        margin-bottom: 25px;
+        max-width: 500px;
+    }
+}
+
+/* Mobile landscape breakpoint */
+@media (max-width: 576px) {
+    .intro-content h1,
+    .intro-section .intro-content h1 {
+        font-size: 1.875rem; /* 30px */
+    }
+    
+    .about-header h1,
+    .tips-header h1,
+    .privacy-header h1,
+    .terms-header h1,
+    .feedback-header h1 {
+        font-size: 1.75rem; /* 28px */
+    }
+    
+    .intro-description,
+    .about-header p,
+    .tips-header p,
+    .privacy-header p,
+    .terms-header p,
+    .feedback-header p {
+        font-size: 0.9375rem; /* 15px */
+        margin-bottom: 20px;
+        max-width: 100%;
+        padding: 0 15px;
+    }
+}
+
+/* Mobile portrait breakpoint */
+@media (max-width: 375px) {
+    .intro-content h1,
+    .intro-section .intro-content h1 {
+        font-size: 1.625rem; /* 26px */
+    }
+    
+    .about-header h1,
+    .tips-header h1,
+    .privacy-header h1,
+    .terms-header h1,
+    .feedback-header h1 {
+        font-size: 1.5rem; /* 24px */
+    }
+    
+    .intro-description,
+    .about-header p,
+    .tips-header p,
+    .privacy-header p,
+    .terms-header p,
+    .feedback-header p {
+        font-size: 0.875rem; /* 14px */
+        margin-bottom: 15px;
+        line-height: 1.5;
+    }
+}
+
+/* Extra spacing and padding adjustments */
+@media (max-width: 768px) {
+    .intro-content,
+    .about-header,
+    .tips-header,
+    .privacy-header,
+    .terms-header,
+    .feedback-header {
+        padding: 30px var(--spacing-base);
+    }
+}
+
+@media (max-width: 576px) {
+    .intro-content,
+    .about-header,
+    .tips-header,
+    .privacy-header,
+    .terms-header,
+    .feedback-header {
+        padding: 20px var(--spacing-base);
+    }
+}
+
+/* Ensure header animations still work */
+.intro-content h1,
+.about-header h1,
+.tips-header h1,
+.privacy-header h1,
+.terms-header h1,
+.feedback-header h1 {
+    animation: fadeIn 0.8s ease-out;
+}
+
+.intro-description,
+.about-header p,
+.tips-header p,
+.privacy-header p,
+.terms-header p,
+.feedback-header p {
+    animation: fadeIn 0.8s ease-out 0.2s both;
+}

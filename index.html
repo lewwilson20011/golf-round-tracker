@@ -12,6 +12,7 @@
 <link href="css/styles.css" rel="stylesheet">
 <link href="css/chat-bot.css" rel="stylesheet">
 <link href="css/header-footer.css" rel="stylesheet">
+<link href="css/responsive.css" rel="stylesheet">
 <!-- Favicon and App Icons -->
 <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
 <link rel="apple-touch-icon" sizes="60x60" href="icons/apple-icon-60x60.png">
@@ -59,7 +60,6 @@
     top: 20px;
     right: 20px;
 }
-
 .menu-item {
     display: flex;
     align-items: center;
@@ -70,17 +70,14 @@
     font-size: 16px;
     font-family: 'Hind Madurai', sans-serif;
 }
-
 .menu-item:hover {
     background: rgba(255, 255, 255, 0.05);
 }
-
 .menu-divider {
     height: 1px;
     background: rgba(255, 255, 255, 0.1);
     margin: 8px 0;
 }
-
 /* ========================================
    2. INTRODUCTION SECTION STYLES - LIGHT VERSION
    ======================================== */
@@ -91,13 +88,12 @@
     background: linear-gradient(to bottom, rgba(240, 248, 255, 0.95), rgba(226, 232, 240, 0));
     padding: 0;
     margin-bottom: 40px;
-/*    border-bottom: 1px solid #e2e8f0;*/
+    /*    border-bottom: 1px solid #e2e8f0;*/
     min-height: calc(100vh - 80px); /* Full viewport height minus header height */
     display: flex;
     align-items: center;
     justify-content: center;
 }
-
 /* Subtle pattern overlay for texture */
 .intro-section::before {
     content: '';
@@ -110,7 +106,6 @@
     opacity: 0.3;
     pointer-events: none;
 }
-
 /* Intro content wrapper */
 .intro-content {
     max-width: 1200px;
@@ -119,7 +114,6 @@
     padding: 60px var(--spacing-base);
     width: 100%;
 }
-
 /* Main heading with serif font - darker for contrast */
 .intro-content h1 {
     font-family: 'Lora', serif;
@@ -132,7 +126,6 @@
     line-height: 1.2;
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.05); /* Subtle shadow */
 }
-
 /* Intro description text - darker for readability */
 .intro-description {
     font-size: 24px;
@@ -143,7 +136,6 @@
     animation: fadeIn 0.8s ease-out 0.2s both;
     font-weight: 400;
 }
-
 /* Features grid container */
 .intro-features {
     display: flex;
@@ -153,7 +145,6 @@
     margin-bottom: 40px;
     animation: fadeIn 0.8s ease-out 0.4s both;
 }
-
 /* Individual feature card - lighter with border */
 .intro-feature {
     max-width: 320px;
@@ -167,13 +158,11 @@
     transition: transform 0.3s, box-shadow 0.3s;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
-
 .intro-feature:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
     border-color: #cbd5e1;
 }
-
 /* Feature icons - keeping green but adjusting */
 .feature-icon {
     font-size: 28px;
@@ -181,7 +170,6 @@
     margin-right: 18px;
     margin-top: 3px;
 }
-
 /* Feature text elements - darker for contrast */
 .feature-text h3 {
     font-size: 18px;
@@ -189,13 +177,11 @@
     margin-bottom: 8px;
     font-weight: 600;
 }
-
 .feature-text p {
     font-size: 14px;
     color: #475569; /* Slate-600 */
     line-height: 1.5;
 }
-
 /* Call-to-action button container */
 .intro-cta {
     display: flex;
@@ -204,7 +190,6 @@
     margin-top: 40px;
     animation: fadeIn 0.8s ease-out 0.6s both;
 }
-
 /* ========================================
    3. CTA BUTTON STYLES
    ======================================== */
@@ -221,20 +206,17 @@
     font-size: 24px;
     box-shadow: 0 4px 12px rgba(34, 197, 94, 0.2);
 }
-
 .cta-button:hover {
     transform: translateY(-3px);
     box-shadow: 0 6px 15px rgba(34, 197, 94, 0.3);
     background-color: #18a95e; /* Slightly darker on hover */
 }
-
 .cta-button.secondary {
     background-color: white;
     border: 1px solid var(--primary-green);
     color: var(--primary-green);
     box-shadow: 0 4px 12px rgba(34, 197, 94, 0.1);
 }
-
 .cta-button.secondary:hover {
     background-color: rgba(34, 197, 94, 0.05);
     border-color: #18a95e;
@@ -243,73 +225,60 @@
 
 /* Mobile adjustments */
 @media (max-width: 768px) {
-    .intro-section {
-        min-height: calc(100vh - 70px); /* Adjust for smaller header on mobile */
-    }
-    
-    .intro-content {
-        padding: 40px var(--spacing-base);
-    }
-
-    .intro-content h1 {
-        font-size: 36px;
-    }
-
-    .intro-description {
-        font-size: 16px;
-    }
-
-    .intro-features {
-        flex-direction: column;
-        align-items: center;
-        gap: 20px;
-    }
-
-    .intro-feature {
-        width: 100%;
-        padding: 20px;
-    }
-
-    .intro-cta {
-        flex-direction: column;
-        gap: 15px;
-    }
+.intro-section {
+    min-height: calc(100vh - 70px); /* Adjust for smaller header on mobile */
 }
-
+.intro-content {
+    padding: 40px var(--spacing-base);
+}
+.intro-content h1 {
+    font-size: 36px;
+}
+.intro-description {
+    font-size: 16px;
+}
+.intro-features {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+.intro-feature {
+    width: 100%;
+    padding: 20px;
+}
+.intro-cta {
+    flex-direction: column;
+    gap: 15px;
+}
+}
 /* ========================================
    4. CARD STYLES (ADD ROUND CARD)
    ======================================== */
 .card {
     transition: transform 0.3s, box-shadow 0.3s;
 }
-
 /* Make the Add Round card stand out */
 .card:first-of-type {
     border: 2px solid var(--primary-green);
     box-shadow: 0 8px 24px rgba(34, 197, 94, 0.15);
     transform: translateY(-5px);
 }
-
 .card:first-of-type .card-header {
     background: linear-gradient(to right, var(--primary-green), #20b073);
     color: white;
     padding: 18px 24px;
     border-radius: .5rem;
 }
-
 .card:first-of-type .card-title {
     font-size: 20px;
     font-weight: 600;
 }
-
 .card:first-of-type .card-title .icon {
     color: white;
 }
-
 .card:first-of-type form {
     padding: 24px;
 }
-
 /* Add a "New" badge to the card */
 /*
 .card:first-of-type .card-header::after {
@@ -347,52 +316,40 @@
     align-items: center;
     gap: 10px;
 }
-
 .save-btn:hover {
     background: #1db863;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
 }
-
 .save-btn:active {
     transform: translateY(0);
 }
-
 .save-btn::after {
     content: '→';
     font-size: 18px;
     transition: transform 0.3s;
 }
-
 .save-btn:hover::after {
     transform: translateX(5px);
 }
-
 /* Enhanced form controls */
 .form-group {
     margin-bottom: 18px;
 }
-
 .form-group label {
     font-weight: 500;
     display: block;
     margin-bottom: 8px;
     color: white;
 }
-
-.form-group input, 
-.form-group select, 
-.form-group textarea {
+.form-group input, .form-group select, .form-group textarea {
     border: 1px solid #e2e8f0;
     padding: 12px 16px;
     border-radius: 6px;
     transition: border-color 0.3s, box-shadow 0.3s;
     width: 100%;
 }
-
-.form-group input:focus, 
-.form-group select:focus, 
-.form-group textarea:focus {
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
     border-color: var(--primary-green);
     box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.2);
     outline: none;
@@ -403,32 +360,40 @@
    ======================================== */
 /* Simple fade-in animation */
 @keyframes simpleAppear {
-    from { 
-        opacity: 0; 
-        transform: translateY(20px);
-    }
-    to { 
-        opacity: 1;
-        transform: translateY(0);
-    }
+from {
+opacity: 0;
+transform: translateY(20px);
 }
-
+to {
+opacity: 1;
+transform: translateY(0);
+}
+}
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+from {
+opacity: 0;
 }
-
+to {
+opacity: 1;
+}
+}
 /* Animation classes that will be applied by JavaScript */
 .fade-in {
     animation: simpleAppear 0.6s ease forwards;
     visibility: visible !important;
 }
-
-.delay-1 { animation-delay: 0.1s; }
-.delay-2 { animation-delay: 0.3s; }
-.delay-3 { animation-delay: 0.5s; }
-.delay-4 { animation-delay: 0.7s; }
-
+.delay-1 {
+    animation-delay: 0.1s;
+}
+.delay-2 {
+    animation-delay: 0.3s;
+}
+.delay-3 {
+    animation-delay: 0.5s;
+}
+.delay-4 {
+    animation-delay: 0.7s;
+}
 /* Make sure the main container and its children are hidden initially */
 .container#main-container {
     visibility: hidden;
@@ -438,38 +403,31 @@
    7. MOBILE RESPONSIVENESS
    ======================================== */
 @media (max-width: 768px) {
-    /* Intro section mobile adjustments */
-    .intro-section {
-        min-height: calc(100vh - 70px); /* Adjust for smaller header on mobile */
-    }
-    
-    .intro-content {
-        padding: 40px var(--spacing-base);
-    }
-
-    .intro-content h1 {
-        font-size: 36px;
-    }
-
-    .intro-description {
-        font-size: 16px;
-    }
-
-    .intro-features {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .intro-feature {
-        width: 100%;
-    }
-
-    .intro-cta {
-        flex-direction: column;
-        gap: 15px;
-    }
+/* Intro section mobile adjustments */
+.intro-section {
+    min-height: calc(100vh - 70px); /* Adjust for smaller header on mobile */
 }
-
+.intro-content {
+    padding: 40px var(--spacing-base);
+}
+.intro-content h1 {
+    font-size: 36px;
+}
+.intro-description {
+    font-size: 16px;
+}
+.intro-features {
+    flex-direction: column;
+    align-items: center;
+}
+.intro-feature {
+    width: 100%;
+}
+.intro-cta {
+    flex-direction: column;
+    gap: 15px;
+}
+}
 /* ========================================
    8. ROUNDS TABLE NOTES TRUNCATION
    ======================================== */
@@ -478,7 +436,6 @@
     width: 100%;
     border-collapse: collapse;
 }
-
 .rounds-header {
     display: grid;
     grid-template-columns: 0.8fr 1.2fr 0.6fr 2fr 0.6fr;
@@ -486,7 +443,6 @@
     border-bottom: 1px solid #e2e8f0;
     padding: 12px 0;
 }
-
 .round-item {
     display: grid;
     grid-template-columns: 0.8fr 1.2fr 0.6fr 2fr 0.6fr;
@@ -494,7 +450,6 @@
     padding: 12px 0;
     align-items: center;
 }
-
 /* Notes text truncation */
 .round-item .notes-cell {
     max-height: 2.8em;           /* Limit to approximately 2 lines */
@@ -506,12 +461,10 @@
     line-height: 1.4;            /* Set consistent line height */
     position: relative;          /* For tooltip positioning */
 }
-
 /* Tooltip for hover to see full notes */
 .round-item .notes-cell:hover {
     cursor: pointer;
 }
-
 /* Add tooltip functionality with CSS only */
 .round-item .notes-cell[title]:hover:after {
     content: attr(title);
@@ -529,18 +482,14 @@
     font-size: 14px;
     line-height: 1.5;
 }
-
 /* Ensure all cells have proper padding */
-.rounds-header > div,
-.round-item > div {
+.rounds-header > div, .round-item > div {
     padding: 8px;
 }
-
 /* Make sure the rounds list container has proper spacing */
 #roundsList {
     width: 100%;
 }
-
 /* Empty state styling */
 .empty-state {
     text-align: center;
@@ -551,26 +500,26 @@
 
 /* Truncate notes to 2 lines in rounds table */
 .round-item > div:nth-child(4) {
-  max-height: 2.8em;           /* Limit to approximately 2 lines */
-  overflow: hidden;            /* Hide overflow content */
-  text-overflow: ellipsis;     /* Show ellipsis for overflow */
-  display: -webkit-box;        /* Use box layout for multi-line truncation */
-  -webkit-line-clamp: 2;       /* Limit to 2 lines */
-  -webkit-box-orient: vertical;/* Orient text vertically */
-  line-height: 1.4;            /* Set consistent line height */
+    max-height: 2.8em;           /* Limit to approximately 2 lines */
+    overflow: hidden;            /* Hide overflow content */
+    text-overflow: ellipsis;     /* Show ellipsis for overflow */
+    display: -webkit-box;        /* Use box layout for multi-line truncation */
+    -webkit-line-clamp: 2;       /* Limit to 2 lines */
+    -webkit-box-orient: vertical;/* Orient text vertically */
+    line-height: 1.4;            /* Set consistent line height */
 }
 </style>
 </head>
 <body>
 <!-- Header (loaded via JS) -->
 <div data-include="includes/header.html"></div>
-    
+
 <!-- Introduction Section -->
 <div class="intro-section">
-    <div class="intro-content">
-        <h1>Welcome to Round Tracker</h1>
-        <p class="intro-description">Your personal golf companion for tracking scores, analyzing performance, and improving your game.</p>
-<!--
+  <div class="intro-content">
+    <h1>Welcome to Round Tracker</h1>
+    <p class="intro-description">Your personal golf companion for tracking scores, analyzing performance, and improving your game.</p>
+    <!--
         <div class="intro-features">
             <div class="intro-feature">
                 <i class="fa-solid fa-chart-line feature-icon"></i>
@@ -595,115 +544,108 @@
             </div>
         </div>
 -->
-        <div class="intro-cta">
-            <a href="#main-container" class="cta-button" id="startTrackingBtn">Track Your Rounds</a>
-            <a href="golf-tips.html" class="cta-button secondary">View Golf Tips</a>
-        </div>
-    </div>
+    <div class="intro-cta"> <a href="#main-container" class="cta-button" id="startTrackingBtn">Track Your Rounds</a> <a href="golf-tips.html" class="cta-button secondary">View Golf Tips</a> </div>
+  </div>
 </div>
 
 <!-- Main Content Container -->
-<div class="container" id="main-container">
-    <!-- Stats Overview Grid -->
-    <div class="stats-grid">
-        <div class="stat-card">
-            <div class="stat-header"><i class="fa-solid fa-bullseye icon"></i> Average Score</div>
-            <div class="stat-value" id="avgScore">-</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-header"><i class="fa-solid fa-trophy icon"></i> Best Score</div>
-            <div class="stat-value" id="bestScore">-</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-header"><i class="fa-solid fa-clock icon"></i> Total Rounds</div>
-            <div class="stat-value" id="totalRounds">0</div>
-        </div>
+<div class="container" id="main-container"> 
+  <!-- Stats Overview Grid -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-header"><i class="fa-solid fa-bullseye icon"></i> Average Score</div>
+      <div class="stat-value" id="avgScore">-</div>
     </div>
-    
-    <!-- Main Content Area -->
-    <div class="main-content">
-        <!-- Add Round Card -->
-        <div class="card">
-          <div class="card-title"><i class="fa-solid fa-calendar icon"></i> Add Round</div>
-            <form>
-                <div class="form-group">
-                    <label>Date</label>
-                    <input type="date" id="roundDate" required>
-                </div>
-                <div class="form-group">
-                    <label>Course</label>
-                    <input
+    <div class="stat-card">
+      <div class="stat-header"><i class="fa-solid fa-trophy icon"></i> Best Score</div>
+      <div class="stat-value" id="bestScore">-</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-header"><i class="fa-solid fa-clock icon"></i> Total Rounds</div>
+      <div class="stat-value" id="totalRounds">0</div>
+    </div>
+  </div>
+  
+  <!-- Main Content Area -->
+  <div class="main-content"> 
+    <!-- Add Round Card -->
+    <div class="card">
+      <div class="card-title"><i class="fa-solid fa-calendar icon"></i> Add Round</div>
+      <form>
+        <div class="form-group">
+          <label>Date</label>
+          <input type="date" id="roundDate" required>
+        </div>
+        <div class="form-group">
+          <label>Course</label>
+          <input
                         type="text"
                         id="courseSelect"
                         list="courseList"
                         placeholder="Start typing to search courses..."
                         required
                     >
-                    <datalist id="courseList">
-                        <!-- Will be populated from database -->
-                    </datalist>
-                </div>
-                <div class="form-group">
-                    <label>Number of Holes</label>
-                    <select id="holesSelect">
-                        <option>18 Holes</option>
-                        <option>9 Holes</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Score</label>
-                    <input type="number" id="scoreInput" min="20" max="200" required>
-                </div>
-                <div class="form-group">
-                    <label>Notes</label>
-                    <textarea id="notes" rows="4" placeholder="How was your round?"></textarea>
-                </div>
-                <button type="submit" class="save-btn">Save Round</button>
-            </form>
+          <datalist id="courseList"> 
+            <!-- Will be populated from database --> 
+          </datalist>
         </div>
-        
-        <!-- Recent Rounds Card -->
-        <div class="card">
-            <div class="card-title"><i class="fa-solid fa-clock icon"></i> Recent Rounds</div>
-            <div class="rounds-table">
-                <div class="rounds-header">
-                    <div>Date</div>
-                    <div>Course</div>
-                    <div>Score</div>
-                    <div>Notes</div>
-                    <div>Actions</div>
-                </div>
-                <div id="roundsList">
-                    <!-- Empty state will be shown here when no rounds are logged -->
-                </div>
-            </div>
+        <div class="form-group">
+          <label>Number of Holes</label>
+          <select id="holesSelect">
+            <option>18 Holes</option>
+            <option>9 Holes</option>
+          </select>
         </div>
+        <div class="form-group">
+          <label>Score</label>
+          <input type="number" id="scoreInput" min="20" max="200" required>
+        </div>
+        <div class="form-group">
+          <label>Notes</label>
+          <textarea id="notes" rows="4" placeholder="How was your round?"></textarea>
+        </div>
+        <button type="submit" class="save-btn">Save Round</button>
+      </form>
     </div>
+    
+    <!-- Recent Rounds Card -->
+    <div class="card">
+      <div class="card-title"><i class="fa-solid fa-clock icon"></i> Recent Rounds</div>
+      <div class="rounds-table">
+        <div class="rounds-header">
+          <div>Date</div>
+          <div>Course</div>
+          <div>Score</div>
+          <div>Notes</div>
+          <div>Actions</div>
+        </div>
+        <div id="roundsList"> 
+          <!-- Empty state will be shown here when no rounds are logged --> 
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- Footer (loaded via JS) -->
 <div data-include="includes/footer.html"></div>
 
 <!-- DROPDOWN MENU -->
-<div id="menuDropdown" class="menu-dropdown">
-    <a href="#" class="menu-item" id="signOutLink">
-        <i class="fa-solid fa-right-from-bracket"></i> Sign Out
-    </a>
-</div>
+<div id="menuDropdown" class="menu-dropdown"> <a href="#" class="menu-item" id="signOutLink"> <i class="fa-solid fa-right-from-bracket"></i> Sign Out </a> </div>
 
 <!-- Back to Top Button -->
 <button id="backToTopBtn" title="Go to top"><i class="fa-solid fa-chevron-up"></i></button>
 
-<!-- Scripts -->
+<!-- Scripts --> 
 <!-- Supabase CDN script MUST be loaded first --> 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script> 
 
 <!-- Load main app scripts --> 
-<script type="module" src="js/supabase.js"></script>
-<script type="module" src="js/script.js"></script>
-<script type="module" src="js/chat-bot.js"></script>
+<script type="module" src="js/supabase.js"></script> 
+<script type="module" src="js/script.js"></script> 
+<script type="module" src="js/chat-bot.js"></script> 
 
-<!-- Sign Out Functionality -->
+<!-- Sign Out Functionality --> 
 <script type="module">
 import { signOut } from './js/supabase.js';
 
@@ -751,9 +693,9 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
-</script>
+</script> 
 
-<!-- Back to Top Script -->
+<!-- Back to Top Script --> 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // Start Tracking button smooth scroll
@@ -792,15 +734,15 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
-</script>
+</script> 
 
-<!-- Header/Footer Initialization -->
+<!-- Header/Footer Initialization --> 
 <script type="module">
     import { initializeHeaderFooter } from './js/header-footer.js';
     initializeHeaderFooter();
-</script>
+</script> 
 
-<!-- Animations Script -->
+<!-- Animations Script --> 
 <script>
 // Simple animation script
 window.addEventListener('load', function() {
@@ -875,8 +817,8 @@ window.addEventListener('load', function() {
         });
     }
 });
-</script>
-	<script>
+</script> 
+<script>
 // Add this script to truncate notes to 2 lines
 document.addEventListener('DOMContentLoaded', function() {
   // Function to apply truncation to existing round items

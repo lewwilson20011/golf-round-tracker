@@ -8,6 +8,7 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 <link href="css/styles.css" rel="stylesheet">
 <link href="css/header-footer.css" rel="stylesheet">
+<link href="css/responsive.css" rel="stylesheet">
 <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
 <link rel="apple-touch-icon" sizes="60x60" href="icons/apple-icon-60x60.png">
 <link rel="apple-touch-icon" sizes="72x72" href="icons/apple-icon-72x72.png">
@@ -25,7 +26,6 @@
 <meta name="msapplication-TileColor" content="#ffffff">
 <meta name="msapplication-TileImage" content="icons/ms-icon-144x144.png">
 <meta name="theme-color" content="#ffffff">
-
 <style>
 /* Terms of Service page specific styles */
 .terms-container {
@@ -33,16 +33,14 @@
     margin: 0 auto;
     padding: 40px var(--spacing-base);
 }
-
 .terms-header {
     text-align: center;
     margin-bottom: 40px;
     animation: fadeIn 0.8s ease-out;
 }
-
 .terms-header h1 {
     font-family: 'Lora', serif;
-    font-size: 64px;
+    font-size: 48px;
     color: #1e293b; /* Dark text for contrast */
     margin-bottom: 20px;
     animation: fadeIn 0.8s ease-out;
@@ -51,7 +49,6 @@
     line-height: 1.2;
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.05); /* Subtle shadow */
 }
-
 .terms-header p {
     font-size: 24px;
     color: black;
@@ -59,14 +56,12 @@
     margin: 0 auto;
     line-height: 1.6;
 }
-
 .last-updated {
     display: block;
     margin-top: 20px;
     color: black;
     font-size: 14px;
 }
-
 .terms-content {
     background: var(--card-bg);
     border-radius: var(--border-radius);
@@ -75,7 +70,6 @@
     animation: fadeIn 0.6s ease-out 0.2s both;
     margin-bottom: 40px;
 }
-
 .terms-content h2 {
     font-size: 22px;
     color: white;
@@ -83,86 +77,70 @@
     padding-bottom: 8px;
     border-bottom: 1px solid var(--border-color);
 }
-
 .terms-content h2:first-child {
     margin-top: 0;
 }
-
 .terms-content h3 {
     font-size: 18px;
     color: white;
     margin: 20px 0 10px;
 }
-
 .terms-content p {
     color: rgba(255, 255, 255, 0.9);
     line-height: 1.6;
     margin-bottom: 15px;
 }
-
 .terms-content ul, .terms-content ol {
     margin-bottom: 15px;
     padding-left: 20px;
 }
-
 .terms-content li {
     color: rgba(255, 255, 255, 0.9);
     margin-bottom: 8px;
     line-height: 1.6;
 }
-
 .terms-content strong {
     color: white;
 }
-
 .contact-section {
     margin-top: 30px;
     padding-top: 20px;
     border-top: 1px solid var(--border-color);
 }
-
 .contact-info {
     display: flex;
     flex-direction: column;
     gap: 5px;
 }
-
 .contact-info a {
     color: var(--primary-green);
     text-decoration: none;
 }
-
 .contact-info a:hover {
     text-decoration: underline;
 }
 
 /* Mobile adjustments */
 @media (max-width: 768px) {
-    .terms-container {
-        padding: 20px var(--spacing-base);
-    }
-    
-    .terms-header h1 {
-        font-size: 28px;
-    }
-    
-    .terms-header p {
-        font-size: 16px;
-    }
-    
-    .terms-content {
-        padding: 20px;
-    }
-    
-    .terms-content h2 {
-        font-size: 20px;
-    }
-    
-    .terms-content h3 {
-        font-size: 17px;
-    }
+.terms-container {
+    padding: 20px var(--spacing-base);
 }
-
+.terms-header h1 {
+    font-size: 28px;
+}
+.terms-header p {
+    font-size: 16px;
+}
+.terms-content {
+    padding: 20px;
+}
+.terms-content h2 {
+    font-size: 20px;
+}
+.terms-content h3 {
+    font-size: 17px;
+}
+}
 /* Dropdown Menu Styles */
 .menu-dropdown {
     position: fixed;
@@ -176,7 +154,6 @@
     top: 20px;
     right: 20px;
 }
-
 .menu-item {
     display: flex;
     align-items: center;
@@ -187,11 +164,9 @@
     font-size: 16px;
     font-family: 'Hind Madurai', sans-serif;
 }
-
 .menu-item:hover {
     background: rgba(255, 255, 255, 0.05);
 }
-
 .menu-divider {
     height: 1px;
     background: rgba(255, 255, 255, 0.1);
@@ -200,94 +175,76 @@
 </style>
 </head>
 <body>
-
 <div data-include="includes/header.html"></div>
-
-<div class="terms-container">
-    <!-- Terms Header -->
-    <div class="terms-header">
-        <h1>Terms of Service</h1>
-        <p>Please read these Terms of Service carefully before using Round Tracker.</p>
-        <span class="last-updated">Last Updated: March 6, 2025</span>
+<div class="terms-container"> 
+  <!-- Terms Header -->
+  <div class="terms-header">
+    <h1>Terms of Service</h1>
+    <p>Please read these Terms of Service carefully before using Round Tracker.</p>
+    <span class="last-updated">Last Updated: March 6, 2025</span> </div>
+  
+  <!-- Terms Content -->
+  <div class="terms-content">
+    <h2>1. Agreement to Terms</h2>
+    <p>By accessing or using Round Tracker, you agree to be bound by these Terms of Service and all applicable laws and regulations. If you do not agree with any of these terms, you are prohibited from using or accessing this application.</p>
+    <h2>2. Use License</h2>
+    <p>Permission is granted to temporarily use Round Tracker for personal, non-commercial tracking of golf performance. This is the grant of a license, not a transfer of title, and under this license you may not:</p>
+    <ul>
+      <li>Modify or copy the materials</li>
+      <li>Use the materials for any commercial purpose</li>
+      <li>Attempt to decompile or reverse engineer any software contained in Round Tracker</li>
+      <li>Remove any copyright or other proprietary notations from the materials</li>
+      <li>Transfer the materials to another person or "mirror" the materials on any other server</li>
+    </ul>
+    <p>This license shall automatically terminate if you violate any of these restrictions and may be terminated by Round Tracker at any time.</p>
+    <h2>3. User Accounts</h2>
+    <p>To use certain features of Round Tracker, you must register for an account. You agree to provide accurate, current, and complete information during the registration process and to update such information to keep it accurate, current, and complete.</p>
+    <p>You are responsible for safeguarding the password that you use to access Round Tracker and for any activities or actions under your password. We encourage you to use "strong" passwords (passwords that use a combination of upper and lower case letters, numbers, and symbols) with your account.</p>
+    <p>You agree not to disclose your password to any third party. You must notify us immediately upon becoming aware of any breach of security or unauthorized use of your account.</p>
+    <h2>4. User Content</h2>
+    <p>When you upload, submit, store, send or receive content to or through Round Tracker, you give us a license to use, host, store, reproduce, modify, and distribute such content. The rights you grant in this license are for the limited purpose of operating, promoting, and improving our services.</p>
+    <p>You represent and warrant that you own or have the necessary rights to any content you submit, and that such content does not violate the rights of any third party.</p>
+    <h2>5. Disclaimer</h2>
+    <p>The materials on Round Tracker are provided on an 'as is' basis. Round Tracker makes no warranties, expressed or implied, and hereby disclaims and negates all other warranties including, without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property or other violation of rights.</p>
+    <p>Further, Round Tracker does not warrant or make any representations concerning the accuracy, likely results, or reliability of the use of the materials on its website or otherwise relating to such materials or on any sites linked to this site.</p>
+    <h2>6. Limitations</h2>
+    <p>In no event shall Round Tracker or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the materials on Round Tracker, even if Round Tracker or an authorized representative has been notified orally or in writing of the possibility of such damage.</p>
+    <p>Because some jurisdictions do not allow limitations on implied warranties, or limitations of liability for consequential or incidental damages, these limitations may not apply to you.</p>
+    <h2>7. Links to Other Websites</h2>
+    <p>Our application may contain links to third-party websites or services that are not owned or controlled by Round Tracker.</p>
+    <p>Round Tracker has no control over, and assumes no responsibility for, the content, privacy policies, or practices of any third party websites or services. You further acknowledge and agree that Round Tracker shall not be responsible or liable, directly or indirectly, for any damage or loss caused or alleged to be caused by or in connection with the use of or reliance on any such content, goods or services available on or through any such websites or services.</p>
+    <h2>8. Modifications</h2>
+    <p>Round Tracker may revise these Terms of Service at any time without notice. By using this application, you are agreeing to be bound by the then current version of these Terms of Service.</p>
+    <h2>9. Governing Law</h2>
+    <p>These Terms shall be governed and construed in accordance with the laws applicable in your jurisdiction, without regard to its conflict of law provisions.</p>
+    <p>Our failure to enforce any right or provision of these Terms will not be considered a waiver of those rights. If any provision of these Terms is held to be invalid or unenforceable by a court, the remaining provisions of these Terms will remain in effect.</p>
+    <h2>10. Termination</h2>
+    <p>We may terminate or suspend your account immediately, without prior notice or liability, for any reason whatsoever, including without limitation if you breach the Terms.</p>
+    <p>Upon termination, your right to use the Service will immediately cease. If you wish to terminate your account, you may simply discontinue using the Service or contact us to request account deletion.</p>
+    <h2>11. Contact Us</h2>
+    <div class="contact-section">
+      <p>If you have any questions about these Terms, please contact us:</p>
+      <div class="contact-info">
+        <p>Email: <a href="mailto:support@roundtracker.com">support@roundtracker.com</a></p>
+        <p>Or through the <a href="#">Support section</a> of our website</p>
+      </div>
     </div>
-    
-    <!-- Terms Content -->
-    <div class="terms-content">
-        <h2>1. Agreement to Terms</h2>
-        <p>By accessing or using Round Tracker, you agree to be bound by these Terms of Service and all applicable laws and regulations. If you do not agree with any of these terms, you are prohibited from using or accessing this application.</p>
-        
-        <h2>2. Use License</h2>
-        <p>Permission is granted to temporarily use Round Tracker for personal, non-commercial tracking of golf performance. This is the grant of a license, not a transfer of title, and under this license you may not:</p>
-        <ul>
-            <li>Modify or copy the materials</li>
-            <li>Use the materials for any commercial purpose</li>
-            <li>Attempt to decompile or reverse engineer any software contained in Round Tracker</li>
-            <li>Remove any copyright or other proprietary notations from the materials</li>
-            <li>Transfer the materials to another person or "mirror" the materials on any other server</li>
-        </ul>
-        <p>This license shall automatically terminate if you violate any of these restrictions and may be terminated by Round Tracker at any time.</p>
-        
-        <h2>3. User Accounts</h2>
-        <p>To use certain features of Round Tracker, you must register for an account. You agree to provide accurate, current, and complete information during the registration process and to update such information to keep it accurate, current, and complete.</p>
-        <p>You are responsible for safeguarding the password that you use to access Round Tracker and for any activities or actions under your password. We encourage you to use "strong" passwords (passwords that use a combination of upper and lower case letters, numbers, and symbols) with your account.</p>
-        <p>You agree not to disclose your password to any third party. You must notify us immediately upon becoming aware of any breach of security or unauthorized use of your account.</p>
-        
-        <h2>4. User Content</h2>
-        <p>When you upload, submit, store, send or receive content to or through Round Tracker, you give us a license to use, host, store, reproduce, modify, and distribute such content. The rights you grant in this license are for the limited purpose of operating, promoting, and improving our services.</p>
-        <p>You represent and warrant that you own or have the necessary rights to any content you submit, and that such content does not violate the rights of any third party.</p>
-        
-        <h2>5. Disclaimer</h2>
-        <p>The materials on Round Tracker are provided on an 'as is' basis. Round Tracker makes no warranties, expressed or implied, and hereby disclaims and negates all other warranties including, without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property or other violation of rights.</p>
-        <p>Further, Round Tracker does not warrant or make any representations concerning the accuracy, likely results, or reliability of the use of the materials on its website or otherwise relating to such materials or on any sites linked to this site.</p>
-        
-        <h2>6. Limitations</h2>
-        <p>In no event shall Round Tracker or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the materials on Round Tracker, even if Round Tracker or an authorized representative has been notified orally or in writing of the possibility of such damage.</p>
-        <p>Because some jurisdictions do not allow limitations on implied warranties, or limitations of liability for consequential or incidental damages, these limitations may not apply to you.</p>
-        
-        <h2>7. Links to Other Websites</h2>
-        <p>Our application may contain links to third-party websites or services that are not owned or controlled by Round Tracker.</p>
-        <p>Round Tracker has no control over, and assumes no responsibility for, the content, privacy policies, or practices of any third party websites or services. You further acknowledge and agree that Round Tracker shall not be responsible or liable, directly or indirectly, for any damage or loss caused or alleged to be caused by or in connection with the use of or reliance on any such content, goods or services available on or through any such websites or services.</p>
-        
-        <h2>8. Modifications</h2>
-        <p>Round Tracker may revise these Terms of Service at any time without notice. By using this application, you are agreeing to be bound by the then current version of these Terms of Service.</p>
-        
-        <h2>9. Governing Law</h2>
-        <p>These Terms shall be governed and construed in accordance with the laws applicable in your jurisdiction, without regard to its conflict of law provisions.</p>
-        <p>Our failure to enforce any right or provision of these Terms will not be considered a waiver of those rights. If any provision of these Terms is held to be invalid or unenforceable by a court, the remaining provisions of these Terms will remain in effect.</p>
-        
-        <h2>10. Termination</h2>
-        <p>We may terminate or suspend your account immediately, without prior notice or liability, for any reason whatsoever, including without limitation if you breach the Terms.</p>
-        <p>Upon termination, your right to use the Service will immediately cease. If you wish to terminate your account, you may simply discontinue using the Service or contact us to request account deletion.</p>
-        
-        <h2>11. Contact Us</h2>
-        <div class="contact-section">
-            <p>If you have any questions about these Terms, please contact us:</p>
-            <div class="contact-info">
-                <p>Email: <a href="mailto:support@roundtracker.com">support@roundtracker.com</a></p>
-                <p>Or through the <a href="#">Support section</a> of our website</p>
-            </div>
-        </div>
-    </div>
+  </div>
 </div>
-
 <div data-include="includes/footer.html"></div>
-	
+
 <!-- DROPDOWN MENU HTML -->
-<div id="menuDropdown" class="menu-dropdown">
-    <a href="#" class="menu-item" id="signOutLink">
-        <i class="fa-solid fa-right-from-bracket"></i> Sign Out
-    </a>
-</div>
-	
-	<!-- Back to Top Button -->
+<div id="menuDropdown" class="menu-dropdown"> <a href="#" class="menu-item" id="signOutLink"> <i class="fa-solid fa-right-from-bracket"></i> Sign Out </a> </div>
+
+<!-- Back to Top Button -->
 <button id="backToTopBtn" title="Go to top"><i class="fa-solid fa-chevron-up"></i></button>
 
 <!-- Supabase CDN script MUST be loaded first --> 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script> 
 <!-- Load main app scripts --> 
-<script type="module" src="js/supabase.js"></script>
+<script type="module" src="js/supabase.js"></script> 
 
-<!-- DROPDOWN MENU SCRIPT -->
+<!-- DROPDOWN MENU SCRIPT --> 
 <script type="module">
 import { signOut } from './js/supabase.js';
 
@@ -340,10 +297,10 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
-</script>
-	
-	<!-- Back to Top Script -->
-<!-- Back to Top Script -->
+</script> 
+
+<!-- Back to Top Script --> 
+<!-- Back to Top Script --> 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
   // Get the button
@@ -367,8 +324,8 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 });
-</script>
-	<script type="module">
+</script> 
+<script type="module">
   import { initializeHeaderFooter } from './js/header-footer.js';
   initializeHeaderFooter();
 </script>
