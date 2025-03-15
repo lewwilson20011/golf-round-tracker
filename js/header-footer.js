@@ -99,6 +99,9 @@ async function initializeHeaderFooter() {
 
         // Setup menu functionality - moved outside the auth check to ensure it runs
         setupHeaderMenu();
+        
+        // Set active nav link
+        setActiveNavLink();
 
     } catch (error) {
         console.error('Header initialization error:', error);
@@ -299,6 +302,35 @@ function positionDropdownMenu() {
     console.log('Dropdown positioned');
 }
 
+// Function to set active nav link based on current page
+function setActiveNavLink() {
+    // Get current page path
+    const currentPath = window.location.pathname;
+    console.log('Current path:', currentPath);
+    
+    // Get all navigation links
+    const navLinks = document.querySelectorAll('.header-links a');
+    
+    // Loop through links to find matching href
+    navLinks.forEach(link => {
+        // Get the link's href attribute
+        const linkPath = link.getAttribute('href');
+        console.log('Checking link:', linkPath);
+        
+        // Remove any existing active classes
+        link.classList.remove('active');
+        
+        // Check if current path ends with the link path
+        if (currentPath.endsWith(linkPath) || 
+            (currentPath.endsWith('/') && linkPath === 'index.html') ||
+            (currentPath === '' && linkPath === 'index.html')) {
+            // Add active class to matching link
+            link.classList.add('active');
+            console.log('Active link set:', linkPath);
+        }
+    });
+}
+
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM loaded, initializing header-footer');
@@ -306,4 +338,4 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Export for direct inclusion in HTML
-export { initializeHeaderFooter, loadIncludes };
+export { initializeHeaderFooter, loadIncludes, setActiveNavLink };

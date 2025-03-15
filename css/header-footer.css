@@ -419,3 +419,78 @@
         gap: 12px;
     }
 }
+
+/* HEADER LINKS STYLES */
+.header-links {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.header-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    position: relative;
+    padding: 4px 8px;
+}
+
+.header-links a:hover {
+    color: var(--primary-green);
+}
+
+/* Active link styles with prominent indicator */
+.header-links a.active {
+    color: #4CAF50 !important;
+    font-weight: bold !important;
+    text-decoration: underline !important;
+    text-underline-offset: 6px !important;
+    text-decoration-thickness: 3px !important;
+    text-decoration-color: #4CAF50 !important;
+}
+
+/* Clear underline indicator for active link */
+/*
+.header-links a.active::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: var(--primary-green);
+    border-radius: 1.5px;
+}
+*/
+
+/* Responsive adjustments for header links */
+@media (max-width: 768px) {
+    .header {
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+    
+    .header-links {
+        order: 3;
+        width: 100%;
+        margin-top: 15px;
+        justify-content: center;
+        gap: 20px;
+    }
+    
+    .header-links a {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .header-links {
+        gap: 15px;
+    }
+    
+    .header-links a {
+        font-size: 13px;
+    }
+}
