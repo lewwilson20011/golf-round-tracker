@@ -1,3 +1,4 @@
+import { loadNotes } from './notes.js';
 import { supabase, signOut } from './supabase.js';
 
 let currentUser = null;

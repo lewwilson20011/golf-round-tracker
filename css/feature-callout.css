@@ -1,0 +1,161 @@
+/* Feature Callout Container */
+.feature-callout {
+  position: relative;
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid #22c55e;
+  border-radius: 8px;
+  padding: 30px 20px;
+  text-align: center;
+  margin: 30px auto;
+  max-width: 600px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.feature-callout:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* NEW Badge */
+.new-badge {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background-color: #22c55e;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 4px 10px;
+  border-radius: 20px;
+  box-shadow: 0 4px 8px rgba(34, 197, 94, 0.3);
+  animation: pulseEffect 2s infinite;
+  z-index: 1;
+}
+
+@keyframes pulseEffect {
+  0% {
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.6);
+  }
+  70% {
+    box-shadow: 0 0 0 8px rgba(34, 197, 94, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+  }
+}
+
+/* Feature Content */
+.feature-callout h3 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 10px;
+}
+
+.feature-callout p {
+  font-family: 'Hind Madurai', sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #475569;
+  margin-bottom: 15px;
+}
+
+/* Go to Notes Button */
+.go-to-notes-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: #22c55e;
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 10px 22px;
+  border-radius: 6px;
+  transition: all 0.2s;
+  margin-top: 5px;
+  font-family: 'Montserrat', sans-serif;
+  box-shadow: 0 4px 6px rgba(34, 197, 94, 0.2);
+}
+
+.go-to-notes-btn:hover {
+  background-color: #16a34a;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(34, 197, 94, 0.3);
+}
+
+.go-to-notes-btn:active {
+  transform: translateY(0);
+}
+
+/* Smooth scrolling for anchor links */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Add padding to the notes section to account for fixed header */
+#notes-section {
+  scroll-margin-top: 80px; /* Adjust based on your header height */
+}
+
+/* Highlight animation for the notes section when scrolled to */
+.highlight-section {
+  animation: highlightSection 2s ease-out;
+}
+
+@keyframes highlightSection {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+  }
+  50% {
+    box-shadow: 0 0 20px 5px rgba(34, 197, 94, 0.4);
+  }
+}
+
+/* Media queries for responsive design */
+@media (max-width: 768px) {
+  .feature-callout {
+    padding: 25px 15px;
+    margin: 20px 15px;
+  }
+  
+  .feature-callout h3 {
+    font-size: 18px;
+  }
+  
+  .feature-callout p {
+    font-size: 14px;
+  }
+  
+  .go-to-notes-btn {
+    padding: 8px 18px;
+    font-size: 14px;
+  }
+}
+
+.go-to-notes-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: #22c55e;
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 8px 20px;
+  border-radius: 6px;
+  transition: all 0.2s;
+  margin-top: 10px;
+}
+
+.go-to-notes-btn:hover {
+  background-color: #16a34a;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.go-to-notes-btn:active {
+  transform: translateY(0);
+}

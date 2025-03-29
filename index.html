@@ -13,6 +13,8 @@
 <link href="css/chat-bot.css" rel="stylesheet">
 <link href="css/header-footer.css" rel="stylesheet">
 <link href="css/responsive.css" rel="stylesheet">
+<link href="css/feature-callout.css" rel="stylesheet">
+
 <!-- Favicon and App Icons -->
 <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
 <link rel="apple-touch-icon" sizes="60x60" href="icons/apple-icon-60x60.png">
@@ -545,6 +547,12 @@ opacity: 1;
         </div>
 -->
     <div class="intro-cta"> <a href="#main-container" class="cta-button" id="startTrackingBtn">Track Your Rounds</a> <a href="golf-tips.html" class="cta-button secondary">View Golf Tips</a> </div>
+    <!-- Updated Feature Callout with Correctly Positioned NEW Badge -->
+    <div class="feature-callout">
+      <div class="new-badge">NEW</div>
+      <h3>Track Your Golf Notes</h3>
+      <p>New feature! Keep track of your swing thoughts, practice goals, and game improvements.</p>
+      <a href="#notes-section" class="go-to-notes-btn"> <i class="fa-solid fa-arrow-down"></i> Go to Notes </a> </div>
   </div>
 </div>
 
@@ -604,7 +612,11 @@ opacity: 1;
           <label>Notes</label>
           <textarea id="notes" rows="4" placeholder="How was your round?"></textarea>
         </div>
-        <button type="submit" class="save-btn">Save Round</button>
+        <!-- Updated Save Round button structure -->
+        <div class="save-round-container">
+  <button type="submit" class="save-btn">Save Round</button>
+</div>
+
       </form>
     </div>
     
@@ -621,6 +633,28 @@ opacity: 1;
         </div>
         <div id="roundsList"> 
           <!-- Empty state will be shown here when no rounds are logged --> 
+        </div>
+      </div>
+    </div>
+    
+    <!-- Golf Notes Card -->
+    <div id="notes-section" class="card">
+      <div class="card-title"><i class="fa-solid fa-clipboard-list icon"></i> My Golf Notes</div>
+      <div class="notes-container">
+        <div id="notesList"> 
+          <!-- Notes will be displayed here -->
+          <div class="empty-notes-state">
+            <p>No notes yet. Add your first note to keep track of your golf goals and tips.</p>
+          </div>
+        </div>
+        <div class="note-form">
+          <div class="form-group">
+            <label>Add a Note</label>
+            <textarea id="newNote" rows="3" placeholder="Write down swing thoughts, practice goals, or things to work on..."></textarea>
+          </div>
+          <div class="add-note-container">
+  <button type="button" class="add-note-btn">Add Note</button>
+</div>
         </div>
       </div>
     </div>
@@ -644,6 +678,8 @@ opacity: 1;
 <script type="module" src="js/supabase.js"></script> 
 <script type="module" src="js/script.js"></script> 
 <script type="module" src="js/chat-bot.js"></script> 
+<script type="module" src="js/notes.js"></script> 
+<script type="module" src="js/add-note-feature.js"></script> 
 
 <!-- Sign Out Functionality --> 
 <script type="module">

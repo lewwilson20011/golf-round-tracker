@@ -783,3 +783,279 @@ select:focus, input:focus, textarea:focus {
 .rounds-header > div, .round-row > div {
     padding: 8px;
 }
+
+/* Notes Section Styles */
+.notes-container {
+  padding: 20px;
+}
+
+/* Note item styling */
+.note-item {
+  background-color: #f8fafc;
+  border-left: 3px solid var(--primary-green);
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 6px;
+  position: relative;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.note-item:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+/* Note content styling */
+.note-content {
+  margin-bottom: 10px;
+  line-height: 1.5;
+  color: #1e293b;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* Note metadata styling */
+.note-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+/* Note action buttons */
+.note-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.note-actions button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #64748b;
+  transition: color 0.2s;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.note-actions button:hover {
+  color: var(--primary-green);
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.note-actions button.delete-btn:hover {
+  color: #ef4444;
+}
+
+/* Empty state styling */
+.empty-notes-state {
+  text-align: center;
+  padding: 30px;
+  color: #64748b;
+  font-style: italic;
+  background-color: #f8fafc;
+  border-radius: 6px;
+}
+
+/* Note form styling */
+.note-form {
+  margin-top: 20px;
+}
+
+.note-form textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  resize: vertical;
+  min-height: 100px;
+  font-family: inherit;
+  font-size: 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.note-form textarea:focus {
+  outline: none;
+  border-color: var(--primary-green);
+  box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.2);
+}
+
+.note-form-buttons {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+/* Add button styling */
+#addNoteBtn {
+  background-color: var(--primary-green);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s, transform 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+#addNoteBtn:hover {
+  background-color: #16a34a;
+  transform: translateY(-2px);
+}
+
+#addNoteBtn:active {
+  transform: translateY(0);
+}
+
+/* Edit note form */
+.note-edit-form {
+  margin-bottom: 10px;
+}
+
+.note-edit-form textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  resize: vertical;
+  min-height: 100px;
+  font-family: inherit;
+  font-size: 1rem;
+  margin-bottom: 10px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.note-edit-form textarea:focus {
+  outline: none;
+  border-color: var(--primary-green);
+  box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.2);
+}
+
+.edit-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.cancel-edit-btn, .save-edit-btn {
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  border: none;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.cancel-edit-btn {
+  background-color: #e2e8f0;
+  color: #475569;
+}
+
+.save-edit-btn {
+  background-color: var(--primary-green);
+  color: white;
+}
+
+.cancel-edit-btn:hover {
+  background-color: #cbd5e1;
+}
+
+.save-edit-btn:hover {
+  background-color: #16a34a;
+}
+
+/* Test Connection button */
+.test-connection-btn {
+  background-color: #6366f1;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  margin-top: 20px;
+  transition: background-color 0.2s;
+}
+
+.test-connection-btn:hover {
+  background-color: #4f46e5;
+}
+
+/* Test results display */
+#test-result {
+  margin-top: 15px;
+  padding: 15px;
+  background-color: #f8fafc;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+  font-family: monospace;
+  white-space: pre-wrap;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+/* Container for Save Round button to right align it */
+.save-round-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+  width: 100%;
+}
+
+/* Place this CSS at the very end of your styles.css file to ensure it overrides everything */
+
+/* Reset and standardize button styles */
+.save-btn,
+.add-note-btn {
+  width: auto !important;
+  background-color: #4CAF50 !important;
+  color: white !important;
+  border: none !important;
+  padding: 12px 24px !important;
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+  font-size: 16px !important;
+  cursor: pointer !important;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1) !important;
+  margin: 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.2s ease !important;
+}
+
+/* Standardize arrow icon */
+.save-btn::after,
+.add-note-btn::after {
+  content: "→" !important;
+  font-size: 18px !important;
+  margin-left: 8px !important;
+  transition: transform 0.2s !important;
+}
+
+/* Standardize hover effects */
+.save-btn:hover,
+.add-note-btn:hover {
+  background-color: #3d8b40 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15) !important;
+}
+
+.save-btn:hover::after,
+.add-note-btn:hover::after {
+  transform: translateX(3px) !important;
+}
+
+/* Standardize containers */
+.save-round-container,
+.add-note-container {
+  display: flex !important;
+  justify-content: flex-end !important;
+  width: 100% !important;
+  margin-top: 16px !important;
+}
