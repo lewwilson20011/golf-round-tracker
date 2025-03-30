@@ -1,266 +1,330 @@
-// Add Note Feature JavaScript
+// notes.js - Golf Notes Functionality
 import { supabase } from './supabase.js';
 
 document.addEventListener('DOMContentLoaded', function() {
-  // Set up event listeners for the Add a Note feature
-  setupAddNoteFeature();
+  console.log('Notes module initializing...');
+  
+  // Setup the Add Note button event handler - UPDATED SELECTOR
+  const addNoteBtn = document.querySelector('.add-note-btn');
+  if (addNoteBtn) {
+    console.log('Add note button found, setting up click handler');
+    addNoteBtn.addEventListener('click', addNote);
+  } else {
+    console.error('Add note button not found in the DOM');
+    // Try with a different selector as a fallback
+    const altButton = document.getElementById('addNoteBtn');
+    if (altButton) {
+      console.log('Found add note button with ID selector');
+      altButton.addEventListener('click', addNote);
+    }
+  }
+  
+  // Load existing notes
+  loadNotes();
 });
 
-function setupAddNoteFeature() {
-  console.log('Setting up Add Note feature...');
+// Simple function to add a note
+async function addNote() {
+  console.log('Add note button clicked');
   
-  // Get references to the button, modal, and close button
-  const addNoteFeatureBtn = document.getElementById('addNoteFeatureBtn');
-  const addNoteModal = document.getElementById('addNoteModal');
-  const closeModalBtn = addNoteModal?.querySelector('.close-modal');
-  const noteForm = document.getElementById('noteForm');
-  
-  // Check if elements exist (they might not on some pages)
-  if (!addNoteFeatureBtn || !addNoteModal) {
-    console.log('Add Note feature elements not found on this page');
+  // Get the note content
+  const noteInput = document.getElementById('newNote');
+  if (!noteInput) {
+    console.error('New note input element not found');
+    alert('Error: Could not find the note input field');
     return;
   }
   
-  // Open modal when the feature button is clicked
-  addNoteFeatureBtn.addEventListener('click', function() {
-    addNoteModal.style.display = 'block';
-    document.body.style.overflow = 'hidden'; // Prevent scrolling behind modal
-    
-    // Focus the textarea
-    setTimeout(() => {
-      document.getElementById('noteContent')?.focus();
-    }, 100);
-  });
-  
-  // Close modal when the close button is clicked
-  closeModalBtn?.addEventListener('click', function() {
-    closeNoteModal();
-  });
-  
-  // Close modal when clicking outside of it
-  window.addEventListener('click', function(event) {
-    if (event.target === addNoteModal) {
-      closeNoteModal();
-    }
-  });
-  
-  // Handle form submission
-  noteForm?.addEventListener('submit', async function(e) {
-    e.preventDefault();
-    await saveNote();
-  });
-  
-  // Also attach the initialization to the Track Your Rounds button
-  const trackRoundsBtn = document.querySelector('.cta-button');
-  if (trackRoundsBtn) {
-    const originalText = trackRoundsBtn.textContent;
-    trackRoundsBtn.innerHTML = `${originalText} <span class="new-badge">NEW: NOTES</span>`;
-  }
-  
-  console.log('Add Note feature setup complete');
-}
-
-// Close the note modal
-function closeNoteModal() {
-  const addNoteModal = document.getElementById('addNoteModal');
-  if (addNoteModal) {
-    addNoteModal.style.display = 'none';
-    document.body.style.overflow = ''; // Restore scrolling
-  }
-}
-
-// Save a new note
-async function saveNote() {
-  const noteContent = document.getElementById('noteContent')?.value.trim();
-  const noteCategory = document.getElementById('noteCategory')?.value;
-  
+  const noteContent = noteInput.value.trim();
   if (!noteContent) {
     alert('Please enter some text for your note');
     return;
   }
   
   try {
-    // Show loading state
-    const saveBtn = document.querySelector('.save-btn');
-    const originalBtnText = saveBtn.innerHTML;
-    saveBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
-    saveBtn.disabled = true;
-    
-    // Get the current user
+    // Get the current user directly from supabase
     const { data, error: authError } = await supabase.auth.getUser();
     
-    if (authError || !data.user) {
-      throw new Error('You must be logged in to add notes');
+    if (authError) {
+      console.error('Auth error:', authError);
+      alert('Authentication error. Please try logging in again.');
+      return;
     }
+    
+    if (!data.user) {
+      alert('You must be logged in to add notes');
+      console.error('No user logged in');
+      return;
+    }
+    
+    const userId = data.user.id;
+    console.log('Current user ID:', userId);
+    console.log('Adding note with content:', noteContent);
     
     // Insert the note into the database
     const { error } = await supabase
       .from('golf_notes')
       .insert([
         {
-          user_id: data.user.id,
-          content: noteContent,
-          category: noteCategory || 'general'
+          user_id: userId,
+          content: noteContent
         }
       ]);
     
     if (error) {
-      throw error;
+      console.error('Error adding note:', error);
+      alert('Failed to add note: ' + error.message);
+      return;
     }
     
-    // Reset form and close modal
-    document.getElementById('noteContent').value = '';
-    document.getElementById('noteCategory').value = 'general';
+    console.log('Note added successfully!');
+    alert('Note added successfully!');
     
-    // Show success briefly before closing
-    saveBtn.innerHTML = '<i class="fa-solid fa-check"></i> Saved!';
-    saveBtn.style.backgroundColor = '#10b981';
+    // Clear the input field
+    noteInput.value = '';
     
-    setTimeout(() => {
-      closeNoteModal();
-      
-      // Show success message
-      showNotification('Note saved successfully!');
-      
-      // Reset button
-      setTimeout(() => {
-        saveBtn.innerHTML = originalBtnText;
-        saveBtn.disabled = false;
-        saveBtn.style.backgroundColor = '';
-      }, 500);
-      
-      // If we're on a page with the notes list, refresh it
-      if (typeof loadNotes === 'function') {
-        loadNotes();
-      } else {
-        // If we're not on the notes page, show a link to view notes
-        showViewNotesPrompt();
-      }
-    }, 1000);
+    // Reload notes to show the new one
+    loadNotes();
     
   } catch (error) {
-    console.error('Error saving note:', error);
-    alert('Error saving note: ' + error.message);
-    
-    // Reset button
-    const saveBtn = document.querySelector('.save-btn');
-    saveBtn.innerHTML = '<i class="fa-solid fa-save"></i> Save Note';
-    saveBtn.disabled = false;
+    console.error('Exception when adding note:', error);
+    alert('An error occurred while adding your note: ' + error.message);
   }
 }
 
-// Show a notification popup
-function showNotification(message) {
-  // Create notification element if it doesn't exist
-  let notification = document.getElementById('notification');
-  if (!notification) {
-    notification = document.createElement('div');
-    notification.id = 'notification';
-    notification.style.position = 'fixed';
-    notification.style.bottom = '20px';
-    notification.style.right = '20px';
-    notification.style.backgroundColor = '#10b981';
-    notification.style.color = 'white';
-    notification.style.padding = '15px 20px';
-    notification.style.borderRadius = '8px';
-    notification.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.15)';
-    notification.style.zIndex = '1000';
-    notification.style.transform = 'translateY(100px)';
-    notification.style.opacity = '0';
-    notification.style.transition = 'all 0.3s ease-out';
-    document.body.appendChild(notification);
+// Load notes from the database
+async function loadNotes() {
+  console.log('Loading notes...');
+  
+  const notesList = document.getElementById('notesList');
+  if (!notesList) {
+    console.error('Notes list element not found');
+    return;
   }
   
-  // Update message and show
-  notification.textContent = message;
-  
-  // Trigger animation
-  setTimeout(() => {
-    notification.style.transform = 'translateY(0)';
-    notification.style.opacity = '1';
+  try {
+    // Get the current user directly from supabase
+    const { data, error: authError } = await supabase.auth.getUser();
     
-    // Hide after 3 seconds
-    setTimeout(() => {
-      notification.style.transform = 'translateY(100px)';
-      notification.style.opacity = '0';
-    }, 3000);
-  }, 10);
-}
-
-// Show a prompt to view notes after adding one
-function showViewNotesPrompt() {
-  // Create prompt if it doesn't exist
-  let prompt = document.getElementById('viewNotesPrompt');
-  if (!prompt) {
-    prompt = document.createElement('div');
-    prompt.id = 'viewNotesPrompt';
-    prompt.style.position = 'fixed';
-    prompt.style.bottom = '20px';
-    prompt.style.left = '50%';
-    prompt.style.transform = 'translateX(-50%) translateY(100px)';
-    prompt.style.backgroundColor = 'white';
-    prompt.style.color = '#1e293b';
-    prompt.style.padding = '15px 20px';
-    prompt.style.borderRadius = '8px';
-    prompt.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.15)';
-    prompt.style.zIndex = '1000';
-    prompt.style.opacity = '0';
-    prompt.style.transition = 'all 0.3s ease-out';
-    prompt.style.display = 'flex';
-    prompt.style.alignItems = 'center';
-    prompt.style.gap = '15px';
+    if (authError) {
+      console.error('Auth error:', authError);
+      notesList.innerHTML = `
+        <div class="empty-notes-state">
+          <p>Error loading notes. Please try logging in again.</p>
+        </div>
+      `;
+      return;
+    }
     
-    const closeBtn = document.createElement('button');
-    closeBtn.innerHTML = '&times;';
-    closeBtn.style.background = 'none';
-    closeBtn.style.border = 'none';
-    closeBtn.style.color = '#64748b';
-    closeBtn.style.fontSize = '24px';
-    closeBtn.style.cursor = 'pointer';
-    closeBtn.style.marginLeft = '10px';
-    closeBtn.style.padding = '0';
-    closeBtn.style.lineHeight = '1';
+    if (!data.user) {
+      console.log('No user logged in, showing empty notes state');
+      notesList.innerHTML = `
+        <div class="empty-notes-state">
+          <p>You need to be logged in to view your notes.</p>
+        </div>
+      `;
+      return;
+    }
     
-    closeBtn.addEventListener('click', function() {
-      prompt.style.transform = 'translateX(-50%) translateY(100px)';
-      prompt.style.opacity = '0';
+    const userId = data.user.id;
+    console.log('Loading notes for user:', userId);
+    
+    // Get the user's notes from the database
+    const { data: notes, error } = await supabase
+      .from('golf_notes')
+      .select('*')
+      .eq('user_id', userId)
+      .order('created_at', { ascending: false });
+    
+    if (error) {
+      console.error('Error loading notes:', error);
+      notesList.innerHTML = `
+        <div class="empty-notes-state">
+          <p>Error loading notes. Please try again later.</p>
+        </div>
+      `;
+      return;
+    }
+    
+    console.log('Notes loaded:', notes ? notes.length : 0);
+    
+    // Handle empty notes
+    if (!notes || notes.length === 0) {
+      notesList.innerHTML = `
+        <div class="empty-notes-state">
+          <p>No notes yet. Add your first note to keep track of your golf goals and tips.</p>
+        </div>
+      `;
+      return;
+    }
+    
+    // Display the notes
+    notesList.innerHTML = '';
+    notes.forEach(note => {
+      const noteElement = document.createElement('div');
+      noteElement.className = 'note-item';
+      noteElement.dataset.id = note.id;
+      
+      const date = new Date(note.created_at);
+      const formattedDate = date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+      });
+      
+      noteElement.innerHTML = `
+        <div class="note-content">${note.content.replace(/\n/g, '<br>')}</div>
+        <div class="note-meta">
+          <div class="note-date">${formattedDate}</div>
+          <div class="note-actions">
+            <button class="edit-btn" title="Edit note">
+              <i class="fa-solid fa-pencil"></i>
+            </button>
+            <button class="delete-btn" title="Delete note">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </div>
+        </div>
+      `;
+      
+      notesList.appendChild(noteElement);
     });
     
-    prompt.innerHTML = `
-      <div>
-        <div style="font-weight: 600; margin-bottom: 5px;">Note saved successfully!</div>
-        <div>View and manage all your notes on the tracker page.</div>
+    // Set up edit and delete buttons
+    document.querySelectorAll('.edit-btn').forEach(button => {
+      button.addEventListener('click', function() {
+        const noteItem = this.closest('.note-item');
+        const noteId = noteItem.dataset.id;
+        const content = noteItem.querySelector('.note-content').innerHTML.replace(/<br>/g, '\n');
+        handleEditNote(noteItem, noteId, content);
+      });
+    });
+    
+    document.querySelectorAll('.delete-btn').forEach(button => {
+      button.addEventListener('click', function() {
+        const noteItem = this.closest('.note-item');
+        const noteId = noteItem.dataset.id;
+        if (confirm('Are you sure you want to delete this note?')) {
+          deleteNote(noteId);
+        }
+      });
+    });
+    
+  } catch (error) {
+    console.error('Exception when loading notes:', error);
+    notesList.innerHTML = `
+      <div class="empty-notes-state">
+        <p>An error occurred while loading your notes.</p>
       </div>
-      <a href="#" id="viewNotesLink" style="display: inline-block; padding: 8px 16px; background-color: var(--primary-green); color: white; border-radius: 6px; text-decoration: none; font-weight: 500;">
-        View Notes
-      </a>
     `;
-    prompt.appendChild(closeBtn);
-    
-    document.body.appendChild(prompt);
-    
-    // Setup view notes link
-    document.getElementById('viewNotesLink')?.addEventListener('click', function(e) {
-      e.preventDefault();
-      window.location.href = 'index.html#notes-section';
-    });
   }
-  
-  // Show the prompt
-  setTimeout(() => {
-    prompt.style.transform = 'translateX(-50%) translateY(0)';
-    prompt.style.opacity = '1';
-    
-    // Hide after 6 seconds
-    setTimeout(() => {
-      prompt.style.transform = 'translateX(-50%) translateY(100px)';
-      prompt.style.opacity = '0';
-    }, 6000);
-  }, 10);
 }
 
-// Add the init function to window (for global access)
-window.initAddNoteFeature = setupAddNoteFeature;
+// Handle editing a note
+function handleEditNote(noteItem, noteId, content) {
+  // Create edit form
+  const editForm = document.createElement('div');
+  editForm.className = 'note-edit-form';
+  editForm.innerHTML = `
+    <textarea class="edit-textarea">${content}</textarea>
+    <div class="edit-buttons">
+      <button class="cancel-edit-btn">Cancel</button>
+      <button class="save-edit-btn">Save</button>
+    </div>
+  `;
+  
+  // Replace note content with edit form
+  const noteContent = noteItem.querySelector('.note-content');
+  noteContent.style.display = 'none';
+  noteItem.insertBefore(editForm, noteContent.nextSibling);
+  
+  // Focus the textarea
+  const textarea = editForm.querySelector('textarea');
+  textarea.focus();
+  
+  // Setup edit form buttons
+  const cancelBtn = editForm.querySelector('.cancel-edit-btn');
+  const saveBtn = editForm.querySelector('.save-edit-btn');
+  
+  cancelBtn.addEventListener('click', function() {
+    editForm.remove();
+    noteContent.style.display = '';
+  });
+  
+  saveBtn.addEventListener('click', function() {
+    saveEditedNote(noteId, textarea.value, noteItem, editForm, noteContent);
+  });
+}
 
-// Call initialization
-setupAddNoteFeature();
+// Save an edited note
+async function saveEditedNote(noteId, newContent, noteItem, editForm, noteContent) {
+  if (!newContent.trim()) {
+    alert('Note cannot be empty');
+    return;
+  }
+  
+  try {
+    const { error } = await supabase
+      .from('golf_notes')
+      .update({ content: newContent })
+      .eq('id', noteId);
+    
+    if (error) {
+      console.error('Error updating note:', error);
+      alert('Failed to update note: ' + error.message);
+      return;
+    }
+    
+    // Update the note content in the UI
+    noteContent.innerHTML = newContent.replace(/\n/g, '<br>');
+    noteContent.style.display = '';
+    editForm.remove();
+    
+    console.log('Note updated successfully');
+  } catch (error) {
+    console.error('Exception when updating note:', error);
+    alert('An error occurred while updating your note.');
+  }
+}
+
+// Delete a note
+async function deleteNote(noteId) {
+  console.log('Deleting note:', noteId);
+  
+  try {
+    const { error } = await supabase
+      .from('golf_notes')
+      .delete()
+      .eq('id', noteId);
+    
+    if (error) {
+      console.error('Error deleting note:', error);
+      alert('Failed to delete note: ' + error.message);
+      return;
+    }
+    
+    console.log('Note deleted successfully');
+    
+    // Reload notes to update the list
+    loadNotes();
+    
+  } catch (error) {
+    console.error('Exception when deleting note:', error);
+    alert('An error occurred while deleting your note.');
+  }
+}
+
+// Export loadNotes function for potential use in other modules
+export { loadNotes };
+
+// Debug function to check if elements are present
+function debugCheckElements() {
+  console.log('Debugging element presence:');
+  console.log('Add Note Button (.add-note-btn):', document.querySelector('.add-note-btn'));
+  console.log('Add Note Button (alt, #addNoteBtn):', document.getElementById('addNoteBtn'));
+  console.log('New Note Textarea:', document.getElementById('newNote'));
+  console.log('Notes List Container:', document.getElementById('notesList'));
+}
+
+// Run debug check after a delay to ensure DOM is fully loaded
+setTimeout(debugCheckElements, 1000);
