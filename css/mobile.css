@@ -107,3 +107,259 @@ body {
   height: 40px;
   font-size: 14px;
 }
+
+/* Responsive CSS that works for both desktop and mobile views */
+
+/* Desktop Layout - keep the original grid for larger screens */
+@media screen and (min-width: 769px) {
+  /* Maintain the desktop layout with two columns */
+  .main-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  
+  /* Rounds table layout for desktop */
+  .rounds-header, 
+  .round-row {
+    display: grid;
+    grid-template-columns: 0.8fr 1.2fr 0.6fr 2fr 0.6fr;
+    gap: 8px;
+    align-items: center;
+  }
+  
+  /* Make sure notes have proper truncation */
+  .notes.collapsed .notes-content {
+    max-height: 2.8em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    line-height: 1.4;
+  }
+  
+  /* Make sure action buttons are properly sized */
+  .action-buttons button {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+/* Tablet Layout */
+@media screen and (max-width: 768px) and (min-width: 481px) {
+  /* Switch to single column layout */
+  .main-content {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Adjust table layout for tablets */
+  .rounds-header, 
+  .round-row {
+    grid-template-columns: 0.7fr 1.2fr 0.6fr 1.8fr 0.6fr;
+    gap: 8px;
+  }
+  
+  /* Slightly smaller text on tablets */
+  .rounds-header > div, 
+  .round-row > div {
+    font-size: 14px;
+  }
+}
+
+/* Mobile Layout */
+@media screen and (max-width: 480px) {
+  /* Single column layout */
+  .main-content {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Adjust table layout for mobile */
+  .rounds-header, 
+  .round-row {
+    grid-template-columns: 0.7fr 1fr 0.5fr 1fr 0.5fr;
+    gap: 4px;
+    padding: 6px 0;
+  }
+  
+  /* Make text smaller on mobile */
+  .rounds-header > div, 
+  .round-row > div {
+    font-size: 13px;
+    padding: 6px 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  /* Handle notes display */
+  .notes.collapsed .notes-content {
+    max-height: 1.4em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  /* Smaller action buttons */
+  .action-buttons {
+    display: flex;
+    gap: 6px;
+  }
+  
+  .action-buttons button {
+    width: 30px;
+    height: 30px;
+    padding: 0;
+  }
+  
+  .action-buttons button i {
+    font-size: 14px;
+  }
+}
+
+/* Very small screens (iPhone SE, etc.) */
+@media screen and (max-width: 375px) {
+  /* Even more compact layout */
+  .rounds-header, 
+  .round-row {
+    grid-template-columns: 0.6fr 0.8fr 0.4fr 0.8fr 0.5fr;
+    gap: 2px;
+  }
+  
+  /* Smaller text and padding */
+  .rounds-header > div, 
+  .round-row > div {
+    font-size: 12px;
+    padding: 4px 2px;
+  }
+  
+  /* Compact action buttons */
+  .action-buttons {
+    gap: 4px;
+  }
+  
+  .action-buttons button {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+/* Shared styles regardless of screen size */
+.notes.expanded .notes-content {
+  white-space: normal;
+  max-height: none;
+}
+
+.expand-indicator {
+  font-size: 12px;
+  color: #4CAF50;
+  margin-top: 2px;
+}
+
+/* Fix the bottom navigation padding */
+body {
+  padding-bottom: 70px;
+}
+
+/* Ensure the back to top button doesn't overlap content */
+#backToTopBtn {
+  bottom: 80px;
+  right: 15px;
+}
+
+/* Style improvements for the incomplete badge */
+.incomplete-badge {
+  display: inline-block;
+  background-color: #334155;
+  color: #94a3b8;
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-weight: 500;
+}
+
+/* Ensure consistent score colors */
+.round-row .score {
+  color: var(--primary-green);
+  font-weight: 600;
+  text-align: center;
+}
+
+/* Fix for conflicting CSS between desktop and mobile views */
+
+/* Desktop-specific fix - ensure these override any existing mobile rules */
+@media screen and (min-width: 769px) {
+  /* Restore the desktop layout with two columns */
+  .main-content {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 24px !important;
+  }
+  
+  /* Restore rounds table layout for desktop */
+  .rounds-header, 
+  .round-row {
+    display: grid !important;
+    grid-template-columns: 0.8fr 1.2fr 0.6fr 2fr 0.6fr !important;
+    gap: 8px !important;
+    align-items: center !important;
+  }
+  
+  /* Ensure proper text sizing on desktop */
+  .rounds-header > div, 
+  .round-row > div {
+    font-size: 14px !important;
+    padding: 8px !important;
+    white-space: normal !important;
+  }
+  
+  /* Note cell specific styles for desktop */
+  .round-row .notes {
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+  
+  .notes.collapsed .notes-content {
+    max-height: 2.8em !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    line-height: 1.4 !important;
+    white-space: normal !important;
+  }
+  
+  /* Restore action button sizes for desktop */
+  .action-buttons button {
+    width: 36px !important;
+    height: 36px !important;
+    padding: 0 !important;
+  }
+}
+
+/* Fix for card styles */
+@media screen and (min-width: 769px) {
+  /* Two cards side by side */
+  .card {
+    margin-bottom: 24px !important;
+    background-color: #2A3541 !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
+  }
+  
+  /* Add round card */
+  .card:first-of-type {
+    display: block !important;
+    height: auto !important;
+    width: auto !important;
+  }
+  
+  /* Recent rounds card */
+  .card:nth-of-type(2) {
+    display: block !important;
+    height: auto !important;
+    width: auto !important;
+  }
+}

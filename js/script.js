@@ -1063,3 +1063,116 @@ document.addEventListener('DOMContentLoaded', function() {
     // Also run on window resize
     window.addEventListener('resize', adjustGridForMobile);
 });
+
+// Adaptive functionality for both desktop and mobile views
+
+// Enhanced notes expansion toggle
+window.toggleNotesExpansion = function(noteElement) {
+    const wasCollapsed = noteElement.classList.contains('collapsed');
+    
+    // Get viewport width to apply different behaviors based on screen size
+    const viewportWidth = window.innerWidth;
+    
+    // On mobile, collapse other expanded notes to save space
+    if (viewportWidth <= 768) {
+        document.querySelectorAll('.notes.expanded').forEach(note => {
+            if (note !== noteElement) {
+                note.classList.add('collapsed');
+                note.classList.remove('expanded');
+                
+                const otherIndicator = note.querySelector('.expand-indicator');
+                if (otherIndicator) {
+                    otherIndicator.textContent = '+ Show More';
+                }
+            }
+        });
+    }
+    
+    // Toggle the class for this note
+    noteElement.classList.toggle('collapsed');
+    noteElement.classList.toggle('expanded');
+    
+    // Update the indicator text
+    const indicator = noteElement.querySelector('.expand-indicator');
+    if (indicator) {
+        indicator.textContent = wasCollapsed ? '- Show Less' : '+ Show More';
+    }
+    
+    // On mobile, scroll to ensure expanded note is visible
+    if (wasCollapsed && viewportWidth <= 768) {
+        // Small delay to allow DOM to update
+        setTimeout(() => {
+            noteElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }, 100);
+    }
+    
+    // Stop event propagation to prevent triggering edit on click
+    event.stopPropagation();
+};
+
+// Resize handler to optimize layout for current screen size
+function optimizeLayoutForScreenSize() {
+    const viewportWidth = window.innerWidth;
+    
+    // Check if we're on mobile vs desktop
+    const isMobile = viewportWidth <= 768;
+    const isVerySmall = viewportWidth <= 375;
+    
+    // If on a small screen, collapse all expanded notes
+    if (isMobile) {
+        document.querySelectorAll('.notes.expanded').forEach(note => {
+            note.classList.add('collapsed');
+            note.classList.remove('expanded');
+            
+            const indicator = note.querySelector('.expand-indicator');
+            if (indicator) {
+                indicator.textContent = '+ Show More';
+            }
+        });
+    }
+    
+    // CSS handles most of the grid adjustments, but you can add
+    // any JavaScript-specific adjustments here if needed
+}
+
+// Run on page load and window resize
+document.addEventListener('DOMContentLoaded', function() {
+    // Initial optimization
+    optimizeLayoutForScreenSize();
+    
+    // Listen for window resize events
+    window.addEventListener('resize', function() {
+        // Debounce the resize handler to avoid performance issues
+        clearTimeout(window.resizeTimer);
+        window.resizeTimer = setTimeout(optimizeLayoutForScreenSize, 100);
+    });
+    
+    // If your app uses the 'addRound' function, enhance it to reset the view properly
+    const saveButton = document.querySelector('.save-btn');
+    if (saveButton) {
+        const originalOnClick = saveButton.onclick;
+        saveButton.onclick = function(e) {
+            // Call original handler if it exists
+            if (originalOnClick) originalOnClick.call(this, e);
+            
+            // After saving, optimize layout again
+            setTimeout(optimizeLayoutForScreenSize, 500);
+        };
+    }
+});
+
+// Helper function to modify row rendering (can be added to your existing code)
+function enhanceRoundRow(row) {
+    // Make sure all new rows have proper event handlers
+    const notesCell = row.querySelector('.notes');
+    if (notesCell) {
+        notesCell.onclick = function() {
+            toggleNotesExpansion(this);
+        };
+    }
+    
+    // Add any other row enhancements here
+    // ...
+    
+    return row;
+}
