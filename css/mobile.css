@@ -1,0 +1,109 @@
+/* Mobile Responsive Fixes for Round Tracker */
+
+/* Improved table layout for mobile */
+@media screen and (max-width: 768px) {
+  /* Adjust the grid template for better mobile display */
+  .rounds-header, 
+  .round-row, 
+  .rounds-table .rounds-header, 
+  .rounds-table .round-row {
+    grid-template-columns: 0.7fr 1fr 0.5fr 1fr 0.5fr;
+    gap: 4px;
+    padding: 8px 0;
+  }
+  
+  /* Make text smaller on mobile */
+  .rounds-header > div, 
+  .round-row > div {
+    font-size: 13px;
+    padding: 6px 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  
+  /* Ensure notes are properly truncated */
+  .round-row .notes-cell,
+  .round-row > div:nth-child(4) {
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: 8px;
+  }
+  
+  /* Action buttons should be smaller on mobile */
+  .action-buttons button {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+  }
+  
+  /* Smaller icons in buttons */
+  .action-buttons button i {
+    font-size: 14px;
+  }
+}
+
+/* iPhone SE and other small screens */
+@media screen and (max-width: 375px) {
+  /* Even more compact layout */
+  .rounds-header, 
+  .round-row, 
+  .rounds-table .rounds-header, 
+  .rounds-table .round-row {
+    grid-template-columns: 0.6fr 0.8fr 0.4fr 0.8fr 0.5fr;
+    gap: 2px;
+  }
+  
+  /* Smaller text and padding */
+  .rounds-header > div, 
+  .round-row > div {
+    font-size: 12px;
+    padding: 4px 2px;
+  }
+  
+  /* Ensure action buttons fit */
+  .action-buttons {
+    gap: 4px;
+  }
+  
+  .action-buttons button {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+/* Fix for notes expansion functionality */
+.notes.collapsed .notes-content {
+  max-height: 1.4em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.notes.expanded .notes-content {
+  white-space: normal;
+  max-height: none;
+}
+
+.expand-indicator {
+  font-size: 12px;
+  color: #4CAF50;
+  margin-top: 2px;
+}
+
+/* Fix the bottom navigation padding */
+body {
+  padding-bottom: 70px;
+}
+
+/* Ensure the back to top button doesn't overlap content */
+#backToTopBtn {
+  bottom: 80px;
+  right: 15px;
+  width: 40px;
+  height: 40px;
+  font-size: 14px;
+}

@@ -976,3 +976,90 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Logging for debugging
 console.log('Script loaded and ready');
+
+// Enhanced toggleNotesExpansion function
+window.toggleNotesExpansion = function(noteElement) {
+    const wasCollapsed = noteElement.classList.contains('collapsed');
+    
+    // First, collapse all other notes to ensure clean layout
+    document.querySelectorAll('.notes.expanded').forEach(note => {
+        if (note !== noteElement) {
+            note.classList.add('collapsed');
+            note.classList.remove('expanded');
+            
+            const otherIndicator = note.querySelector('.expand-indicator');
+            if (otherIndicator) {
+                otherIndicator.textContent = '+ Show More';
+            }
+        }
+    });
+    
+    // Toggle the class for this note
+    noteElement.classList.toggle('collapsed');
+    noteElement.classList.toggle('expanded');
+    
+    // Update the indicator text
+    const indicator = noteElement.querySelector('.expand-indicator');
+    if (indicator) {
+        indicator.textContent = wasCollapsed ? '- Show Less' : '+ Show More';
+    }
+    
+    // Optional: Scroll slightly to ensure expanded note is visible
+    if (wasCollapsed) {
+        // Small delay to allow DOM to update
+        setTimeout(() => {
+            noteElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }, 100);
+    }
+    
+    // Stop event propagation to prevent triggering edit on click
+    event.stopPropagation();
+};
+
+// Add a window resize handler to collapse notes on small screens
+window.addEventListener('resize', function() {
+    if (window.innerWidth <= 768) {
+        // Collapse all expanded notes when screen gets small
+        document.querySelectorAll('.notes.expanded').forEach(note => {
+            note.classList.add('collapsed');
+            note.classList.remove('expanded');
+            
+            const indicator = note.querySelector('.expand-indicator');
+            if (indicator) {
+                indicator.textContent = '+ Show More';
+            }
+        });
+    }
+});
+
+// Adjust grid view on load and resize
+function adjustGridForMobile() {
+    const isMobile = window.innerWidth <= 768;
+    const isVerySmall = window.innerWidth <= 375;
+    
+    // Get all table headers and rows
+    const headers = document.querySelectorAll('.rounds-header');
+    const rows = document.querySelectorAll('.round-row');
+    
+    // Set appropriate grid template
+    const gridTemplate = isVerySmall 
+        ? "0.6fr 0.8fr 0.4fr 0.8fr 0.5fr"
+        : (isMobile ? "0.7fr 1fr 0.5fr 1fr 0.5fr" : "0.8fr 1.2fr 0.6fr 2fr 0.6fr");
+    
+    // Apply to all headers and rows
+    headers.forEach(header => {
+        header.style.gridTemplateColumns = gridTemplate;
+    });
+    
+    rows.forEach(row => {
+        row.style.gridTemplateColumns = gridTemplate;
+    });
+}
+
+// Run on page load
+document.addEventListener('DOMContentLoaded', function() {
+    adjustGridForMobile();
+    
+    // Also run on window resize
+    window.addEventListener('resize', adjustGridForMobile);
+});
